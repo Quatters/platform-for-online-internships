@@ -9,7 +9,7 @@ export ENV_KEY=ENV_VALUE
 set ENV_KEY=ENV_VALUE
 ```
 
-or using `.env` file. Look for the `.env.example` to see which are needed or
+or by using `.env` file. Look for the `.env.example` to see which are needed or
 may be set.
 
 ### Backend
@@ -22,7 +22,7 @@ To start, make virtual env, activate it and install dependencies:
 source/to/python3.11 -m venv env
 # unix
 source env/bin/activate
-# windows
+# windows cmd
 .\env\Scripts\activate.bat
 pip install -r requirements.txt
 ```
