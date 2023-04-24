@@ -18,9 +18,11 @@ Mako==1.2.4
 MarkupSafe==2.1.2
 mccabe==0.7.0
 orjson==3.8.10
+packaging==23.1
 pycodestyle==2.10.0
 pydantic==1.10.7
 pyflakes==3.0.1
+PyMySQL==1.0.3
 python-dotenv==1.0.0
 python-multipart==0.0.6
 PyYAML==6.0
