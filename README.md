@@ -61,12 +61,13 @@ python -m flake8
 Here we are using Nuxt 3. To start, install dependencies:
 
 ```sh
-# root directory
+# cd frontend
 npm i
 ```
 
 Up development server:
 
 ```sh
+# cd frontend
 npm run dev
 ```
