@@ -1,0 +1,20 @@
+{
+    "root": true,
+    "extends": [
+        "@nuxtjs/eslint-config-typescript",
+        "plugin:prettier/recommended"
+    ],
+    "plugins": [
+        "prettier"
+    ],
+    "rules": {
+        "@typescript-eslint/ban-ts-comment": "error",
+        "@typescript-eslint/no-non-null-assertion": "warn",
+        "comma-dangle": "off",
+        "prettier/prettier": "error",
+        "semi": "warn",
+        "vue/html-indent": "error",
+        "vue/no-empty-component-block": "error",
+        "vue/require-explicit-emits": "error"
+    }
+}
