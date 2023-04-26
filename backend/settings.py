@@ -11,7 +11,7 @@ APP_NAME = 'platform_for_online_internships_backend'
 API_VERSION = 'v1'
 
 UVICORN_CONFIG = {
-    'app': 'backend.app:app',
+    'app': 'backend:app',
     'host': os.getenv('UVICORN_HOST', '0.0.0.0'),
     'port': int(os.getenv('UVICORN_PORT', 8000)),
     'reload': bool(os.getenv('UVICORN_HOT_RELOAD', False)),
