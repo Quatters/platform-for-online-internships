@@ -12,6 +12,23 @@ set ENV_KEY=ENV_VALUE
 or by using `.env` file. Look for the `.env.example` to see which are needed or
 may be set.
 
+OpenAPI schema plays an important role for both backend and frontend. On backend
+you are could use SwaggerUI to quickly test recent endpoints. On frontend schema
+translates to typescript types which are used directly in the code.
+
+So don't forget to regenerate schema if there are updates on backend:
+
+```sh
+python generate_openapi.py
+```
+
+and then regenerate types on frontend:
+
+```sh
+# cd frontend
+npx openapi-typescript ../openapi.json --output openapi.ts
+```
+
 ### Backend
 
 We are using Python 3.11 and [FastAPI](https://fastapi.tiangolo.com/).
@@ -54,6 +71,12 @@ Before opening PR, make sure there are no `flake8` errors:
 
 ```sh
 python -m flake8
+```
+
+all tests are passed:
+
+```sh
+python -m pytest tests.py
 ```
 
 ### Frontend
