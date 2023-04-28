@@ -23,3 +23,16 @@ archive.zip
 # vim temporary files
 *~
 .*.sw?
+
+# from nuxt
+node_modules
+*.log*
+.nuxt
+nitro
+cache
+output
+dist
+DS_Store
+
+# additional
+.env
