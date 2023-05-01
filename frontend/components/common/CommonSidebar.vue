@@ -8,7 +8,7 @@
             </h1>
         </div>
         <ul class="flex flex-col">
-            <li v-for="item in sidebarItems">
+            <li v-for="(item, idx) in sidebarItems" :key="idx">
                 <div v-if="item.separator" class="my-6"></div>
                 <NuxtLink v-else :to="item.link" class="flex flex-row items-center text-blue-900 mx-3 mt-2 py-1 ps-7">
                     <div

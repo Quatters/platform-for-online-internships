@@ -1,5 +1,5 @@
-import { APIMethod, APIPath, APIResponseBody, HttpMethod, APIRequestBody, ContentType } from '~/types';
 import { useStorage } from '@vueuse/core';
+import { APIMethod, APIPath, APIResponseBody, HttpMethod, APIRequestBody, ContentType } from '~/types';
 
 interface Options<P extends APIPath, M extends APIMethod<P>, CT extends ContentType> {
     path: P;
@@ -15,7 +15,7 @@ const baseHeaders = {
     'Content-Type': 'application/json',
 };
 
-export default defineNuxtPlugin(nuxtApp => {
+export default defineNuxtPlugin(() => {
     const config = useRuntimeConfig();
     const accessToken = useStorage('accessToken', '');
 
@@ -42,7 +42,7 @@ export default defineNuxtPlugin(nuxtApp => {
 
         const additionalHeaders: Record<string, string> = {};
         if (accessToken.value) {
-            additionalHeaders['Authorization'] = `Bearer ${accessToken.value}`;
+            additionalHeaders.Authorization = `Bearer ${accessToken.value}`;
         }
 
         return _api<APIResponseBody<P, M>>(options.path, {

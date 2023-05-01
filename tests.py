@@ -1,5 +1,4 @@
 import orjson
-from pathlib import Path
 from fastapi.testclient import TestClient
 from backend import app
 from backend.settings import PROJECT_ROOT

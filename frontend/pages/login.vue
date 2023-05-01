@@ -7,25 +7,25 @@
                     <div>
                         <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Эл. почта</label>
                         <input
+                            id="email"
+                            v-model="email"
                             type="email"
                             name="email"
-                            id="email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
                             placeholder="name@mail.com"
                             required
-                            v-model="email"
                         />
                     </div>
                     <div class="mt-3">
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Пароль</label>
                         <input
+                            id="password"
+                            v-model="password"
                             type="password"
                             name="password"
-                            id="password"
                             placeholder="••••••••"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
                             required
-                            v-model="password"
                         />
                     </div>
                     <button

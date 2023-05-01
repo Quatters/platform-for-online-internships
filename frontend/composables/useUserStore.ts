@@ -1,7 +1,7 @@
 import { FetchError } from 'ofetch';
 import { defineStore } from 'pinia';
-import { components } from 'openapi';
 import { useStorage } from '@vueuse/core';
+import { components } from 'openapi';
 
 export default defineStore('user', () => {
     const { $api } = useNuxtApp();
@@ -9,7 +9,7 @@ export default defineStore('user', () => {
     const user = ref<components['schemas']['User']>();
 
     async function fetchToken({ email, password }: { email: string; password: string }) {
-        const { access_token } = await $api({
+        const response = await $api({
             path: '/api/auth/token',
             method: 'post',
             headers: {
@@ -20,7 +20,7 @@ export default defineStore('user', () => {
                 password,
             },
         });
-        accessToken.value = access_token;
+        accessToken.value = response.access_token;
     }
 
     async function _fetchUser() {

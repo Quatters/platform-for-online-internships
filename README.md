@@ -112,3 +112,9 @@ Up development server:
 # cd frontend
 yarn dev
 ```
+
+Run eslint:
+
+```sh
+yarn lint
+```

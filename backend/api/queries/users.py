@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from backend.api.schemas import users as schemas
 from backend.models.users import User
 
 

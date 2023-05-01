@@ -12,8 +12,15 @@
         "@typescript-eslint/no-non-null-assertion": "warn",
         "comma-dangle": "off",
         "prettier/prettier": "error",
-        "semi": "warn",
-        "vue/html-indent": "error",
+        "semi": [
+            "error",
+            "always"
+        ],
+        "vue/html-indent": [
+            "error",
+            4,
+            {}
+        ],
         "vue/no-empty-component-block": "error",
         "vue/require-explicit-emits": "error"
     }
