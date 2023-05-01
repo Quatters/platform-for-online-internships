@@ -7,6 +7,9 @@ PROJECT_ROOT: Path = BACKEND_ROOT.parent.absolute()
 
 load_dotenv(PROJECT_ROOT / '.env')
 
+if 'PYTEST_CURRENT_TEST' in os.environ:
+    load_dotenv(PROJECT_ROOT / '.env.ci')
+
 APP_NAME = 'platform_for_online_internships_backend'
 API_VERSION = 'v1'
 CLIENT_DOMAIN = os.getenv('CLIENT_DOMAIN', 'http://localhost:3000')
