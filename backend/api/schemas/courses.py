@@ -1,4 +1,4 @@
-from backend.api.base import BaseSchema
+from backend.api.schemas.base import BaseSchema
 
 
 class Course(BaseSchema):

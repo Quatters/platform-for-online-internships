@@ -5,7 +5,7 @@ from backend.api.queries import courses as queries
 from backend.api.schemas import courses as schemas
 
 
-router = APIRouter(prefix='/course')
+router = APIRouter(prefix='/courses')
 
 
 @router.get('/', response_model=list[schemas.Course])

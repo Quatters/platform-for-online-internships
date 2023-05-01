@@ -5,7 +5,8 @@ from backend.database import Base
 class BaseModelMeta(type(Base)):
     def __new__(cls, name, bases, attrs):
         if '__tablename__' not in attrs:
-            attrs['__tablename__'] = name.lower()
+            # add to prefix to avoid collisions with built-in names
+            attrs['__tablename__'] = f'app_{name.lower()}'
         return super().__new__(cls, name, bases, attrs)
 
 

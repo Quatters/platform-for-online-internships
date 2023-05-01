@@ -12,6 +12,23 @@ set ENV_KEY=ENV_VALUE
 or by using `.env` file. Look for the `.env.example` to see which are needed or
 may be set.
 
+OpenAPI schema plays an important role for both backend and frontend. On backend
+you are could use SwaggerUI to quickly test recent endpoints. On frontend schema
+translates to typescript types which are used directly in the code.
+
+So don't forget to regenerate schema if there are updates on backend:
+
+```sh
+python generate_openapi.py
+```
+
+and then regenerate types on frontend:
+
+```sh
+# cd frontend
+npx openapi-typescript ../openapi.json --output openapi.ts
+```
+
 ### Backend
 
 We are using Python 3.11 and [FastAPI](https://fastapi.tiangolo.com/).
@@ -56,18 +73,48 @@ Before opening PR, make sure there are no `flake8` errors:
 python -m flake8
 ```
 
+all tests are passed:
+
+```sh
+python -m pytest tests.py
+```
+
+#### create_user.py
+
+You can use `create_user.py` CLI tool to quickly create user with any role.
+User saves in database with hashed password as it was a real registration.
+
+```sh
+# get help
+python create_user.py -h
+# create admin user
+python create_user.py \
+    --email admin@admin.admin \
+    --password admin \
+    --role admin \
+    --first-name admin \
+    --last-name admin \
+    --patronymic admin
+```
+
 ### Frontend
 
 Here we are using Nuxt 3. To start, install dependencies:
 
 ```sh
 # cd frontend
-npm i
+yarn
 ```
 
 Up development server:
 
 ```sh
 # cd frontend
-npm run dev
+yarn dev
+```
+
+Run eslint:
+
+```sh
+yarn lint
 ```
