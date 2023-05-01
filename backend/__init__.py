@@ -1,17 +1,22 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from backend.settings import STATIC_DIR
-from backend.settings import API_VERSION
-from backend.api.routers import routers
+from fastapi.middleware.cors import CORSMiddleware
+from backend.settings import STATIC_DIR, CLIENT_DOMAIN
+from backend.api.routes import routers
 
 
 app = FastAPI()
-api_router = APIRouter(prefix=f'/api/{API_VERSION}')
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[CLIENT_DOMAIN],
+    allow_methods=['*'],
+    allow_headers=['*'],
+    allow_credentials=['*'],
+)
 
 for router in routers:
-    api_router.include_router(router)
-
-app.include_router(api_router)
+    app.include_router(router, prefix='/api')
 
 app.mount(
     '/static',

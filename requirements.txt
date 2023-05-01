@@ -1,4 +1,6 @@
 fastapi[all]~=0.95.1
+python-jose[cryptography]~=3.3.0
+passlib[bcrypt]~=1.7.4
 
 alembic~=1.10.3
 PyMySQL==1.0.3

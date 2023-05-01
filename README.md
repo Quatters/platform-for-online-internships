@@ -79,18 +79,36 @@ all tests are passed:
 python -m pytest tests.py
 ```
 
+#### create_user.py
+
+You can use `create_user.py` CLI tool to quickly create user with any role.
+User saves in database with hashed password as it was a real registration.
+
+```sh
+# get help
+python create_user.py -h
+# create admin user
+python create_user.py \
+    --email admin@admin.admin \
+    --password admin \
+    --role admin \
+    --first-name admin \
+    --last-name admin \
+    --patronymic admin
+```
+
 ### Frontend
 
 Here we are using Nuxt 3. To start, install dependencies:
 
 ```sh
 # cd frontend
-npm i
+yarn
 ```
 
 Up development server:
 
 ```sh
 # cd frontend
-npm run dev
+yarn dev
 ```

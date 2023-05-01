@@ -9,6 +9,7 @@ load_dotenv(PROJECT_ROOT / '.env')
 
 APP_NAME = 'platform_for_online_internships_backend'
 API_VERSION = 'v1'
+CLIENT_DOMAIN = os.getenv('CLIENT_DOMAIN', f'http://localhost:3000')
 
 UVICORN_CONFIG = {
     'app': 'backend:app',
@@ -27,3 +28,10 @@ DATABASE_URL = os.environ['DATABASE_URL']
 if DATABASE_URL.startswith('mysql') or DATABASE_URL.startswith('mariadb'):
     import pymysql
     pymysql.install_as_MySQLdb()
+
+AUTH = {
+    'SECRET_KEY': os.environ['AUTH_SECRET_KEY'],
+    'ALGORITHM': 'HS256',
+    'TOKEN_EXPIRE_MINUTES': int(os.getenv('AUTH_TOKEN_EXPIRE_MINUTES', 30)),
+    'TOKEN_URL': f'/api/auth/token',
+}

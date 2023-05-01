@@ -1,5 +1,5 @@
 <template>
-    <div>index page</div>
+    <div>profile page</div>
 </template>
 
 <script setup lang="ts"></script>

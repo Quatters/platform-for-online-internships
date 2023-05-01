@@ -30,10 +30,14 @@
                     </div>
                     <button
                         type="submit"
-                        class="w-full text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-50 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-9"
+                        class="w-full text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-50 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg px-5 h-11 text-center mt-9"
+                        :disabled="$isFetching"
                     >
-                        Войти
+                        <div>Войти</div>
                     </button>
+                    <div v-show="loginError" class="text-center mt-3 text-red-600 text-sm">
+                        Не удалось войти. Проверьте введённые данные.
+                    </div>
                 </form>
             </div>
         </div>
@@ -41,11 +45,38 @@
 </template>
 
 <script setup lang="ts">
+    import { components } from '~/openapi';
+
+    const { $isFetching } = useNuxtApp();
+    const userStore = useUserStore();
+
     const email = ref('');
     const password = ref('');
+    const loginError = ref(false);
+
+    definePageMeta({
+        layout: 'clean',
+    });
+
+    function redirect(user: components['schemas']['User']) {
+        let path = '/intern/dashboard';
+        if (user.is_admin) {
+            path = '/';
+        } else if (user.is_teacher) {
+            path = '/teacher/interns';
+        }
+        return navigateTo({ path });
+    }
 
     async function submit() {
-        const response = await $fetch('/login', { method: 'post' });
-        console.log(response);
+        try {
+            loginError.value = false;
+            await userStore.fetchToken({ email: email.value, password: password.value });
+            await userStore.fetchUser({ force: true });
+            return redirect(userStore.user!);
+        } catch (e) {
+            console.log(e);
+            loginError.value = true;
+        }
     }
 </script>

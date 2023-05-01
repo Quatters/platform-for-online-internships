@@ -9,7 +9,10 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@types/node": "^18",
+    "@vueuse/core": "^10.1.0",
+    "@vueuse/nuxt": "^10.1.0",
     "autoprefixer": "^10.4.14",
     "nuxt": "^3.4.2",
     "openapi-typescript": "^6.2.3",
@@ -19,5 +22,9 @@
     "tailwindcss": "^3.3.1",
     "typescript": "^5.0.4",
     "vue-tsc": "^1.4.4"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.4.9",
+    "pinia": "^2.0.35"
   }
 }

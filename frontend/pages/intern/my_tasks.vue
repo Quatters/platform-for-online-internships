@@ -1,5 +1,5 @@
 <template>
-    <div>index page</div>
+    <div>my_tasks page</div>
 </template>
 
 <script setup lang="ts"></script>

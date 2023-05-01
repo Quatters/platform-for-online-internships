@@ -4,6 +4,6 @@
 
 <script setup lang="ts">
     definePageMeta({
-        layout: 'teacher',
+        layout: 'default',
     });
 </script>
