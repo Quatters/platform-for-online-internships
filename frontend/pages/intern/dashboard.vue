@@ -1,3 +1,3 @@
 <template>
-    <div>profile page</div>
+    <div>dashboard page</div>
 </template>
