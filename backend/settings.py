@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -7,7 +8,7 @@ PROJECT_ROOT: Path = BACKEND_ROOT.parent.absolute()
 
 load_dotenv(PROJECT_ROOT / '.env')
 
-if 'PYTEST_CURRENT_TEST' in os.environ:
+if 'pytest' in sys.modules:
     load_dotenv(PROJECT_ROOT / '.env.ci')
 
 APP_NAME = 'platform_for_online_internships_backend'
