@@ -41,7 +41,14 @@ jobs:
         runs-on: ubuntu-22.04
 
         steps:
-            - uses: actions/checkout@v1
-            - uses: stefanoeb/eslint-action@1.0.2
-              with:
-                  files: frontend/
+            - uses: actions/checkout@v3
+
+            - name: Install dependencies
+              working-directory: ./frontend
+              run: |
+                  yarn
+
+            - name: Run eslint
+              working-directory: ./frontend
+              run: |
+                  yarn lint
