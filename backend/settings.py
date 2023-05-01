@@ -25,6 +25,10 @@ UVICORN_CONFIG = {
 STATIC_DIR = PROJECT_ROOT / 'static'
 MEDIA_DIR = PROJECT_ROOT / 'media'
 
+for dir_ in (STATIC_DIR, MEDIA_DIR):
+    if not dir_.exists():
+        os.mkdir(dir_)
+
 DATABASE_URL = os.environ['DATABASE_URL']
 
 # python db clients usually are platform-dependent
