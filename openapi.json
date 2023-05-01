@@ -5,17 +5,17 @@
     "version": "v1"
   },
   "paths": {
-    "/api/courses/": {
+    "/api/course/": {
       "get": {
         "summary": "Get Courses",
-        "operationId": "get_courses_api_courses__get",
+        "operationId": "get_courses_api_course__get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Courses Api Courses  Get",
+                  "title": "Response Get Courses Api Course  Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Course"
@@ -28,7 +28,7 @@
       },
       "post": {
         "summary": "Create Course",
-        "operationId": "create_course_api_courses__post",
+        "operationId": "create_course_api_course__post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -63,10 +63,10 @@
         }
       }
     },
-    "/api/courses/{course_id}": {
+    "/api/course/{course_id}": {
       "get": {
         "summary": "Get Course",
-        "operationId": "get_course_api_courses__course_id__get",
+        "operationId": "get_course_api_course__course_id__get",
         "parameters": [
           {
             "required": true,
@@ -78,6 +78,90 @@
             "in": "path"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneCourse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Course",
+        "operationId": "delete_course_api_course__course_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteCourse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Patch Course",
+        "operationId": "patch_course_api_course__course_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchCourse"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -238,6 +322,19 @@
           }
         }
       },
+      "DeleteCourse": {
+        "title": "DeleteCourse",
+        "required": [
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        }
+      },
       "HTTPValidationError": {
         "title": "HTTPValidationError",
         "type": "object",
@@ -264,6 +361,20 @@
             "title": "Id",
             "type": "integer"
           },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "PatchCourse": {
+        "title": "PatchCourse",
+        "type": "object",
+        "properties": {
           "name": {
             "title": "Name",
             "type": "string"

@@ -15,3 +15,10 @@ class OneCourse(BaseSchema):
 class CreateCourse(BaseSchema):
     name: str
     description: str
+
+class DeleteCourse(BaseSchema):
+    status: str
+
+class PatchCourse(BaseSchema):
+    name: str | None
+    description: str | None

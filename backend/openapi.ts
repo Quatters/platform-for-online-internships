@@ -5,19 +5,15 @@
 
 
 export interface paths {
-  "/api/course/": {
+  "/api/courses/": {
     /** Get Courses */
-    get: operations["get_courses_api_course__get"];
+    get: operations["get_courses_api_courses__get"];
     /** Create Course */
-    post: operations["create_course_api_course__post"];
+    post: operations["create_course_api_courses__post"];
   };
-  "/api/course/{course_id}": {
+  "/api/courses/{course_id}": {
     /** Get Course */
-    get: operations["get_course_api_course__course_id__get"];
-    /** Delete Course */
-    delete: operations["delete_course_api_course__course_id__delete"];
-    /** Patch Course */
-    patch: operations["patch_course_api_course__course_id__patch"];
+    get: operations["get_course_api_courses__course_id__get"];
   };
   "/api/auth/token": {
     /** Login For Access Token */
@@ -65,11 +61,6 @@ export interface components {
       /** Description */
       description: string;
     };
-    /** DeleteCourse */
-    DeleteCourse: {
-      /** Status */
-      status: string;
-    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -83,13 +74,6 @@ export interface components {
       name: string;
       /** Description */
       description: string;
-    };
-    /** PatchCourse */
-    PatchCourse: {
-      /** Name */
-      name?: string;
-      /** Description */
-      description?: string;
     };
     /** Token */
     Token: {
@@ -135,7 +119,7 @@ export type external = Record<string, never>;
 export interface operations {
 
   /** Get Courses */
-  get_courses_api_course__get: {
+  get_courses_api_courses__get: {
     responses: {
       /** @description Successful Response */
       200: {
@@ -146,7 +130,7 @@ export interface operations {
     };
   };
   /** Create Course */
-  create_course_api_course__post: {
+  create_course_api_courses__post: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["CreateCourse"];
@@ -168,59 +152,10 @@ export interface operations {
     };
   };
   /** Get Course */
-  get_course_api_course__course_id__get: {
+  get_course_api_courses__course_id__get: {
     parameters: {
       path: {
         course_id: number;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["OneCourse"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /** Delete Course */
-  delete_course_api_course__course_id__delete: {
-    parameters: {
-      path: {
-        course_id: number;
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["DeleteCourse"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /** Patch Course */
-  patch_course_api_course__course_id__patch: {
-    parameters: {
-      path: {
-        course_id: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["PatchCourse"];
       };
     };
     responses: {
