@@ -30,14 +30,14 @@ def create_course(course: schemas.CreateCourse, db: Session = Depends(get_db)):
     return created_course
 
 
-@router.delete('/{course_id}', response_model=schemas.DeleteCourse)
+@router.delete('/{course_id}', status_code=204)
 def delete_course(course_id: int, db: Session = Depends(get_db)):
     course = queries.get_course(db, course_id)
     if course is None:
         raise not_found()
 
     queries.delete_course(db, course)
-    return schemas.DeleteCourse(status="success")
+    return {}
 
 
 @router.patch('/{course_id}', response_model=schemas.OneCourse)
