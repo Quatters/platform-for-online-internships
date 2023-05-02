@@ -116,15 +116,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeleteCourse"
-                }
-              }
-            }
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -318,19 +311,6 @@
           },
           "description": {
             "title": "Description",
-            "type": "string"
-          }
-        }
-      },
-      "DeleteCourse": {
-        "title": "DeleteCourse",
-        "required": [
-          "status"
-        ],
-        "type": "object",
-        "properties": {
-          "status": {
-            "title": "Status",
             "type": "string"
           }
         }
