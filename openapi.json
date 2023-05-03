@@ -5,17 +5,17 @@
     "version": "v1"
   },
   "paths": {
-    "/api/course/": {
+    "/api/courses/": {
       "get": {
         "summary": "Get Courses",
-        "operationId": "get_courses_api_course__get",
+        "operationId": "get_courses_api_courses__get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Courses Api Course  Get",
+                  "title": "Response Get Courses Api Courses  Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Course"
@@ -28,7 +28,7 @@
       },
       "post": {
         "summary": "Create Course",
-        "operationId": "create_course_api_course__post",
+        "operationId": "create_course_api_courses__post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -68,10 +68,10 @@
         ]
       }
     },
-    "/api/course/{course_id}": {
+    "/api/courses/{course_id}": {
       "get": {
         "summary": "Get Course",
-        "operationId": "get_course_api_course__course_id__get",
+        "operationId": "get_course_api_courses__course_id__get",
         "parameters": [
           {
             "required": true,
@@ -108,7 +108,7 @@
       },
       "delete": {
         "summary": "Delete Course",
-        "operationId": "delete_course_api_course__course_id__delete",
+        "operationId": "delete_course_api_courses__course_id__delete",
         "parameters": [
           {
             "required": true,
@@ -143,7 +143,7 @@
       },
       "patch": {
         "summary": "Patch Course",
-        "operationId": "patch_course_api_course__course_id__patch",
+        "operationId": "patch_course_api_courses__course_id__patch",
         "parameters": [
           {
             "required": true,
