@@ -10,6 +10,10 @@ class User(BaseSchema):
     is_teacher: bool
 
 
+class UserWithId(User):
+    id: int
+
+
 class DbUser(User):
     password: str
 

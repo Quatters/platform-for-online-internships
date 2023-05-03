@@ -27,6 +27,16 @@ export interface paths {
     /** Get Users Me */
     get: operations["get_users_me_api_users_me_get"];
   };
+  "/api/user/{user_id}/courses/": {
+    /** Get User Courses */
+    get: operations["get_user_courses_api_user__user_id__courses__get"];
+    /** Create User Course */
+    post: operations["create_user_course_api_user__user_id__courses__post"];
+  };
+  "/api/user/{user_id}/courses/{course_id}": {
+    /** Delete User Course */
+    delete: operations["delete_user_course_api_user__user_id__courses__course_id__delete"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -57,18 +67,6 @@ export interface components {
       id: number;
       /** Name */
       name: string;
-    };
-    /** CreateCourse */
-    CreateCourse: {
-      /** Name */
-      name: string;
-      /** Description */
-      description: string;
-    };
-    /** DeleteCourse */
-    DeleteCourse: {
-      /** Status */
-      status: string;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -113,6 +111,22 @@ export interface components {
       /** Is Teacher */
       is_teacher: boolean;
     };
+    /** UserCourse */
+    UserCourse: {
+      /** Id */
+      id: number;
+      /** User Id */
+      user_id: number;
+      /** Course Id */
+      course_id: number;
+      /** Progress */
+      progress: number;
+      /**
+       * Admission Date 
+       * Format: date-time
+       */
+      admission_date: string;
+    };
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -121,6 +135,18 @@ export interface components {
       msg: string;
       /** Error Type */
       type: string;
+    };
+    /** CreateCourse */
+    backend__api__schemas__courses__CreateCourse: {
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+    };
+    /** CreateCourse */
+    backend__api__schemas__user_courses__CreateCourse: {
+      /** Course Id */
+      course_id: number;
     };
   };
   responses: never;
@@ -149,7 +175,7 @@ export interface operations {
   create_course_api_course__post: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateCourse"];
+        "application/json": components["schemas"]["backend__api__schemas__courses__CreateCourse"];
       };
     };
     responses: {
@@ -198,11 +224,7 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["DeleteCourse"];
-        };
-      };
+      204: never;
       /** @description Validation Error */
       422: {
         content: {
@@ -267,6 +289,74 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["User"];
+        };
+      };
+    };
+  };
+  /** Get User Courses */
+  get_user_courses_api_user__user_id__courses__get: {
+    parameters: {
+      path: {
+        user_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": (components["schemas"]["UserCourse"])[];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create User Course */
+  create_user_course_api_user__user_id__courses__post: {
+    parameters: {
+      path: {
+        user_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["backend__api__schemas__user_courses__CreateCourse"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserCourse"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete User Course */
+  delete_user_course_api_user__user_id__courses__course_id__delete: {
+    parameters: {
+      path: {
+        course_id: number;
+        user_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };

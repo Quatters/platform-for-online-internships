@@ -8,5 +8,5 @@ class UserCourse(BaseModel):
     user = Relationship(User, primaryjoin=user_id == User.id)
     course_id = Column(Integer, ForeignKey(Course.id), index=True)
     course = Relationship(Course, primaryjoin=course_id == Course.id)
-    progress = Column(Float, nullable=True)
-    admission_date = Column(DateTime, nullable=True)
+    progress = Column(Float, default=0)
+    admission_date = Column(DateTime)

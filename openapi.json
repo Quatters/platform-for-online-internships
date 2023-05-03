@@ -257,8 +257,8 @@
     },
     "/api/user/{user_id}/courses/": {
       "get": {
-        "summary": "Get Courses",
-        "operationId": "get_courses_api_user__user_id__courses__get",
+        "summary": "Get User Courses",
+        "operationId": "get_user_courses_api_user__user_id__courses__get",
         "parameters": [
           {
             "required": true,
@@ -276,7 +276,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Courses Api User  User Id  Courses  Get",
+                  "title": "Response Get User Courses Api User  User Id  Courses  Get",
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/UserCourse"
@@ -295,7 +295,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       },
       "post": {
         "summary": "Create User Course",
@@ -342,21 +347,35 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
-    "/api/user/{user_id}/courses/{user_course_id}": {
+    "/api/user/{user_id}/courses/{course_id}": {
       "delete": {
         "summary": "Delete User Course",
-        "operationId": "delete_user_course_api_user__user_id__courses__user_course_id__delete",
+        "operationId": "delete_user_course_api_user__user_id__courses__course_id__delete",
         "parameters": [
           {
             "required": true,
             "schema": {
-              "title": "User Course Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "user_course_id",
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "integer"
+            },
+            "name": "user_id",
             "in": "path"
           }
         ],
@@ -374,7 +393,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     }
   },
