@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import get_current_user
-from backend.api.errors.errors import bad_request, not_found, unathorized
+from backend.api.errors.errors import not_found, unathorized
 from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import courses as queries
@@ -30,9 +30,6 @@ def create_course(course: schemas.CreateCourse,
                   db: Session = Depends(get_db)):
     if not user.is_admin:
         raise unathorized()
-    if queries.get_course_by_name(db, course.name) is not None:
-        raise bad_request('Course with the same name is already present in the database')
-
     created_course = queries.create_course(db, course)
     return created_course
 

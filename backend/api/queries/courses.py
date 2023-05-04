@@ -29,10 +29,7 @@ def delete_course(db: Session, course: Course):
 
 
 def patch_course(db: Session, course: Course, data: schemas.PatchCourse) -> Course:
-    if data.name is not None:
-        course.name = data.name
-    if data.description is not None:
-        course.description = data.description
+    db.query(Course).filter(Course.id == course.id).update(data.dict(exclude_unset=True))
     db.commit()
     db.refresh(course)
     return course
