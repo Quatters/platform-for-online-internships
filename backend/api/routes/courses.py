@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from backend.api.auth import get_current_user
+from backend.api.errors.errors import not_found, unathorized
+from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import courses as queries
 from backend.api.schemas import courses as schemas
@@ -17,10 +20,45 @@ def get_courses(db: Session = Depends(get_db)):
 def get_course(course_id: int, db: Session = Depends(get_db)):
     course = queries.get_course(db, course_id)
     if course is None:
-        raise HTTPException(404, 'Not found.')  # probably need to wrap raising 404 as function
+        raise not_found()
     return course
 
 
 @router.post('/', response_model=schemas.OneCourse)
-def create_course(course: schemas.CreateCourse, db: Session = Depends(get_db)):
-    return queries.create_course(db, course)
+def create_course(course: schemas.CreateCourse,
+                  user: User = Depends(get_current_user),
+                  db: Session = Depends(get_db)):
+    if not user.is_admin:
+        raise unathorized()
+    created_course = queries.create_course(db, course)
+    return created_course
+
+
+@router.delete('/{course_id}', status_code=204)
+def delete_course(course_id: int,
+                  user: User = Depends(get_current_user),
+                  db: Session = Depends(get_db)):
+    if not user.is_admin:
+        raise unathorized()
+    course = queries.get_course(db, course_id)
+    if course is None:
+        raise not_found()
+
+    queries.delete_course(db, course)
+    return {}
+
+
+@router.patch('/{course_id}', response_model=schemas.OneCourse)
+def patch_course(course_id: int,
+                 course: schemas.PatchCourse,
+                 user: User = Depends(get_current_user),
+                 db: Session = Depends(get_db)):
+    if not user.is_admin:
+        raise unathorized()
+    course_to_patch = queries.get_course(db, course_id)
+    if course_to_patch is None:
+        raise not_found()
+
+    queries.patch_course(db, course_to_patch, course)
+
+    return course_to_patch

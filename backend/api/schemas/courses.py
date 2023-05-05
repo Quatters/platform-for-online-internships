@@ -15,3 +15,8 @@ class OneCourse(BaseSchema):
 class CreateCourse(BaseSchema):
     name: str
     description: str
+
+
+class PatchCourse(BaseSchema):
+    name: str | None
+    description: str | None
