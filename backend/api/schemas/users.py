@@ -2,16 +2,13 @@ from backend.api.schemas.base import BaseSchema
 
 
 class User(BaseSchema):
+    id: int
     email: str
     first_name: str
     last_name: str
     patronymic: str
     is_admin: bool
     is_teacher: bool
-
-
-class UserWithId(User):
-    id: int
 
 
 class DbUser(User):

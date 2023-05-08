@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import get_current_user
-from backend.api.errors.errors import not_found, unathorized
+from backend.api.errors.errors import not_found, unauthorized
 from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import courses as queries
@@ -29,7 +29,7 @@ def create_course(course: schemas.CreateCourse,
                   user: User = Depends(get_current_user),
                   db: Session = Depends(get_db)):
     if not user.is_admin:
-        raise unathorized()
+        raise unauthorized()
     created_course = queries.create_course(db, course)
     return created_course
 
@@ -39,7 +39,7 @@ def delete_course(course_id: int,
                   user: User = Depends(get_current_user),
                   db: Session = Depends(get_db)):
     if not user.is_admin:
-        raise unathorized()
+        raise unauthorized()
     course = queries.get_course(db, course_id)
     if course is None:
         raise not_found()
@@ -54,7 +54,7 @@ def patch_course(course_id: int,
                  user: User = Depends(get_current_user),
                  db: Session = Depends(get_db)):
     if not user.is_admin:
-        raise unathorized()
+        raise unauthorized()
     course_to_patch = queries.get_course(db, course_id)
     if course_to_patch is None:
         raise not_found()

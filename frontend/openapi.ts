@@ -98,6 +98,8 @@ export interface components {
     };
     /** User */
     User: {
+      /** Id */
+      id: number;
       /** Email */
       email: string;
       /** First Name */

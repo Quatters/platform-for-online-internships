@@ -27,7 +27,7 @@
             { separator: true },
             { link: '/logout', title: 'Выход' },
         ],
-        admin: [{ link: '/logout', title: 'Выход' }],
+        admin: [{ link: '/admin/courses', title: 'Курсы' }, { separator: true }, { link: '/logout', title: 'Выход' }],
     };
 
     const role: keyof typeof sidebarItems = userStore.user?.is_admin

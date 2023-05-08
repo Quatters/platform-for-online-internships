@@ -529,6 +529,7 @@
       "User": {
         "title": "User",
         "required": [
+          "id",
           "email",
           "first_name",
           "last_name",
@@ -538,6 +539,10 @@
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
           "email": {
             "title": "Email",
             "type": "string"

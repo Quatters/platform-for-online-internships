@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col min-w-[19rem] bg-white overflow-hidden">
+    <div class="flex flex-col min-w-[19rem] bg-white overflow-hidden shadow">
         <div class="flex items-center justify-center py-6">
             <h1 class="text-xl uppercase text-blue-800 font-medium">
                 Платформа

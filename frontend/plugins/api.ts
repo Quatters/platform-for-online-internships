@@ -9,6 +9,7 @@ interface Options<P extends APIPath, M extends APIMethod<P>, CT extends ContentT
         'Content-Type': CT;
         [key: string]: string;
     };
+    params?: Record<string, string | number>;
 }
 
 const baseHeaders = {
@@ -45,8 +46,15 @@ export default defineNuxtPlugin(() => {
             additionalHeaders.Authorization = `Bearer ${accessToken.value}`;
         }
 
-        return _api<APIResponseBody<P, M>>(options.path, {
-            method: options.method as HttpMethod,
+        let renderedPath: string = options.path;
+        if (options.params) {
+            for (const [key, value] of Object.entries(options.params)) {
+                renderedPath = renderedPath.replaceAll(`{${key}}`, String(value));
+            }
+        }
+
+        return _api<APIResponseBody<P, M>>(renderedPath, {
+            method: (options.method as string).toUpperCase() as HttpMethod,
             body: body as Record<string, unknown> | URLSearchParams | undefined,
             headers: {
                 ...baseHeaders,

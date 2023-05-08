@@ -9,5 +9,5 @@ def bad_request(detail: str) -> HTTPException:
     return HTTPException(400, detail)
 
 
-def unathorized() -> HTTPException:
-    return HTTPException(401, 'Unathorized')
+def unauthorized() -> HTTPException:
+    return HTTPException(401, 'Unauthorized')
