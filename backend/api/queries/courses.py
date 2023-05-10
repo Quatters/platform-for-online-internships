@@ -1,10 +1,12 @@
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.orm import Session
 from backend.models import Course
 from backend.api.schemas import courses as schemas
+from backend.settings import LimitOffsetParams
 
 
-def get_courses(db: Session):
-    return db.query(Course).all()
+def get_courses(db: Session, params: LimitOffsetParams):
+    return paginate(db.query(Course), params)
 
 
 def get_course(db: Session, id: int) -> Course | None:

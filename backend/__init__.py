@@ -6,6 +6,7 @@ from starlette.responses import JSONResponse
 from backend.settings import STATIC_DIR, CLIENT_DOMAIN
 from backend.api.routes import routers
 from sqlalchemy.exc import IntegrityError
+from fastapi_pagination import add_pagination
 
 app = FastAPI()
 
@@ -13,8 +14,11 @@ app = FastAPI()
 @app.exception_handler(IntegrityError)
 async def unique_violation_exception_handler(request: Request, exc: IntegrityError):
     return JSONResponse(
-            status_code=400,
-            content=jsonable_encoder({"detail": f"{exc._message()}"})
+        status_code=400,
+        content=jsonable_encoder({
+            'code': 'integrity_error',
+            'original_message': str(exc),
+        })
     )
 
 app.add_middleware(
@@ -24,6 +28,8 @@ app.add_middleware(
     allow_headers=['*'],
     allow_credentials=['*'],
 )
+
+add_pagination(app)
 
 for router in routers:
     app.include_router(router, prefix='/api')

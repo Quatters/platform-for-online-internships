@@ -73,6 +73,17 @@ export interface components {
       /** Detail */
       detail?: (components["schemas"]["ValidationError"])[];
     };
+    /** LimitOffsetPage[Course] */
+    LimitOffsetPage_Course_: {
+      /** Items */
+      items: (components["schemas"]["Course"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
     /** OneCourse */
     OneCourse: {
       /** Id */
@@ -164,11 +175,23 @@ export interface operations {
 
   /** Get Courses */
   get_courses_api_courses__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+      };
+    };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["Course"])[];
+          "application/json": components["schemas"]["LimitOffsetPage_Course_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };

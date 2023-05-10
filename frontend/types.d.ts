@@ -19,3 +19,8 @@ export type APIRequestBody<
     M extends APIMethod,
     CT extends ContentType,
 > = paths[P][M]['requestBody']['content'][CT];
+
+export interface LoaderArgs {
+    limit?: number;
+    offset?: number;
+}

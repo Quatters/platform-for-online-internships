@@ -10,6 +10,7 @@ interface Options<P extends APIPath, M extends APIMethod<P>, CT extends ContentT
         [key: string]: string;
     };
     params?: Record<string, string | number>;
+    query?: Record<string, string | number | undefined>;
 }
 
 const baseHeaders = {
@@ -61,6 +62,7 @@ export default defineNuxtPlugin(() => {
                 ...additionalHeaders,
                 ...(options.headers ? options.headers : {}),
             },
+            query: options.query,
         });
     }
 

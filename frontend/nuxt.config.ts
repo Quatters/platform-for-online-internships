@@ -6,6 +6,8 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
+            // pageSize: 20,
+            pageSize: 5,
             apiUrl: 'http://localhost:8000',
         },
     },
