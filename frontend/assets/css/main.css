@@ -12,3 +12,19 @@ html {
 body {
     background-color: rgb(246, 246, 246);
 }
+
+/* #toasts > div > div > div {
+    @apply relative w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden;
+}
+#toasts > div > div > div > div:first-child {
+    @apply absolute left-0 bottom-0 right-0 h-1 rounded bg-gray-200;
+} */
+
+#modals div[role='dialog'] button {
+    text-align: center;
+    justify-content: center;
+}
+
+#modals div.fixed.top-0.right-0 {
+    display: none;
+}

@@ -6,18 +6,37 @@ from backend.models.users import User
 from backend.database import get_db
 from backend.api.queries import courses, user_courses as queries
 from backend.api.schemas import user_courses as schemas
+from backend.settings import LimitOffsetPage, LimitOffsetParams
 
 
 router = APIRouter(prefix='/user/{user_id}/courses')
 
 
-@router.get('/', response_model=list[schemas.UserCourse])
-def get_user_courses(user_id: int,
-                     user: User = Depends(get_current_user),
-                     db: Session = Depends(get_db)):
+@router.get('/', response_model=LimitOffsetPage[schemas.NamedUserCourse])
+def get_user_courses(
+    user_id: int,
+    params: LimitOffsetParams = Depends(),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
     if user_id != user.id:
         raise unauthorized()
-    return queries.get_user_courses(db, user_id)
+    return queries.get_user_courses(db, user_id, params)
+
+
+@router.get('/{course_id}', response_model=schemas.OneUserCourse)
+def get_one_user_course(
+    course_id: int,
+    user_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if user_id != user.id:
+        raise unauthorized()
+    user_course = queries.get_user_course_by_course_id(db, course_id, user_id)
+    if user_course is None:
+        raise not_found()
+    return user_course
 
 
 @router.post('/', response_model=schemas.UserCourse)

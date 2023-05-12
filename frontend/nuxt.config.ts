@@ -6,8 +6,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            // pageSize: 20,
-            pageSize: 5,
+            pageSize: 20,
             apiUrl: 'http://localhost:8000',
         },
     },
@@ -23,7 +22,7 @@ export default defineNuxtConfig({
     },
     ssr: false,
     css: ['~/assets/css/main.css'],
-    modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n'],
+    modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n', '@tailvue/nuxt'],
     postcss: {
         plugins: {
             tailwindcss: {},

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center mt-2">
+    <div class="flex justify-center mt-2 mb-4">
         <button v-show="canLoad" class="text-blue-700 hover:underline" @click.prevent="loadNeeded">
             Показать больше
         </button>

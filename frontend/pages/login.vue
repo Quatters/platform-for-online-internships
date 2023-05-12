@@ -45,8 +45,6 @@
 </template>
 
 <script setup lang="ts">
-    import { components } from '~/openapi';
-
     const { $isFetching } = useNuxtApp();
     const userStore = useUserStore();
 
@@ -58,24 +56,14 @@
         layout: 'clean',
     });
 
-    function redirect(user: components['schemas']['User']) {
-        let path = '/intern/dashboard';
-        if (user.is_admin) {
-            path = '/';
-        } else if (user.is_teacher) {
-            path = '/teacher/interns';
-        }
-        return navigateTo({ path });
-    }
-
     async function submit() {
         try {
             loginError.value = false;
             await userStore.fetchToken({ email: email.value, password: password.value });
             await userStore.fetchUser({ force: true });
-            return redirect(userStore.user!);
+            return navigateTo({ name: 'index' });
         } catch (e) {
-            console.log(e);
+            console.error(e);
             loginError.value = true;
         }
     }

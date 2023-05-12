@@ -1,6 +1,14 @@
 import { APIPath, APIMethod, LoaderArgs } from '~/types';
 
-export default async function <P extends APIPath, M extends APIMethod<P>>({ path, method }: { path: P; method: M }) {
+export default async function <P extends APIPath, M extends APIMethod<P>>({
+    path,
+    method,
+    params,
+}: {
+    path: P;
+    method: M;
+    params?: Record<string, string | number>;
+}) {
     const { $api } = useNuxtApp();
     const config = useRuntimeConfig();
 
@@ -12,6 +20,7 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({ path
                 limit,
                 offset,
             },
+            params,
         });
 
     const { data } = await useAsyncData(() => loader({ limit: config.public.pageSize }));

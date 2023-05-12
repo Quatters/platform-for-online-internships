@@ -14,8 +14,11 @@ PROJECT_ROOT: Path = BACKEND_ROOT.parent.absolute()
 
 load_dotenv(PROJECT_ROOT / '.env')
 
+DEBUG = bool(os.getenv('DEBUG', False))
+
 if 'pytest' in sys.modules:
     load_dotenv(PROJECT_ROOT / '.env.ci')
+    DEBUG = bool(os.getenv('TESTS_DEBUG', True))
 
 APP_NAME = 'platform_for_online_internships_backend'
 API_VERSION = 'v1'
