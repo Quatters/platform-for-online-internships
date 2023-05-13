@@ -8,13 +8,14 @@ from backend.database import get_db
 from backend.api.queries import courses as queries
 from backend.api.schemas import courses as schemas
 from backend.settings import LimitOffsetPage, LimitOffsetParams
+from backend.api.dependencies import ListPageParams
 
 
 router = APIRouter(prefix='/courses')
 
 
 @router.get('/', response_model=LimitOffsetPage[schemas.Course])
-def get_courses(params: LimitOffsetParams = Depends(), db: Session = Depends(get_db),):
+def get_courses(params: ListPageParams = Depends(), db: Session = Depends(get_db),):
     return queries.get_courses(db, params)
 
 
