@@ -23,7 +23,7 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
             params,
         });
 
-    const { data } = await useAsyncData(() => loader({ limit: config.public.pageSize }));
+    const data = ref(await loader({ limit: config.public.pageSize }));
 
     async function loadMore(params: LoaderArgs) {
         const newData = await loader(params);

@@ -16,7 +16,7 @@
 <script setup lang="ts">
     usePageStore().name = 'Мои курсы';
     const userStore = useUserStore();
-    const { data, loadMore } = await useAsyncDataWithLoader({
+    const { data, loadMore } = await useListLoader({
         path: '/api/user/{user_id}/courses/',
         method: 'get',
         params: { user_id: userStore.user!.id },

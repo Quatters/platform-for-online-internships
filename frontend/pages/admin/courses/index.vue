@@ -13,6 +13,6 @@
 </template>
 
 <script setup lang="ts">
-    const { data, loadMore } = await useAsyncDataWithLoader({ path: '/api/courses/', method: 'get' });
+    const { data, loadMore } = await useListLoader({ path: '/api/courses/', method: 'get' });
     usePageStore().name = 'Курсы';
 </script>

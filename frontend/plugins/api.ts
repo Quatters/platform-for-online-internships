@@ -31,6 +31,9 @@ export default defineNuxtPlugin(() => {
         onResponse() {
             isFetching.value = false;
         },
+        onResponseError() {
+            isFetching.value = false;
+        },
     });
 
     function api<P extends APIPath, M extends APIMethod<P>, CT extends ContentType>(options: Options<P, M, CT>) {

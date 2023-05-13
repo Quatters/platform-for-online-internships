@@ -17,7 +17,7 @@
     }
     const variants: Record<NonNullable<Props['variant']>, string> = {
         blue: 'bg-blue-800 hover:bg-blue-700 text-white',
-        gray: 'bg-gray-500 hover:bg-gray-400 text-white',
+        gray: 'bg-gray-600 hover:bg-gray-500 text-white',
         red: 'bg-red-600 hover:bg-red-500 text-white',
     };
     const props = withDefaults(defineProps<Props>(), {

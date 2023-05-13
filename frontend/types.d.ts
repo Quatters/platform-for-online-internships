@@ -1,4 +1,5 @@
 import { isParenthesizedTypeNode } from 'typescript';
+import type { RouteLocationRaw } from 'vue-router';
 import { paths } from './openapi';
 
 export type HttpMethod = 'get' | 'post' | 'patch' | 'delete';
@@ -24,3 +25,26 @@ export interface LoaderArgs {
     limit?: number;
     offset?: number;
 }
+
+interface SidebarLinkItem {
+    title: string;
+    link: RouteLocationRaw;
+    separator?: never;
+    action?: never;
+}
+
+interface SidebarActionItem {
+    title: string;
+    action: () => void;
+    link?: never;
+    separator?: never;
+}
+
+interface SidebarSeparatorItem {
+    separator: boolean;
+    title?: never;
+    link?: never;
+    action?: never;
+}
+
+export type SidebarItem = SidebarLinkItem | SidebarActionItem | SidebarSeparatorItem;
