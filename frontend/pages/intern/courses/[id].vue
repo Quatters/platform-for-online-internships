@@ -12,7 +12,7 @@
                 </div>
                 <div class="pb-3 mb-3 border-b">
                     <div v-if="!courseDescription" class="text-gray-600">Об этом курсе нет информации.</div>
-                    <div v-else class="whitespace-pre">
+                    <div v-else class="whitespace-pre-wrap">
                         {{ courseDescription }}
                     </div>
                 </div>

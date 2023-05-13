@@ -5,7 +5,7 @@
                 <div class="font-medium">
                     {{ $t(capitalize(key)) }}
                 </div>
-                <div class="whitespace-pre">
+                <div class="whitespace-pre-wrap">
                     {{ value }}
                 </div>
             </div>
