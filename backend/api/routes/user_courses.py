@@ -6,7 +6,8 @@ from backend.models.users import User
 from backend.database import get_db
 from backend.api.queries import courses, user_courses as queries
 from backend.api.schemas import user_courses as schemas
-from backend.settings import LimitOffsetPage, LimitOffsetParams
+from backend.api.dependencies import ListPageParams
+from backend.settings import LimitOffsetPage
 
 
 router = APIRouter(prefix='/user/{user_id}/courses')
@@ -15,7 +16,7 @@ router = APIRouter(prefix='/user/{user_id}/courses')
 @router.get('/', response_model=LimitOffsetPage[schemas.NamedUserCourse])
 def get_user_courses(
     user_id: int,
-    params: LimitOffsetParams = Depends(),
+    params: ListPageParams = Depends(),
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

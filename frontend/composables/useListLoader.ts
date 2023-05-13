@@ -1,5 +1,11 @@
-import type { LocationQuery } from 'vue-router';
+import type { LocationQuery, LocationQueryValue } from 'vue-router';
 import { APIPath, APIMethod, LoaderArgs } from '~/types';
+
+interface ExtendedLoaderArgs extends LoaderArgs {
+    otherQueries?: {
+        [k: string]: LocationQueryValue | LocationQueryValue[];
+    };
+}
 
 export default async function <P extends APIPath, M extends APIMethod<P>>({
     path,
@@ -19,12 +25,12 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
         return Object.fromEntries(Object.entries(newQuery).filter(([key]) => !['limit', 'offset'].includes(key)));
     }
 
-    const loader = ({ limit, offset }: LoaderArgs = {}) => {
+    const loader = ({ limit, offset, otherQueries }: ExtendedLoaderArgs = {}) => {
         return $api({
             path,
             method,
             query: {
-                ...filterRouteQuery(route.query),
+                ...otherQueries,
                 limit,
                 offset,
             },
@@ -32,7 +38,7 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
         });
     };
 
-    const data = ref(await loader({ limit: config.public.pageSize }));
+    const data = ref(await loader({ limit: config.public.pageSize, otherQueries: filterRouteQuery(route.query) }));
 
     async function loadMore({ limit, offset }: LoaderArgs) {
         const newData = await loader({ limit, offset });
@@ -45,21 +51,12 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
     }
 
     watch(toRef(route, 'query'), async newQuery => {
-        const filtered = filterRouteQuery(newQuery);
         // @ts-expect-error expecting list path
-        data.value = await $api({
-            path,
-            method,
-            query: {
-                ...filtered,
-                limit: config.public.pageSize,
-            },
-        });
+        data.value = await loader({ limit: config.public.pageSize, otherQueries: filterRouteQuery(newQuery) });
     });
 
     return {
         data,
         loadMore,
-        loader,
     };
 }

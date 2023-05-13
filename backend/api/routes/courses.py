@@ -7,7 +7,7 @@ from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import courses as queries
 from backend.api.schemas import courses as schemas
-from backend.settings import LimitOffsetPage, LimitOffsetParams
+from backend.settings import LimitOffsetPage
 from backend.api.dependencies import ListPageParams
 
 
