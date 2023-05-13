@@ -230,6 +230,7 @@ export interface operations {
       query: {
         limit?: number;
         offset?: number;
+        search?: string;
       };
     };
     responses: {
@@ -375,6 +376,7 @@ export interface operations {
       query: {
         limit?: number;
         offset?: number;
+        search?: string;
       };
       path: {
         user_id: number;

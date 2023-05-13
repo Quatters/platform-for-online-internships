@@ -1,12 +1,11 @@
 from datetime import datetime
-from fastapi_pagination.ext.sqlalchemy import paginate as sqla_paginate
 from fastapi_pagination import paginate
 from sqlalchemy import and_, func
 from sqlalchemy.orm import Session, joinedload
 from backend.api.schemas.courses import Course
 from backend.models.users import User
 from backend.models.user_courses import UserCourse
-from backend.models.courses import Course
+from backend.models.courses import Course as CourseModel
 from backend.api.dependencies import ListPageParams
 
 
@@ -18,12 +17,12 @@ def get_user_courses(
     query = db.query(UserCourse) \
         .filter(UserCourse.user_id == user_id) \
         .options(
-            joinedload(UserCourse.course, innerjoin=True).load_only(Course.name)
+            joinedload(UserCourse.course, innerjoin=True).load_only(CourseModel.name)
         )
 
     if s := params.search:
         query = query.filter(
-            UserCourse.course.has(func.lower(Course.name).like(f'%{s}%'))
+            UserCourse.course.has(func.lower(CourseModel.name).like(f'%{s}%'))
         )
 
     objects = query \

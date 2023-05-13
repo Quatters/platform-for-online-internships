@@ -31,6 +31,15 @@
             },
             "name": "offset",
             "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
           }
         ],
         "responses": {
@@ -319,6 +328,15 @@
               "default": 0
             },
             "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
             "in": "query"
           }
         ],
