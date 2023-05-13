@@ -26,7 +26,7 @@ def get_user_courses(
         .all()
     for obj in objects:
         obj.course_name = obj.course.name
-    return paginate(objects, params)
+    return paginate(objects, params, length_function=lambda _: db.query(UserCourse).count())
 
 
 def get_user_course(db: Session, user_course_id: int) -> UserCourse | None:

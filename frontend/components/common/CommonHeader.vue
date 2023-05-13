@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-end items-center h-20 mx-8 border-b-2 border-blue-100">
-        <h1 class="me-auto font-medium text-xl">
+        <h1 class="me-auto font-medium text-xl ml-6 md:ml-0">
             {{ pageStore.name }}
         </h1>
         <div class="flex items-center">
