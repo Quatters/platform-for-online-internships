@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-8 mt-4" :class="$style.wrapper">
+    <div class="mx-8 mt-4 flex" :class="$style.wrapper">
         <slot name="buttons" />
         <slot name="inputs" />
     </div>

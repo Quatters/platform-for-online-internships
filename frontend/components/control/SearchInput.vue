@@ -1,5 +1,5 @@
 <template>
-    <div class="relative justify-end">
+    <div class="relative w-fit ml-auto">
         <button
             class="absolute top-0 bottom-0 right-0 text-gray-500 font-bold focus:text-blue-800 hover:text-blue-600 transition-colors duration-100 px-3"
             @click="() => setSearch(undefined)"

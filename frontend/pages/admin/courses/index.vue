@@ -4,6 +4,9 @@
             <template #buttons>
                 <ControlButtonCreate />
             </template>
+            <template #inputs>
+                <ControlSearchInput v-model="search" />
+            </template>
         </ControlPanel>
         <CommonContent>
             <CommonListViewTable :items="data!.items" />
@@ -15,4 +18,8 @@
 <script setup lang="ts">
     const { data, loadMore } = await useListLoader({ path: '/api/courses/', method: 'get' });
     usePageStore().name = 'Курсы';
+
+    const route = useRoute();
+
+    const search = ref<string | null | undefined>(getFirstQueryValue(route.query.search));
 </script>
