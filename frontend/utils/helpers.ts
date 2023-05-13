@@ -1,4 +1,5 @@
 import type { ModalButton } from 'node_modules/tailvue';
+import type { LocationQueryValue } from 'vue-router';
 
 export const noop = () => {};
 
@@ -14,4 +15,12 @@ export function capitalize(value: string) {
         return value;
     }
     return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+export function getFirstQueryValue(queryValue: LocationQueryValue | LocationQueryValue[]) {
+    let value = queryValue;
+    if (Array.isArray(value)) {
+        value = value[0];
+    }
+    return value;
 }

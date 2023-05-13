@@ -20,12 +20,12 @@
 
 <script setup lang="ts">
     usePageStore().name = 'Курсы';
+    const route = useRoute();
 
-    const search = ref<string>();
+    const search = ref<string | null | undefined>(getFirstQueryValue(route.query.search));
 
     const { data, loadMore } = await useListLoader({
         path: '/api/courses/',
         method: 'get',
-        watchQuery: { search },
     });
 </script>

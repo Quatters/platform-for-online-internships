@@ -1,10 +1,10 @@
+import type { LocationQuery } from 'vue-router';
 import { APIPath, APIMethod, LoaderArgs } from '~/types';
 
 export default async function <P extends APIPath, M extends APIMethod<P>>({
     path,
     method,
     params,
-    watchQuery,
 }: {
     path: P;
     method: M;
@@ -13,24 +13,18 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
 }) {
     const { $api } = useNuxtApp();
     const config = useRuntimeConfig();
+    const route = useRoute();
 
-    function unpackWatchQuery() {
-        return Object.fromEntries(
-            Object.entries(watchQuery ?? ({} as Record<string, Ref<string | undefined>>)).map(([key, value]) => [
-                key,
-                value.value,
-            ]),
-        );
+    function filterRouteQuery(newQuery: LocationQuery) {
+        return Object.fromEntries(Object.entries(newQuery).filter(([key]) => !['limit', 'offset'].includes(key)));
     }
 
     const loader = ({ limit, offset }: LoaderArgs = {}) => {
-        const queries = unpackWatchQuery();
-
         return $api({
             path,
             method,
             query: {
-                ...queries,
+                ...filterRouteQuery(route.query),
                 limit,
                 offset,
             },
@@ -50,24 +44,18 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
         };
     }
 
-    if (watchQuery) {
-        for (const [key, refValue] of Object.entries(watchQuery)) {
-            watch(refValue, async newValue => {
-                const queries = unpackWatchQuery();
-
-                // @ts-expect-error expecting list path
-                data.value = await $api({
-                    path,
-                    method,
-                    query: {
-                        ...queries,
-                        [key]: newValue,
-                        limit: config.public.pageSize,
-                    },
-                });
-            });
-        }
-    }
+    watch(toRef(route, 'query'), async newQuery => {
+        const filtered = filterRouteQuery(newQuery);
+        // @ts-expect-error expecting list path
+        data.value = await $api({
+            path,
+            method,
+            query: {
+                ...filtered,
+                limit: config.public.pageSize,
+            },
+        });
+    });
 
     return {
         data,

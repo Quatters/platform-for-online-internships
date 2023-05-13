@@ -12,7 +12,7 @@
 
     const props = withDefaults(
         defineProps<{
-            modelValue?: string;
+            modelValue?: string | null;
             placeholder?: string;
             throttle?: number;
             debounce?: number;
