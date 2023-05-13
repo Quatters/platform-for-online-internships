@@ -8,6 +8,7 @@
                     path="/api/user/{user_id}/courses/{course_id}"
                     :params="myCourseParams"
                     :confirm-body="leaveCourseConfirmBody"
+                    :success-title="successTitle"
                 />
             </template>
         </ControlPanel>
@@ -53,5 +54,9 @@
 
     const leaveCourseConfirmBody = computed(() => {
         return `Вы действительно хотите покинуть курс "${course.value?.course_name}"?`;
+    });
+
+    const successTitle = computed(() => {
+        return `Вы покинули курс "${course.value?.course_name}"`;
     });
 </script>

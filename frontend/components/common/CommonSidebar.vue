@@ -22,10 +22,10 @@
         </button>
         <aside
             ref="sidebar"
-            class="fixed md:static top-0 left-0 z-40 min-w-[19rem] h-screen transition-transform -translate-x-full md:translate-x-0 bg-white shadow-md"
+            class="fixed md:sticky top-0 left-0 z-40 min-w-[19rem] h-screen transition-transform -translate-x-full md:translate-x-0 bg-white shadow-md"
             @click="hideModal"
         >
-            <div class="fixed min-w-[inherit]">
+            <div class="min-w-[inherit]">
                 <div class="flex items-center justify-center py-6">
                     <h1 class="text-xl uppercase text-blue-800 font-medium">
                         Платформа

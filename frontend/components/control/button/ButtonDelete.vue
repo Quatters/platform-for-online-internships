@@ -5,7 +5,7 @@
 <script setup lang="ts">
     import { APIPath } from '~/types';
 
-    const { $api, $modal } = useNuxtApp();
+    const { $api, $modal, $toast } = useNuxtApp();
     const { navigateBackwards } = useRouteUtils();
 
     const props = withDefaults(
@@ -15,11 +15,15 @@
             text?: string;
             confirmTitle?: string;
             confirmBody?: string | null;
+            successTitle?: string | null;
+            successMessage?: string;
         }>(),
         {
             text: 'Удалить',
             confirmTitle: DEFAULT_MODAL_TITLE,
             confirmBody: null,
+            successTitle: null,
+            successMessage: undefined,
         },
     );
 
@@ -36,6 +40,12 @@
                         // @ts-expect-error must support delete
                         method: 'delete',
                         params: props.params,
+                    });
+                    $toast.show({
+                        title: props.successTitle ?? `Действие "${props.text}" успешно выполнено`,
+                        message: props.successMessage,
+                        type: 'info',
+                        timeout: 4,
                     });
                     return navigateBackwards();
                 },
