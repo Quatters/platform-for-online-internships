@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends
-from fastapi_pagination import LimitOffsetParams
 from sqlalchemy.orm import Session
 from backend.api.auth import get_current_user
 from backend.api.errors.errors import not_found, unauthorized
