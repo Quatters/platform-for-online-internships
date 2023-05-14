@@ -1,4 +1,5 @@
 from typing import List
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from backend.models.topics import Topic
 from backend.api.schemas import topics as schemas
@@ -7,8 +8,8 @@ def get_topics(db: Session, course_id: int) -> List[Topic]:
     return db.query(Topic).filter(Topic.course_id == course_id).all()
 
 
-def get_topic(db: Session, topic_id: int) -> Topic | None:
-    return db.query(Topic).get(topic_id)
+def get_topic(db: Session, topic_id: int, course_id: int) -> Topic | None:
+    return db.query(Topic).filter(and_(Topic.course_id == course_id, Topic.id == topic_id)).one_or_none()
 
 
 def create_topic(db: Session, topic: schemas.CreateTopic, course_id: int) -> Topic:

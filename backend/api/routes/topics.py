@@ -19,6 +19,7 @@ def get_topics(course_id: int,
         raise not_found()
     return queries.get_topics(db, course.id)
 
+
 @router.get('/{topic_id}', response_model=schemas.Topic)
 def get_topic(course_id: int,
               topic_id: int,
@@ -26,10 +27,11 @@ def get_topic(course_id: int,
     course = courses.get_course(db, course_id)
     if course is None:
         raise not_found()
-    topic = queries.get_topic(db, topic_id)
+    topic = queries.get_topic(db, topic_id, course_id)
     if topic is None:
         raise not_found()
     return topic
+
 
 @router.post('/', response_model=schemas.Topic)
 def create_topic(course_id: int,
@@ -40,6 +42,10 @@ def create_topic(course_id: int,
         raise unathorized()
     if courses.get_course(db, course_id) is None:
         raise not_found()
+
+    if topic.prev_topic_id is not None:
+        if queries.get_topic(db, topic.prev_topic_id, course_id) is None:
+            raise not_found()
 
     created_topic = queries.create_topic(db, topic, course_id)
     return created_topic
@@ -52,7 +58,7 @@ def delete_course(course_id: int,
                   db: Session = Depends(get_db)):
     if not user.is_admin:
         raise unathorized()
-    topic = queries.get_topic(db, topic_id)
+    topic = queries.get_topic(db, topic_id, course_id)
     if topic is None:
         raise not_found()
 
@@ -68,7 +74,7 @@ def patch_course(course_id: int,
                  db: Session = Depends(get_db)):
     if not user.is_admin:
         raise unathorized()
-    topic_to_patch = queries.get_topic(db, topic_id)
+    topic_to_patch = queries.get_topic(db, topic_id, course_id)
     if topic_to_patch is None:
         raise not_found()
 
