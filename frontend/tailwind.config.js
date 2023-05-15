@@ -7,9 +7,11 @@ module.exports = {
         './plugins/**/*.{js,ts}',
         './nuxt.config.{js,ts}',
         './app.vue',
+        'node_modules/tailvue/dist/tailvue.es.js',
     ],
     theme: {
         extend: {},
     },
     plugins: [],
+    darkMode: 'class',
 };

@@ -34,6 +34,8 @@ export interface paths {
     post: operations["create_user_course_api_user__user_id__courses__post"];
   };
   "/api/user/{user_id}/courses/{course_id}": {
+    /** Get One User Course */
+    get: operations["get_one_user_course_api_user__user_id__courses__course_id__get"];
     /** Delete User Course */
     delete: operations["delete_user_course_api_user__user_id__courses__course_id__delete"];
   };
@@ -73,6 +75,46 @@ export interface components {
       /** Detail */
       detail?: (components["schemas"]["ValidationError"])[];
     };
+    /** LimitOffsetPage[Course] */
+    LimitOffsetPage_Course_: {
+      /** Items */
+      items: (components["schemas"]["Course"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[NamedUserCourse] */
+    LimitOffsetPage_NamedUserCourse_: {
+      /** Items */
+      items: (components["schemas"]["NamedUserCourse"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** NamedUserCourse */
+    NamedUserCourse: {
+      /** Id */
+      id: number;
+      /** User Id */
+      user_id: number;
+      /** Course Id */
+      course_id: number;
+      /** Progress */
+      progress: number;
+      /**
+       * Admission Date 
+       * Format: date-time
+       */
+      admission_date: string;
+      /** Course Name */
+      course_name: string;
+    };
     /** OneCourse */
     OneCourse: {
       /** Id */
@@ -81,6 +123,26 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+    };
+    /** OneUserCourse */
+    OneUserCourse: {
+      /** Id */
+      id: number;
+      /** User Id */
+      user_id: number;
+      /** Course Id */
+      course_id: number;
+      /** Progress */
+      progress: number;
+      /**
+       * Admission Date 
+       * Format: date-time
+       */
+      admission_date: string;
+      /** Course Name */
+      course_name: string;
+      /** Course Description */
+      course_description: string;
     };
     /** PatchCourse */
     PatchCourse: {
@@ -98,6 +160,8 @@ export interface components {
     };
     /** User */
     User: {
+      /** Id */
+      id: number;
       /** Email */
       email: string;
       /** First Name */
@@ -162,11 +226,24 @@ export interface operations {
 
   /** Get Courses */
   get_courses_api_courses__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+    };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["Course"])[];
+          "application/json": components["schemas"]["LimitOffsetPage_Course_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
@@ -296,6 +373,11 @@ export interface operations {
   /** Get User Courses */
   get_user_courses_api_user__user_id__courses__get: {
     parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
       path: {
         user_id: number;
       };
@@ -304,7 +386,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": (components["schemas"]["UserCourse"])[];
+          "application/json": components["schemas"]["LimitOffsetPage_NamedUserCourse_"];
         };
       };
       /** @description Validation Error */
@@ -332,6 +414,29 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["UserCourse"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get One User Course */
+  get_one_user_course_api_user__user_id__courses__course_id__get: {
+    parameters: {
+      path: {
+        course_id: number;
+        user_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneUserCourse"];
         };
       };
       /** @description Validation Error */

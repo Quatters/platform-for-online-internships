@@ -10,5 +10,13 @@ class UserCourse(BaseSchema):
     admission_date: datetime
 
 
+class NamedUserCourse(UserCourse):
+    course_name: str
+
+
+class OneUserCourse(NamedUserCourse):
+    course_description: str
+
+
 class CreateCourse(BaseSchema):
     course_id: int

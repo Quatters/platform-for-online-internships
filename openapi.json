@@ -9,17 +9,56 @@
       "get": {
         "summary": "Get Courses",
         "operationId": "get_courses_api_courses__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 10
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Courses Api Courses  Get",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Course"
-                  }
+                  "$ref": "#/components/schemas/LimitOffsetPage_Course_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -268,6 +307,37 @@
             },
             "name": "user_id",
             "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 10
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
           }
         ],
         "responses": {
@@ -276,11 +346,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get User Courses Api User  User Id  Courses  Get",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserCourse"
-                  }
+                  "$ref": "#/components/schemas/LimitOffsetPage_NamedUserCourse_"
                 }
               }
             }
@@ -356,6 +422,57 @@
       }
     },
     "/api/user/{user_id}/courses/{course_id}": {
+      "get": {
+        "summary": "Get One User Course",
+        "operationId": "get_one_user_course_api_user__user_id__courses__course_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "integer"
+            },
+            "name": "user_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneUserCourse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
       "delete": {
         "summary": "Delete User Course",
         "operationId": "delete_user_course_api_user__user_id__courses__course_id__delete",
@@ -471,6 +588,109 @@
           }
         }
       },
+      "LimitOffsetPage_Course_": {
+        "title": "LimitOffsetPage[Course]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Course"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_NamedUserCourse_": {
+        "title": "LimitOffsetPage[NamedUserCourse]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NamedUserCourse"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "NamedUserCourse": {
+        "title": "NamedUserCourse",
+        "required": [
+          "id",
+          "user_id",
+          "course_id",
+          "progress",
+          "admission_date",
+          "course_name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "course_id": {
+            "title": "Course Id",
+            "type": "integer"
+          },
+          "progress": {
+            "title": "Progress",
+            "type": "number"
+          },
+          "admission_date": {
+            "title": "Admission Date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "course_name": {
+            "title": "Course Name",
+            "type": "string"
+          }
+        }
+      },
       "OneCourse": {
         "title": "OneCourse",
         "required": [
@@ -490,6 +710,50 @@
           },
           "description": {
             "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "OneUserCourse": {
+        "title": "OneUserCourse",
+        "required": [
+          "id",
+          "user_id",
+          "course_id",
+          "progress",
+          "admission_date",
+          "course_name",
+          "course_description"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "course_id": {
+            "title": "Course Id",
+            "type": "integer"
+          },
+          "progress": {
+            "title": "Progress",
+            "type": "number"
+          },
+          "admission_date": {
+            "title": "Admission Date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "course_name": {
+            "title": "Course Name",
+            "type": "string"
+          },
+          "course_description": {
+            "title": "Course Description",
             "type": "string"
           }
         }
@@ -529,6 +793,7 @@
       "User": {
         "title": "User",
         "required": [
+          "id",
           "email",
           "first_name",
           "last_name",
@@ -538,6 +803,10 @@
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
           "email": {
             "title": "Email",
             "type": "string"

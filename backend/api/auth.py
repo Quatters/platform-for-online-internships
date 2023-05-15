@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from jose import JWTError, jwt
-from backend.api.schemas.users import User, UserWithId
+from backend.api.schemas.users import User
 from backend.api.queries.users import get_user_by_email
 from backend.api.schemas.users import TokenData
 from backend.database import get_db
@@ -67,8 +67,3 @@ async def get_current_user_data(token: Annotated[str, Depends(oauth2)], db: Sess
 async def get_current_user(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
     user = await get_current_user_data(token, db)
     return User.from_orm(user)
-
-
-async def get_current_user_with_id(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
-    user = await get_current_user_data(token, db)
-    return UserWithId.from_orm(user)

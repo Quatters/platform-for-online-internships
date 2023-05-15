@@ -11,7 +11,7 @@
                             v-model="email"
                             type="email"
                             name="email"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-800 focus:border-blue-800 block w-full p-2.5"
                             placeholder="name@mail.com"
                             required
                         />
@@ -24,16 +24,17 @@
                             type="password"
                             name="password"
                             placeholder="••••••••"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-800 focus:border-blue-800 block w-full p-2.5"
                             required
                         />
                     </div>
                     <button
                         type="submit"
-                        class="w-full text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-50 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg px-5 h-11 text-center mt-9"
+                        class="w-full text-white bg-blue-800 hover:bg-blue-700 align-middle transition-colors duration-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 h-11 text-center mt-9 flex justify-center items-center"
                         :disabled="$isFetching"
                     >
-                        <div>Войти</div>
+                        <UtilSpinner v-if="$isFetching" :size="5" />
+                        <div v-else>Войти</div>
                     </button>
                     <div v-show="loginError" class="text-center mt-3 text-red-600 text-sm">
                         Не удалось войти. Проверьте введённые данные.
@@ -45,8 +46,6 @@
 </template>
 
 <script setup lang="ts">
-    import { components } from '~/openapi';
-
     const { $isFetching } = useNuxtApp();
     const userStore = useUserStore();
 
@@ -58,24 +57,14 @@
         layout: 'clean',
     });
 
-    function redirect(user: components['schemas']['User']) {
-        let path = '/intern/dashboard';
-        if (user.is_admin) {
-            path = '/';
-        } else if (user.is_teacher) {
-            path = '/teacher/interns';
-        }
-        return navigateTo({ path });
-    }
-
     async function submit() {
         try {
             loginError.value = false;
             await userStore.fetchToken({ email: email.value, password: password.value });
             await userStore.fetchUser({ force: true });
-            return redirect(userStore.user!);
+            return navigateTo({ name: 'index' });
         } catch (e) {
-            console.log(e);
+            console.error(e);
             loginError.value = true;
         }
     }

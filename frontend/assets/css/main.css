@@ -12,3 +12,18 @@ html {
 body {
     background-color: rgb(246, 246, 246);
 }
+
+#modals #ModalBase {
+    z-index: 100;
+}
+
+#modals div[role='dialog'] button {
+    text-align: center;
+    justify-content: center;
+    z-index: 100;
+    @apply transition-colors duration-100;
+}
+
+#modals div.fixed.top-0.right-0 {
+    display: none;
+}

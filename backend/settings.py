@@ -2,14 +2,23 @@ import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
+from fastapi import Query
+from pydantic import Field
+from fastapi_pagination import (
+    LimitOffsetPage as LimitOffsetPageBase,
+    LimitOffsetParams as LimitOffsetParamsBase,
+)
 
 BACKEND_ROOT: Path = Path(__file__).parent.resolve().absolute()
 PROJECT_ROOT: Path = BACKEND_ROOT.parent.absolute()
 
 load_dotenv(PROJECT_ROOT / '.env')
 
+DEBUG = bool(os.getenv('DEBUG', False))
+
 if 'pytest' in sys.modules:
     load_dotenv(PROJECT_ROOT / '.env.ci')
+    DEBUG = bool(os.getenv('TESTS_DEBUG', True))
 
 APP_NAME = 'platform_for_online_internships_backend'
 API_VERSION = 'v1'
@@ -43,3 +52,20 @@ AUTH = {
     'TOKEN_EXPIRE_MINUTES': int(os.getenv('AUTH_TOKEN_EXPIRE_MINUTES', 30)),
     'TOKEN_URL': '/api/auth/token',
 }
+
+
+PAGINATION = {
+    'DEFAULT_LIMIT': 10,
+}
+
+LimitOffsetPage = LimitOffsetPageBase.with_custom_options(
+    limit=Field(PAGINATION['DEFAULT_LIMIT'], ge=1),
+)
+
+
+class LimitOffsetParams(LimitOffsetParamsBase):
+    limit: int = Query(
+        PAGINATION['DEFAULT_LIMIT'],
+        ge=1,
+        description='Page size limit',
+    )
