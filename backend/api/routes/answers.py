@@ -2,11 +2,12 @@ from typing import Union
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import get_current_user
-from backend.api.errors.errors import not_found, unauthorized
+from backend.api.errors.errors import not_found, unauthorized, bad_request
 from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import tasks, topics, answers as queries
 from backend.api.schemas import answers as schemas
+from backend.models.task_types import TaskType
 
 
 router = APIRouter(prefix='/courses/{course_id}/topics/{topic_id}/tasks/{task_id}/answers')
@@ -20,8 +21,12 @@ def get_answers(course_id: int,
                 db: Session = Depends(get_db)):
     if topics.get_topic(db, topic_id, course_id) is None:
         raise not_found()
-    if tasks.get_task(db, task_id) is None:
+    task = tasks.get_task(db, task_id)
+    if task is None:
         raise not_found()
+    if not task.task_type.may_have_answers():
+        raise bad_request('Unsuitable task type')
+
     answers = queries.get_answers(db, task_id)
     if user.is_admin:
         return [schemas.AnswerAdmin.from_orm(answer) for answer in answers]
@@ -37,8 +42,11 @@ def get_answer(course_id: int,
                db: Session = Depends(get_db)):
     if topics.get_topic(db, topic_id, course_id) is None:
         raise not_found()
-    if tasks.get_task(db, task_id) is None:
+    task = tasks.get_task(db, task_id)
+    if task is None:
         raise not_found()
+    if not task.task_type.may_have_answers():
+        raise bad_request('Unsuitable task type')
     answer = queries.get_answer(db, answer_id)
     if answer is None:
         raise not_found()
@@ -58,8 +66,11 @@ def create_answer(course_id: int,
         raise unauthorized()
     if topics.get_topic(db, topic_id, course_id) is None:
         raise not_found()
-    if tasks.get_task(db, task_id) is None:
+    task = tasks.get_task(db, task_id)
+    if task is None:
         raise not_found()
+    if not task.task_type.may_have_answers():
+        raise bad_request('Unsuitable task type')
 
     created_task = queries.create_answer(db, answer, task_id)
     return created_task
@@ -96,8 +107,11 @@ def patch_answer(course_id: int,
         raise unauthorized()
     if topics.get_topic(db, topic_id, course_id) is None:
         raise not_found()
-    if tasks.get_task(db, task_id) is None:
+    task = tasks.get_task(db, task_id)
+    if task is None:
         raise not_found()
+    if not task.task_type.may_have_answers():
+        raise bad_request('Unsuitable task type')
 
     answer_to_patch = queries.get_answer(db, answer_id)
     queries.patch_answer(db, answer_to_patch, answer)
