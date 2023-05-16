@@ -52,7 +52,7 @@ def create_topic(course_id: int,
 
 
 @router.delete('/{topic_id}', status_code=204)
-def delete_course(course_id: int,
+def delete_topic(course_id: int,
                   topic_id: int,
                   user: User = Depends(get_current_user),
                   db: Session = Depends(get_db)):
@@ -67,7 +67,7 @@ def delete_course(course_id: int,
 
 
 @router.patch('/{topic_id}', response_model=schemas.Topic)
-def patch_course(course_id: int,
+def patch_topic(course_id: int,
                  topic_id: int,
                  topic: schemas.PatchTopic,
                  user: User = Depends(get_current_user),

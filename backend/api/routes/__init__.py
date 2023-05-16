@@ -4,6 +4,7 @@ from . import (
     user_courses,
     topics,
     tasks,
+    answers,
 )
 
 routers = (
@@ -12,4 +13,5 @@ routers = (
     user_courses.router,
     topics.router,
     tasks.router,
+    answers.router,
 )

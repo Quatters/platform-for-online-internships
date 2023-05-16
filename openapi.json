@@ -661,8 +661,8 @@
         }
       },
       "delete": {
-        "summary": "Delete Course",
-        "operationId": "delete_course_api_courses__course_id__topics__topic_id__delete",
+        "summary": "Delete Topic",
+        "operationId": "delete_topic_api_courses__course_id__topics__topic_id__delete",
         "parameters": [
           {
             "required": true,
@@ -705,8 +705,8 @@
         ]
       },
       "patch": {
-        "summary": "Patch Course",
-        "operationId": "patch_course_api_courses__course_id__topics__topic_id__patch",
+        "summary": "Patch Topic",
+        "operationId": "patch_topic_api_courses__course_id__topics__topic_id__patch",
         "parameters": [
           {
             "required": true,
@@ -1057,10 +1057,427 @@
           }
         ]
       }
+    },
+    "/api/courses/{course_id}/topics/{topic_id}/tasks/{task_id}/answers/": {
+      "get": {
+        "summary": "Get Answers",
+        "operationId": "get_answers_api_courses__course_id__topics__topic_id__tasks__task_id__answers__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Task Id",
+              "type": "integer"
+            },
+            "name": "task_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Answers Api Courses  Course Id  Topics  Topic Id  Tasks  Task Id  Answers  Get",
+                  "anyOf": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AnswerAdmin"
+                      }
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Answer"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create Answer",
+        "operationId": "create_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Task Id",
+              "type": "integer"
+            },
+            "name": "task_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAnswer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnswerAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/courses/{course_id}/topics/{topic_id}/tasks/{task_id}/answers/{answer_id}": {
+      "get": {
+        "summary": "Get Answer",
+        "operationId": "get_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Task Id",
+              "type": "integer"
+            },
+            "name": "task_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Answer Id",
+              "type": "integer"
+            },
+            "name": "answer_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Get Answer Api Courses  Course Id  Topics  Topic Id  Tasks  Task Id  Answers  Answer Id  Get",
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/AnswerAdmin"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Answer"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete Answer",
+        "operationId": "delete_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Task Id",
+              "type": "integer"
+            },
+            "name": "task_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Answer Id",
+              "type": "integer"
+            },
+            "name": "answer_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Patch Answer",
+        "operationId": "patch_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Task Id",
+              "type": "integer"
+            },
+            "name": "task_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Answer Id",
+              "type": "integer"
+            },
+            "name": "answer_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchAnswer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnswerAdmin"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "Answer": {
+        "title": "Answer",
+        "required": [
+          "id",
+          "value",
+          "task_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "integer"
+          }
+        }
+      },
+      "AnswerAdmin": {
+        "title": "AnswerAdmin",
+        "required": [
+          "id",
+          "value",
+          "task_id",
+          "is_correct"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "integer"
+          },
+          "is_correct": {
+            "title": "Is Correct",
+            "type": "boolean"
+          }
+        }
+      },
       "Body_login_for_access_token_api_auth_token_post": {
         "title": "Body_login_for_access_token_api_auth_token_post",
         "required": [
@@ -1112,6 +1529,24 @@
           "name": {
             "title": "Name",
             "type": "string"
+          }
+        }
+      },
+      "CreateAnswer": {
+        "title": "CreateAnswer",
+        "required": [
+          "value",
+          "is_correct"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "is_correct": {
+            "title": "Is Correct",
+            "type": "boolean"
           }
         }
       },
@@ -1411,6 +1846,20 @@
           "course_description": {
             "title": "Course Description",
             "type": "string"
+          }
+        }
+      },
+      "PatchAnswer": {
+        "title": "PatchAnswer",
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "is_correct": {
+            "title": "Is Correct",
+            "type": "boolean"
           }
         }
       },
