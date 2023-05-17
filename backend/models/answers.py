@@ -5,10 +5,10 @@ from backend.models.tasks import Task
 
 
 class Answer(BaseModel):
-    value = Column(String)
-    task_id = Column(Integer, ForeignKey(Task.id), index=True)
+    value = Column(String, nullable=False)
+    task_id = Column(Integer, ForeignKey(Task.id), index=True, nullable=False)
     task = Relationship(Task, primaryjoin=task_id == Task.id)
-    is_correct = Column(Boolean)
+    is_correct = Column(Boolean, nullable=False)
     __table_args__ = (
             UniqueConstraint(task_id, value, name="u_answer_value_for_task"),
     )
