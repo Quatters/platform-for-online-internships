@@ -1,23 +1,26 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import get_current_user
+from backend.api.dependencies import ListPageParams
 from backend.api.errors.errors import not_found, unauthorized
 from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import courses, topics as queries
 from backend.api.schemas import topics as schemas
+from backend.settings import LimitOffsetPage
 
 
 router = APIRouter(prefix='/courses/{course_id}/topics')
 
 
-@router.get('/', response_model=list[schemas.Topic])
+@router.get('/', response_model=LimitOffsetPage[schemas.Topic])
 def get_topics(course_id: int,
+               params: ListPageParams = Depends(),
                db: Session = Depends(get_db)):
     course = courses.get_course(db, course_id)
     if course is None:
         raise not_found()
-    return queries.get_topics(db, course.id)
+    return queries.get_topics(db, course.id, params)
 
 
 @router.get('/{topic_id}', response_model=schemas.OneTopic)

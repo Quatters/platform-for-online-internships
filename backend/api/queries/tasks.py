@@ -1,10 +1,16 @@
 from typing import List
-from sqlalchemy.orm import Session
+from fastapi_pagination.ext.sqlalchemy import paginate
+from sqlalchemy import func
+from sqlalchemy.orm import Session, query
+from backend.api.dependencies import ListPageParams
 from backend.models.tasks import Task
 from backend.api.schemas import tasks as schemas
 
-def get_tasks(db: Session, topic_id: int) -> List[Task]:
-    return db.query(Task).filter(Task.topic_id == topic_id).all()
+def get_tasks(db: Session, topic_id: int, params: ListPageParams) -> List[Task]:
+    query = db.query(Task).filter(Task.topic_id == topic_id)
+    if s := params.search:
+        query = query.filter(func.lower(Task.name).like(f'%{s.lower()}%'))
+    return paginate(query, params)
 
 
 def get_task(db: Session, task_id: int) -> Task | None:

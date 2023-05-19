@@ -1,23 +1,26 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import get_current_user
+from backend.api.dependencies import ListPageParams
 from backend.api.errors.errors import not_found, unauthorized
 from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import topics, tasks as queries
 from backend.api.schemas import tasks as schemas
+from backend.settings import LimitOffsetPage
 
 
 router = APIRouter(prefix='/courses/{course_id}/topics/{topic_id}')
 
 
-@router.get('/', response_model=list[schemas.Task])
+@router.get('/', response_model=LimitOffsetPage[schemas.Task])
 def get_tasks(course_id: int,
               topic_id: int,
+              params: ListPageParams = Depends(),
               db: Session = Depends(get_db)):
     if topics.get_topic(db, topic_id, course_id) is None:
         raise not_found()
-    return queries.get_tasks(db, topic_id)
+    return queries.get_tasks(db, topic_id, params)
 
 
 @router.get('/{task_id}', response_model=schemas.OneTask)
