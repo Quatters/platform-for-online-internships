@@ -3,6 +3,7 @@ from . import (
     users,
     user_courses,
     subdivisions,
+    posts,
 )
 
 routers = (
@@ -10,4 +11,5 @@ routers = (
     users.router,
     user_courses.router,
     subdivisions.router,
+    posts.router,
 )

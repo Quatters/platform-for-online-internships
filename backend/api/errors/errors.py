@@ -11,3 +11,7 @@ def bad_request(detail: str) -> HTTPException:
 
 def unauthorized() -> HTTPException:
     return HTTPException(401, 'Unauthorized')
+
+
+def no_permission() -> HTTPException:
+    return HTTPException(403, 'Operation not permitted.')

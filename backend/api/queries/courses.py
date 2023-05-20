@@ -4,12 +4,11 @@ from sqlalchemy import func
 from backend.models import Course
 from backend.api.schemas import courses as schemas
 from backend.api.dependencies import ListPageParams
+from backend.api.queries.helpers import with_search
 
 
 def get_courses(db: Session, params: ListPageParams):
-    query = db.query(Course)
-    if s := params.search:
-        query = query.filter(func.lower(Course.name).like(f'%{s.lower()}%'))
+    query = with_search(Course.name, query=db.query(Course), search=params.search)
     return paginate(query, params)
 
 

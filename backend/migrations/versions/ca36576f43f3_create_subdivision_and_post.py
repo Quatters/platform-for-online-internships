@@ -1,8 +1,8 @@
 """Create Subdivision and Post
 
-Revision ID: ce4083f25ad2
+Revision ID: ca36576f43f3
 Revises: 641de8286960
-Create Date: 2023-05-18 23:53:12.429131
+Create Date: 2023-05-20 20:00:27.656040
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ce4083f25ad2'
+revision = 'ca36576f43f3'
 down_revision = '641de8286960'
 branch_labels = None
 depends_on = None
@@ -29,7 +29,7 @@ def upgrade() -> None:
     op.create_table('app_post',
     sa.Column('name', sa.String(length=128), nullable=False),
     sa.Column('description', sa.Text(), server_default='', nullable=False),
-    sa.Column('subdivision_id', sa.Integer(), nullable=True),
+    sa.Column('subdivision_id', sa.Integer(), nullable=False),
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.ForeignKeyConstraint(['subdivision_id'], ['app_subdivision.id'], ),
     sa.PrimaryKeyConstraint('id')
