@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Text, ForeignKey, Integer
-from sqlalchemy.orm import relationship, Mapped
+from sqlalchemy.orm import relationship
 from backend.models.base import BaseModel
 from backend.models.subdivisions import Subdivision
 from backend.models.association_tables import UserPostAssociation

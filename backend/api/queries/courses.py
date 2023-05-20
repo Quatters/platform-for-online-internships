@@ -1,6 +1,5 @@
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.orm import Session
-from sqlalchemy import func
 from backend.models import Course
 from backend.api.schemas import courses as schemas
 from backend.api.dependencies import ListPageParams

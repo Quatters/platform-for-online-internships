@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import admin_only
-from backend.api.errors.errors import not_found, unauthorized
+from backend.api.errors.errors import not_found
 from backend.api.schemas import subdivisions as schemas
 from backend.api.queries import subdivisions as queries
 from backend.api.dependencies import ListPageParams
-from backend.api.schemas.users import User
 from backend.settings import LimitOffsetPage
 from backend.database import get_db
 from backend.models import Subdivision

@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar
+from typing import TypeVar
 from sqlalchemy import func, or_, Column
 from sqlalchemy.orm import Query
 

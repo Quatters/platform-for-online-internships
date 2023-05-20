@@ -2,7 +2,6 @@ from datetime import datetime
 from fastapi_pagination import paginate
 from sqlalchemy import and_, func
 from sqlalchemy.orm import Session, joinedload
-from backend.api.queries.helpers import with_search
 from backend.api.schemas.courses import Course
 from backend.models.users import User
 from backend.models.user_courses import UserCourse

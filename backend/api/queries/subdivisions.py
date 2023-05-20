@@ -1,6 +1,5 @@
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.orm import Session
-from sqlalchemy import func
 from backend.api.queries.helpers import with_search
 from backend.models import Subdivision
 from backend.api.schemas import subdivisions as schemas
