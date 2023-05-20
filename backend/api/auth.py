@@ -72,6 +72,13 @@ async def get_current_user(token: Annotated[str, Depends(oauth2)], db: Session =
 
 async def admin_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
     user = await get_current_user(token, db)
-    if not user.is_admin:
-        raise no_permission()
-    return user
+    if user.is_admin:
+        return user
+    raise no_permission()
+
+
+async def admin_or_teacher_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
+    user = await get_current_user(token, db)
+    if user.is_admin or user.is_teacher:
+        return user
+    raise no_permission()

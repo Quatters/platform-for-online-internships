@@ -1,8 +1,12 @@
-from typing import Callable
-from sqlalchemy import func, or_
+from typing import Generic, TypeVar
+from sqlalchemy import func, or_, Column
+from sqlalchemy.orm import Query
 
 
-def with_search(*fields, query, search: str):
+T = TypeVar('T')
+
+
+def with_search(*fields: Column[str], query: Query[T], search: str | None) -> Query[T]:
     if search:
         filters = [
             func.lower(field).like(f'%{search.lower()}%')

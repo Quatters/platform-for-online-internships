@@ -6,13 +6,19 @@ from backend.api.schemas import posts as schemas
 from backend.api.queries.helpers import with_search
 
 
-def get_post_by_subdivision_id(db: Session, subdivision_id: int, params: ListPageParams):
+def get_posts(db: Session, params: ListPageParams):
+    query = db.query(Post).options(load_only(Post.id, Post.name, Post.subdivision_id))
+    query = with_search(Post.name, query=query, search=params.search)
+    return paginate(query, params)
+
+
+def get_posts_by_subdivision_id(db: Session, subdivision_id: int, params: ListPageParams):
     query = db.query(Post).filter(Post.subdivision_id == subdivision_id).options(load_only(
         Post.id,
         Post.name,
     ))
     query = with_search(Post.name, query=query, search=params.search)
-    return paginate(query)
+    return paginate(query, params)
 
 
 def get_post(db: Session, post_id):
@@ -32,7 +38,7 @@ def delete_post(db: Session, post: Post):
     db.commit()
 
 
-def update_post(db: Session, post: Post, patch_data: schemas.PatchPost):
+def update_post(db: Session, post: Post, patch_data: schemas.PatchSubdivisionPost):
     db.query(Post).filter(Post.id == post.id).update(patch_data.dict(exclude_unset=True))
     db.commit()
     db.refresh(post)

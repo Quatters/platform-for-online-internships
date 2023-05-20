@@ -1,20 +1,24 @@
 from backend.api.schemas.base import BaseSchema
 
 
-class Post(BaseSchema):
+class SubdivisionPost(BaseSchema):
     id: int
     name: str
 
 
-class OnePost(Post):
+class Post(SubdivisionPost):
+    subdivision_id: int
+
+
+class OneSubdivisionPost(SubdivisionPost):
     description: str
 
 
-class CreatePost(BaseSchema):
+class CreateSubdivisionPost(BaseSchema):
     name: str
     description: str
 
 
-class PatchPost(BaseSchema):
+class PatchSubdivisionPost(BaseSchema):
     name: str | None
     description: str | None

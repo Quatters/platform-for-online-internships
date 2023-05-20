@@ -29,6 +29,7 @@ UVICORN_CONFIG = {
     'host': os.getenv('UVICORN_HOST', '0.0.0.0'),
     'port': int(os.getenv('UVICORN_PORT', 8000)),
     'reload': bool(os.getenv('UVICORN_HOT_RELOAD', False)),
+    'log_level': 'debug' if bool(os.getenv('DEBUG', False)) else 'info',
 }
 
 STATIC_DIR = PROJECT_ROOT / 'static'
@@ -55,7 +56,7 @@ AUTH = {
 
 
 PAGINATION = {
-    'DEFAULT_LIMIT': 10,
+    'DEFAULT_LIMIT': 20,
 }
 
 LimitOffsetPage = LimitOffsetPageBase.with_custom_options(
