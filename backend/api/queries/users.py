@@ -22,7 +22,7 @@ def get_users(db: Session, params: ListPageParams):
         User.first_name,
         User.last_name,
         User.patronymic,
-        query=db.query(User).filter(User.is_teacher),
+        query=db.query(User),
         search=params.search,
     )
     return paginate(query, params)
