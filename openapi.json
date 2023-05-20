@@ -16,7 +16,7 @@
               "title": "Limit",
               "minimum": 1.0,
               "type": "integer",
-              "default": 10
+              "default": 20
             },
             "name": "limit",
             "in": "query"
@@ -294,6 +294,158 @@
         ]
       }
     },
+    "/api/users": {
+      "get": {
+        "summary": "Get Users",
+        "operationId": "get_users_api_users_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_User_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}": {
+      "get": {
+        "summary": "Get User",
+        "operationId": "get_user_api_users__user_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "integer"
+            },
+            "name": "user_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Patch User",
+        "operationId": "patch_user_api_users__user_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "integer"
+            },
+            "name": "user_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/api/user/{user_id}/courses/": {
       "get": {
         "summary": "Get User Courses",
@@ -314,7 +466,7 @@
               "title": "Limit",
               "minimum": 1.0,
               "type": "integer",
-              "default": 10
+              "default": 20
             },
             "name": "limit",
             "in": "query"
@@ -517,6 +669,565 @@
           }
         ]
       }
+    },
+    "/api/subdivisions/": {
+      "get": {
+        "summary": "Get Subdivisions",
+        "operationId": "get_subdivisions_api_subdivisions__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_Subdivision_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Subdivision",
+        "operationId": "create_subdivision_api_subdivisions__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubdivision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneSubdivision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/subdivisions/{subdivision_id}": {
+      "get": {
+        "summary": "Get One Subdivision",
+        "operationId": "get_one_subdivision_api_subdivisions__subdivision_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Subdivision Id"
+            },
+            "name": "subdivision_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneSubdivision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Subdivision",
+        "operationId": "delete_subdivision_api_subdivisions__subdivision_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Patch Subdivision",
+        "operationId": "patch_subdivision_api_subdivisions__subdivision_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Subdivision Id"
+            },
+            "name": "subdivision_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchSubdivision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneSubdivision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/posts": {
+      "get": {
+        "summary": "Get Posts",
+        "operationId": "get_posts_api_posts_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_Post_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/subdivisions/{subdivision_id}/posts": {
+      "get": {
+        "summary": "Get Subdivision Posts",
+        "operationId": "get_subdivision_posts_api_subdivisions__subdivision_id__posts_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Subdivision Id",
+              "type": "integer"
+            },
+            "name": "subdivision_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_SubdivisionPost_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Subdivision Post",
+        "operationId": "create_subdivision_post_api_subdivisions__subdivision_id__posts_post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Subdivision Id",
+              "type": "integer"
+            },
+            "name": "subdivision_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubdivisionPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneSubdivisionPost"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/subdivisions/{subdivision_id}/posts/{post_id}": {
+      "get": {
+        "summary": "Get Subdivision Post",
+        "operationId": "get_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Subdivision Id",
+              "type": "integer"
+            },
+            "name": "subdivision_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Id"
+            },
+            "name": "post_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneSubdivisionPost"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Subdivision Post",
+        "operationId": "delete_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Subdivision Id",
+              "type": "integer"
+            },
+            "name": "subdivision_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Id"
+            },
+            "name": "post_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update Subdivision Post",
+        "operationId": "update_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Subdivision Id",
+              "type": "integer"
+            },
+            "name": "subdivision_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Id"
+            },
+            "name": "post_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchSubdivisionPost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneSubdivisionPost"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -571,6 +1282,42 @@
           },
           "name": {
             "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "CreateSubdivision": {
+        "title": "CreateSubdivision",
+        "required": [
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "CreateSubdivisionPost": {
+        "title": "CreateSubdivisionPost",
+        "required": [
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
             "type": "string"
           }
         }
@@ -652,6 +1399,134 @@
           }
         }
       },
+      "LimitOffsetPage_Post_": {
+        "title": "LimitOffsetPage[Post]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_SubdivisionPost_": {
+        "title": "LimitOffsetPage[SubdivisionPost]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubdivisionPost"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_Subdivision_": {
+        "title": "LimitOffsetPage[Subdivision]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subdivision"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_User_": {
+        "title": "LimitOffsetPage[User]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
       "NamedUserCourse": {
         "title": "NamedUserCourse",
         "required": [
@@ -693,6 +1568,52 @@
       },
       "OneCourse": {
         "title": "OneCourse",
+        "required": [
+          "id",
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "OneSubdivision": {
+        "title": "OneSubdivision",
+        "required": [
+          "id",
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "OneSubdivisionPost": {
+        "title": "OneSubdivisionPost",
         "required": [
           "id",
           "name",
@@ -772,6 +1693,122 @@
           }
         }
       },
+      "PatchSubdivision": {
+        "title": "PatchSubdivision",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "PatchSubdivisionPost": {
+        "title": "PatchSubdivisionPost",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "PatchUser": {
+        "title": "PatchUser",
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "Post": {
+        "title": "Post",
+        "required": [
+          "id",
+          "name",
+          "subdivision_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "subdivision_id": {
+            "title": "Subdivision Id",
+            "type": "integer"
+          }
+        }
+      },
+      "Subdivision": {
+        "title": "Subdivision",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "SubdivisionPost": {
+        "title": "SubdivisionPost",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "Token": {
         "title": "Token",
         "required": [
@@ -799,7 +1836,8 @@
           "last_name",
           "patronymic",
           "is_admin",
-          "is_teacher"
+          "is_teacher",
+          "posts"
         ],
         "type": "object",
         "properties": {
@@ -830,6 +1868,13 @@
           "is_teacher": {
             "title": "Is Teacher",
             "type": "boolean"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubdivisionPost"
+            }
           }
         }
       },

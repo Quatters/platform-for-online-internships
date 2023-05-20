@@ -27,6 +27,16 @@ export interface paths {
     /** Get Users Me */
     get: operations["get_users_me_api_users_me_get"];
   };
+  "/api/users": {
+    /** Get Users */
+    get: operations["get_users_api_users_get"];
+  };
+  "/api/users/{user_id}": {
+    /** Get User */
+    get: operations["get_user_api_users__user_id__get"];
+    /** Patch User */
+    patch: operations["patch_user_api_users__user_id__patch"];
+  };
   "/api/user/{user_id}/courses/": {
     /** Get User Courses */
     get: operations["get_user_courses_api_user__user_id__courses__get"];
@@ -38,6 +48,38 @@ export interface paths {
     get: operations["get_one_user_course_api_user__user_id__courses__course_id__get"];
     /** Delete User Course */
     delete: operations["delete_user_course_api_user__user_id__courses__course_id__delete"];
+  };
+  "/api/subdivisions/": {
+    /** Get Subdivisions */
+    get: operations["get_subdivisions_api_subdivisions__get"];
+    /** Create Subdivision */
+    post: operations["create_subdivision_api_subdivisions__post"];
+  };
+  "/api/subdivisions/{subdivision_id}": {
+    /** Get One Subdivision */
+    get: operations["get_one_subdivision_api_subdivisions__subdivision_id__get"];
+    /** Delete Subdivision */
+    delete: operations["delete_subdivision_api_subdivisions__subdivision_id__delete"];
+    /** Patch Subdivision */
+    patch: operations["patch_subdivision_api_subdivisions__subdivision_id__patch"];
+  };
+  "/api/posts": {
+    /** Get Posts */
+    get: operations["get_posts_api_posts_get"];
+  };
+  "/api/subdivisions/{subdivision_id}/posts": {
+    /** Get Subdivision Posts */
+    get: operations["get_subdivision_posts_api_subdivisions__subdivision_id__posts_get"];
+    /** Create Subdivision Post */
+    post: operations["create_subdivision_post_api_subdivisions__subdivision_id__posts_post"];
+  };
+  "/api/subdivisions/{subdivision_id}/posts/{post_id}": {
+    /** Get Subdivision Post */
+    get: operations["get_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__get"];
+    /** Delete Subdivision Post */
+    delete: operations["delete_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__delete"];
+    /** Update Subdivision Post */
+    patch: operations["update_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__patch"];
   };
 }
 
@@ -70,6 +112,20 @@ export interface components {
       /** Name */
       name: string;
     };
+    /** CreateSubdivision */
+    CreateSubdivision: {
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+    };
+    /** CreateSubdivisionPost */
+    CreateSubdivisionPost: {
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -90,6 +146,50 @@ export interface components {
     LimitOffsetPage_NamedUserCourse_: {
       /** Items */
       items: (components["schemas"]["NamedUserCourse"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[Post] */
+    LimitOffsetPage_Post_: {
+      /** Items */
+      items: (components["schemas"]["Post"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[SubdivisionPost] */
+    LimitOffsetPage_SubdivisionPost_: {
+      /** Items */
+      items: (components["schemas"]["SubdivisionPost"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[Subdivision] */
+    LimitOffsetPage_Subdivision_: {
+      /** Items */
+      items: (components["schemas"]["Subdivision"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[User] */
+    LimitOffsetPage_User_: {
+      /** Items */
+      items: (components["schemas"]["User"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -124,6 +224,24 @@ export interface components {
       /** Description */
       description: string;
     };
+    /** OneSubdivision */
+    OneSubdivision: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+    };
+    /** OneSubdivisionPost */
+    OneSubdivisionPost: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+    };
     /** OneUserCourse */
     OneUserCourse: {
       /** Id */
@@ -151,6 +269,56 @@ export interface components {
       /** Description */
       description?: string;
     };
+    /** PatchSubdivision */
+    PatchSubdivision: {
+      /** Name */
+      name?: string;
+      /** Description */
+      description?: string;
+    };
+    /** PatchSubdivisionPost */
+    PatchSubdivisionPost: {
+      /** Name */
+      name?: string;
+      /** Description */
+      description?: string;
+    };
+    /** PatchUser */
+    PatchUser: {
+      /** Email */
+      email?: string;
+      /** First Name */
+      first_name?: string;
+      /** Last Name */
+      last_name?: string;
+      /** Patronymic */
+      patronymic?: string;
+      /** Posts */
+      posts?: (number)[];
+    };
+    /** Post */
+    Post: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Subdivision Id */
+      subdivision_id: number;
+    };
+    /** Subdivision */
+    Subdivision: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+    };
+    /** SubdivisionPost */
+    SubdivisionPost: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+    };
     /** Token */
     Token: {
       /** Access Token */
@@ -174,6 +342,8 @@ export interface components {
       is_admin: boolean;
       /** Is Teacher */
       is_teacher: boolean;
+      /** Posts */
+      posts: (components["schemas"]["SubdivisionPost"])[];
     };
     /** UserCourse */
     UserCourse: {
@@ -370,6 +540,79 @@ export interface operations {
       };
     };
   };
+  /** Get Users */
+  get_users_api_users_get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_User_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get User */
+  get_user_api_users__user_id__get: {
+    parameters: {
+      path: {
+        user_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Patch User */
+  patch_user_api_users__user_id__patch: {
+    parameters: {
+      path: {
+        user_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchUser"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** Get User Courses */
   get_user_courses_api_user__user_id__courses__get: {
     parameters: {
@@ -458,6 +701,267 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Subdivisions */
+  get_subdivisions_api_subdivisions__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_Subdivision_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Subdivision */
+  create_subdivision_api_subdivisions__post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateSubdivision"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneSubdivision"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get One Subdivision */
+  get_one_subdivision_api_subdivisions__subdivision_id__get: {
+    parameters: {
+      path: {
+        subdivision_id: unknown;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneSubdivision"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Subdivision */
+  delete_subdivision_api_subdivisions__subdivision_id__delete: {
+    parameters: {
+      query: {
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Patch Subdivision */
+  patch_subdivision_api_subdivisions__subdivision_id__patch: {
+    parameters: {
+      path: {
+        subdivision_id: unknown;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchSubdivision"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneSubdivision"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Posts */
+  get_posts_api_posts_get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_Post_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Subdivision Posts */
+  get_subdivision_posts_api_subdivisions__subdivision_id__posts_get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+      path: {
+        subdivision_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_SubdivisionPost_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Subdivision Post */
+  create_subdivision_post_api_subdivisions__subdivision_id__posts_post: {
+    parameters: {
+      path: {
+        subdivision_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateSubdivisionPost"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneSubdivisionPost"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Subdivision Post */
+  get_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__get: {
+    parameters: {
+      path: {
+        subdivision_id: number;
+        post_id: unknown;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneSubdivisionPost"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Subdivision Post */
+  delete_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__delete: {
+    parameters: {
+      path: {
+        subdivision_id: number;
+        post_id: unknown;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Update Subdivision Post */
+  update_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__patch: {
+    parameters: {
+      path: {
+        subdivision_id: number;
+        post_id: unknown;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchSubdivisionPost"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneSubdivisionPost"];
+        };
+      };
       /** @description Validation Error */
       422: {
         content: {
