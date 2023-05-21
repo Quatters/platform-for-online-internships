@@ -142,6 +142,17 @@ export interface components {
       /** Offset */
       offset?: number;
     };
+    /** LimitOffsetPage[ListUser] */
+    LimitOffsetPage_ListUser_: {
+      /** Items */
+      items: (components["schemas"]["ListUser"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
     /** LimitOffsetPage[NamedUserCourse] */
     LimitOffsetPage_NamedUserCourse_: {
       /** Items */
@@ -186,16 +197,22 @@ export interface components {
       /** Offset */
       offset?: number;
     };
-    /** LimitOffsetPage[User] */
-    LimitOffsetPage_User_: {
-      /** Items */
-      items: (components["schemas"]["User"])[];
-      /** Total */
-      total: number;
-      /** Limit */
-      limit?: number;
-      /** Offset */
-      offset?: number;
+    /** ListUser */
+    ListUser: {
+      /** Id */
+      id: number;
+      /** Email */
+      email: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** Patronymic */
+      patronymic: string;
+      /** Is Admin */
+      is_admin: boolean;
+      /** Is Teacher */
+      is_teacher: boolean;
     };
     /** NamedUserCourse */
     NamedUserCourse: {
@@ -553,7 +570,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["LimitOffsetPage_User_"];
+          "application/json": components["schemas"]["LimitOffsetPage_ListUser_"];
         };
       };
       /** @description Validation Error */

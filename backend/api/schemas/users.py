@@ -13,6 +13,16 @@ class User(BaseSchema):
     posts: list[SubdivisionPost]
 
 
+class ListUser(BaseSchema):
+    id: int
+    email: str
+    first_name: str
+    last_name: str
+    patronymic: str
+    is_admin: bool
+    is_teacher: bool
+
+
 class DbUser(User):
     password: str
 
