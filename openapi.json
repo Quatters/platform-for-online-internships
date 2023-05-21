@@ -337,7 +337,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LimitOffsetPage_User_"
+                  "$ref": "#/components/schemas/LimitOffsetPage_ListUser_"
                 }
               }
             }
@@ -1367,6 +1367,38 @@
           }
         }
       },
+      "LimitOffsetPage_ListUser_": {
+        "title": "LimitOffsetPage[ListUser]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListUser"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
       "LimitOffsetPage_NamedUserCourse_": {
         "title": "LimitOffsetPage[NamedUserCourse]",
         "required": [
@@ -1495,35 +1527,46 @@
           }
         }
       },
-      "LimitOffsetPage_User_": {
-        "title": "LimitOffsetPage[User]",
+      "ListUser": {
+        "title": "ListUser",
         "required": [
-          "items",
-          "total"
+          "id",
+          "email",
+          "first_name",
+          "last_name",
+          "patronymic",
+          "is_admin",
+          "is_teacher"
         ],
         "type": "object",
         "properties": {
-          "items": {
-            "title": "Items",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/User"
-            }
-          },
-          "total": {
-            "title": "Total",
-            "minimum": 0.0,
+          "id": {
+            "title": "Id",
             "type": "integer"
           },
-          "limit": {
-            "title": "Limit",
-            "minimum": 1.0,
-            "type": "integer"
+          "email": {
+            "title": "Email",
+            "type": "string"
           },
-          "offset": {
-            "title": "Offset",
-            "minimum": 0.0,
-            "type": "integer"
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string"
+          },
+          "is_admin": {
+            "title": "Is Admin",
+            "type": "boolean"
+          },
+          "is_teacher": {
+            "title": "Is Teacher",
+            "type": "boolean"
           }
         }
       },

@@ -19,8 +19,6 @@ def path_user(user_id: int, db: Session = Depends(get_db)):
     user = queries.get_user(db, user_id)
     if user is None:
         raise not_found()
-    if not user.is_teacher:
-        raise not_found()
     return user
 
 
@@ -49,7 +47,7 @@ async def get_users_me(user: Annotated[schemas.User, Depends(get_current_user)])
 
 @router.get(
     '/users',
-    response_model=LimitOffsetPage[schemas.User],
+    response_model=LimitOffsetPage[schemas.ListUser],
 )
 async def get_users(
     params: ListPageParams = Depends(),
