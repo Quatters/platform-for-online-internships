@@ -780,8 +780,8 @@ export interface operations {
   /** Delete Subdivision */
   delete_subdivision_api_subdivisions__subdivision_id__delete: {
     parameters: {
-      query: {
-        course_id: number;
+      path: {
+        subdivision_id: number;
       };
     };
     responses: {
