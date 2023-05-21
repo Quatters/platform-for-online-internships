@@ -1,4 +1,3 @@
-import { FetchError } from 'ofetch';
 import type { ToastProps } from 'node_modules/tailvue';
 
 export default defineNuxtPlugin(nuxtApp => {
@@ -9,13 +8,10 @@ export default defineNuxtPlugin(nuxtApp => {
         }
         const toastOptions: ToastProps = {
             type: 'danger',
-            title: 'Неизвестная ошибка',
+            title: 'Ошибка',
             message: String(error),
             timeout: 4,
         };
-        if (error instanceof FetchError) {
-            toastOptions.title = 'Ошибка соединения с сервером';
-        }
         $toast.show(toastOptions);
         console.error(error);
     };
