@@ -816,11 +816,11 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Subdivision Id",
               "type": "integer"
             },
-            "name": "course_id",
-            "in": "query"
+            "name": "subdivision_id",
+            "in": "path"
           }
         ],
         "responses": {
