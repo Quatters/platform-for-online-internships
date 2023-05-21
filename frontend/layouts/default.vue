@@ -47,6 +47,7 @@
             { action: logoutAction, title: 'Выход' },
         ],
         admin: [
+            { link: '/admin/subdivisions', title: 'Подразделения' },
             { link: '/admin/courses', title: 'Курсы' },
             { separator: true },
             { action: logoutAction, title: 'Выход' },
