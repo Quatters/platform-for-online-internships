@@ -5,6 +5,12 @@ export default defineI18nConfig(() => ({
         ru: {
             Name: 'Название',
             Description: 'Описание',
+            'First name': 'Имя',
+            'Last name': 'Фамилия',
+            Patronymic: 'Отчество',
+            'Is admin': 'Администратор',
+            'Is teacher': 'Наставник',
+            Posts: 'Должности',
         },
     },
 }));

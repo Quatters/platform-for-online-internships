@@ -7,7 +7,8 @@
             ⨯
         </button>
         <ControlInput
-            class="ml-auto"
+            class="ml-auto w-full"
+            :class="inputClass"
             placeholder="Найти..."
             :debounce="350"
             :model-value="modelValue"
@@ -20,9 +21,17 @@
     const route = useRoute();
     const router = useRouter();
 
-    defineProps<{
-        modelValue?: string | null;
-    }>();
+    const props = withDefaults(
+        defineProps<{
+            modelValue?: string | null;
+            emitOnly?: boolean;
+            inputClass?: string;
+        }>(),
+        {
+            inputClass: '',
+            modelValue: undefined,
+        },
+    );
 
     const emit = defineEmits<{
         (e: 'update:modelValue', value?: string): void;
@@ -30,13 +39,15 @@
 
     function setSearch(value?: string) {
         value = value || undefined;
-        router.replace({
-            ...route,
-            query: {
-                ...route.query,
-                search: value,
-            },
-        });
+        if (!props.emitOnly) {
+            router.replace({
+                ...route,
+                query: {
+                    ...route.query,
+                    search: value,
+                },
+            });
+        }
         emit('update:modelValue', value);
     }
 </script>

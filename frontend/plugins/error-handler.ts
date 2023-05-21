@@ -1,3 +1,4 @@
+import { FetchError } from 'ofetch';
 import type { ToastProps } from 'node_modules/tailvue';
 
 export default defineNuxtPlugin(nuxtApp => {
@@ -12,6 +13,9 @@ export default defineNuxtPlugin(nuxtApp => {
             message: String(error),
             timeout: 4,
         };
+        if (error instanceof FetchError && error.data) {
+            toastOptions.message = JSON.stringify(error.data);
+        }
         $toast.show(toastOptions);
         console.error(error);
     };

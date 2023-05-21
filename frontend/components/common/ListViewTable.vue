@@ -15,7 +15,7 @@
             >
                 <tr class="border-b hover:bg-gray-100 hover:cursor-pointer" :data-href="href" @click.stop="navigate">
                     <td v-for="(value, valueIdx) in getItemValues(item)" :key="valueIdx" class="px-4 py-2">
-                        {{ value }}
+                        <FieldAbstract :value="value" />
                     </td>
                 </tr>
             </NuxtLink>
@@ -69,6 +69,6 @@
         if (!props.withId) {
             keys = keys.filter(key => key !== 'id');
         }
-        return keys.map(value => capitalize(value));
+        return keys.map(value => capitalize(value.replaceAll('_', ' ')));
     });
 </script>

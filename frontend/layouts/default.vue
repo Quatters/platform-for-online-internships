@@ -50,6 +50,8 @@
             { link: '/admin/subdivisions', title: 'Подразделения' },
             { link: '/admin/courses', title: 'Курсы' },
             { separator: true },
+            { link: '/admin/users', title: 'Пользователи' },
+            { separator: true },
             { action: logoutAction, title: 'Выход' },
         ],
     };

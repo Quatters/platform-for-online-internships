@@ -3,7 +3,7 @@ import { APIPath, APIMethod, LoaderArgs } from '~/types';
 
 interface ExtendedLoaderArgs extends LoaderArgs {
     otherQueries?: {
-        [k: string]: LocationQueryValue | LocationQueryValue[];
+        [k: string]: LocationQueryValue | LocationQueryValue[] | string | undefined;
     };
 }
 
@@ -11,6 +11,7 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
     path,
     method,
     params,
+    watchQuery,
 }: {
     path: P;
     method: M;
@@ -23,6 +24,13 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
 
     function filterRouteQuery(newQuery: LocationQuery) {
         return Object.fromEntries(Object.entries(newQuery).filter(([key]) => !['limit', 'offset'].includes(key)));
+    }
+
+    function unpackWatchQueries() {
+        if (!watchQuery) {
+            return {};
+        }
+        return Object.fromEntries(Object.entries(watchQuery).map(([key, value]) => [key, value.value]));
     }
 
     const loader = ({ limit, offset, otherQueries }: ExtendedLoaderArgs = {}) => {
@@ -52,8 +60,30 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
 
     watch(toRef(route, 'query'), async newQuery => {
         // @ts-expect-error expecting list path
-        data.value = await loader({ limit: config.public.pageSize, otherQueries: filterRouteQuery(newQuery) });
+        data.value = await loader({
+            limit: config.public.pageSize,
+            otherQueries: {
+                ...filterRouteQuery(newQuery),
+                ...unpackWatchQueries(),
+            },
+        });
     });
+
+    if (watchQuery) {
+        for (const [key, value] of Object.entries(watchQuery)) {
+            watch(value, async value => {
+                // @ts-expect-error expecting list path
+                data.value = await loader({
+                    limit: config.public.pageSize,
+                    otherQueries: {
+                        ...filterRouteQuery(route.query),
+                        ...unpackWatchQueries(),
+                        [key]: value,
+                    },
+                });
+            });
+        }
+    }
 
     return {
         data,
