@@ -24,3 +24,5 @@ export function getFirstQueryValue(queryValue: LocationQueryValue | LocationQuer
     }
     return value;
 }
+
+export const error404 = () => createError({ fatal: true, statusCode: 404, message: 'Страница не найдена' });

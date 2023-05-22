@@ -33,6 +33,9 @@
     const sidebarItems: Record<Role, SidebarItem[]> = {
         intern: [
             { link: '/intern/dashboard', title: 'Личный кабинет' },
+            { separator: true },
+            { link: '/intern/subdivisions', title: 'Подразделения' },
+            { separator: true },
             { link: '/intern/my_tasks', title: 'Мои задания' },
             { separator: true },
             { link: '/intern/my_courses', title: 'Мои курсы' },
