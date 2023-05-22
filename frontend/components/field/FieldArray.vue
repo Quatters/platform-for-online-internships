@@ -1,13 +1,13 @@
 <template>
-    <ul>
+    <ul v-if="shownItems.length">
         <li v-for="(item, idx) in shownItems" :key="idx">{{ item }}</li>
     </ul>
+    <div v-else class="text-gray-600 italic">нет</div>
 </template>
 
 <script setup lang="ts">
     import { FieldProps } from '~/types';
     interface Item {
-        id: number;
         [key: string]: unknown;
     }
 

@@ -6,11 +6,7 @@ export default function () {
             return FieldBoolean;
         }
         if (Array.isArray(value)) {
-            if (value.length) {
-                if ('id' in value[0]) {
-                    return FieldArray;
-                }
-            }
+            return FieldArray;
         }
         return FieldString;
     }
