@@ -1,8 +1,8 @@
 """Create Subdivision and Post
 
-Revision ID: 25a1341db056
-Revises: 641de8286960
-Create Date: 2023-05-20 23:23:10.358906
+Revision ID: dd8cab8d69f5
+Revises: ab35b63119c0
+Create Date: 2023-05-23 00:46:19.066351
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '25a1341db056'
-down_revision = '641de8286960'
+revision = 'dd8cab8d69f5'
+down_revision = 'ab35b63119c0'
 branch_labels = None
 depends_on = None
 
