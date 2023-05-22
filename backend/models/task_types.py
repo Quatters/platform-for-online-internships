@@ -1,5 +1,6 @@
 import enum
 
+
 class TaskType(enum.Enum):
     single = 'single'
     multiple = 'multiple'

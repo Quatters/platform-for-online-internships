@@ -1,11 +1,14 @@
 from typing import List
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.orm import Session
+from backend.api.dependencies import ListPageParams
 from backend.api.schemas import answers as schemas
 from backend.models.answers import Answer
 
 
-def get_answers(db: Session, task_id: int) -> List[Answer]:
-    return db.query(Answer).filter(Answer.task_id == task_id).all()
+def get_answers(db: Session, task_id: int, params: ListPageParams) -> List[Answer]:
+    query = db.query(Answer).filter(Answer.task_id == task_id)
+    return paginate(query, params)
 
 
 def get_answer(db: Session, answer_id) -> Answer | None:

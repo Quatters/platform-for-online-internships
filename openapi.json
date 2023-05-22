@@ -648,19 +648,19 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Topic Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "topic_id",
             "in": "path"
           },
           {
             "required": true,
             "schema": {
-              "title": "Topic Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "topic_id",
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -694,19 +694,19 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Topic Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "topic_id",
             "in": "path"
           },
           {
             "required": true,
             "schema": {
-              "title": "Topic Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "topic_id",
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -738,19 +738,19 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Topic Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "topic_id",
             "in": "path"
           },
           {
             "required": true,
             "schema": {
-              "title": "Topic Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "topic_id",
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -770,7 +770,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Topic"
+                  "$ref": "#/components/schemas/OneTopic"
                 }
               }
             }
@@ -801,19 +801,19 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Topic Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "topic_id",
             "in": "path"
           },
           {
             "required": true,
             "schema": {
-              "title": "Topic Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "topic_id",
+            "name": "course_id",
             "in": "path"
           },
           {
@@ -878,19 +878,19 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Topic Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "topic_id",
             "in": "path"
           },
           {
             "required": true,
             "schema": {
-              "title": "Topic Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "topic_id",
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -941,10 +941,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Task Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "task_id",
             "in": "path"
           },
           {
@@ -959,9 +959,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Task Id"
+              "title": "Course Id",
+              "type": "integer"
             },
-            "name": "task_id",
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -995,10 +996,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Task Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "task_id",
             "in": "path"
           },
           {
@@ -1013,10 +1014,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Task Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "task_id",
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -1048,10 +1049,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Task Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "task_id",
             "in": "path"
           },
           {
@@ -1066,10 +1067,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Task Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "task_id",
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -1120,10 +1121,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Task Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "task_id",
             "in": "path"
           },
           {
@@ -1138,11 +1139,42 @@
           {
             "required": true,
             "schema": {
-              "title": "Task Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "task_id",
+            "name": "course_id",
             "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 10
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
           }
         ],
         "responses": {
@@ -1151,21 +1183,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Answers Api Courses  Course Id  Topics  Topic Id  Tasks  Task Id  Answers  Get",
-                  "anyOf": [
-                    {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/AnswerAdmin"
-                      }
-                    },
-                    {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Answer"
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/LimitOffsetPage_Union_AnswerAdmin__Answer__"
                 }
               }
             }
@@ -1194,10 +1212,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Task Id",
               "type": "integer"
             },
-            "name": "course_id",
+            "name": "task_id",
             "in": "path"
           },
           {
@@ -1212,10 +1230,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Task Id",
+              "title": "Course Id",
               "type": "integer"
             },
-            "name": "task_id",
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -1266,19 +1284,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Answer Id",
               "type": "integer"
             },
-            "name": "course_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Topic Id",
-              "type": "integer"
-            },
-            "name": "topic_id",
+            "name": "answer_id",
             "in": "path"
           },
           {
@@ -1293,10 +1302,19 @@
           {
             "required": true,
             "schema": {
-              "title": "Answer Id",
+              "title": "Topic Id",
               "type": "integer"
             },
-            "name": "answer_id",
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -1343,19 +1361,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Answer Id",
               "type": "integer"
             },
-            "name": "course_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Topic Id",
-              "type": "integer"
-            },
-            "name": "topic_id",
+            "name": "answer_id",
             "in": "path"
           },
           {
@@ -1370,10 +1379,19 @@
           {
             "required": true,
             "schema": {
-              "title": "Answer Id",
+              "title": "Topic Id",
               "type": "integer"
             },
-            "name": "answer_id",
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -1405,19 +1423,10 @@
           {
             "required": true,
             "schema": {
-              "title": "Course Id",
+              "title": "Answer Id",
               "type": "integer"
             },
-            "name": "course_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Topic Id",
-              "type": "integer"
-            },
-            "name": "topic_id",
+            "name": "answer_id",
             "in": "path"
           },
           {
@@ -1432,10 +1441,19 @@
           {
             "required": true,
             "schema": {
-              "title": "Answer Id",
+              "title": "Topic Id",
               "type": "integer"
             },
-            "name": "answer_id",
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -1793,6 +1811,45 @@
           }
         }
       },
+      "LimitOffsetPage_Union_AnswerAdmin__Answer__": {
+        "title": "LimitOffsetPage[Union[AnswerAdmin, Answer]]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/AnswerAdmin"
+                },
+                {
+                  "$ref": "#/components/schemas/Answer"
+                }
+              ]
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
       "NamedUserCourse": {
         "title": "NamedUserCourse",
         "required": [
@@ -1886,6 +1943,10 @@
             "title": "Prev Task Id",
             "type": "integer"
           },
+          "next_task_id": {
+            "title": "Next Task Id",
+            "type": "integer"
+          },
           "task_type": {
             "$ref": "#/components/schemas/TaskType"
           }
@@ -1919,6 +1980,10 @@
           },
           "prev_topic_id": {
             "title": "Prev Topic Id",
+            "type": "integer"
+          },
+          "next_topic_id": {
+            "title": "Next Topic Id",
             "type": "integer"
           }
         }
@@ -2030,6 +2095,10 @@
           },
           "prev_topic_id": {
             "title": "Prev Topic Id",
+            "type": "integer"
+          },
+          "next_topic_id": {
+            "title": "Next Topic Id",
             "type": "integer"
           }
         }

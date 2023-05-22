@@ -1,86 +1,77 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import get_current_user
+from backend.api.current_dependencies import current_course, current_topic
 from backend.api.dependencies import ListPageParams
 from backend.api.errors.errors import not_found, unauthorized
+from backend.api.schemas.courses import Course
 from backend.api.schemas.users import User
 from backend.database import get_db
-from backend.api.queries import courses, topics as queries
+from backend.api.queries import topics as queries
 from backend.api.schemas import topics as schemas
+from backend.models.topics import Topic
 from backend.settings import LimitOffsetPage
 
 
 router = APIRouter(prefix='/courses/{course_id}/topics')
 
 
-@router.get('/', response_model=LimitOffsetPage[schemas.Topic])
-def get_topics(course_id: int,
-               params: ListPageParams = Depends(),
+def populate_next_topic(topic: Topic, db: Session) -> schemas.OneTopic:
+    next_topic = queries.get_next_topic(db, topic.id)
+    if next_topic is None:
+        return topic
+
+    result = schemas.OneTopic.from_orm(topic)
+    result.next_topic_id = next_topic.id
+    return result
+
+
+@router.get('/',
+            response_model=LimitOffsetPage[schemas.Topic],
+            dependencies=[Depends(current_course)])
+def get_topics(params: ListPageParams = Depends(),
                db: Session = Depends(get_db)):
-    course = courses.get_course(db, course_id)
-    if course is None:
-        raise not_found()
-    return queries.get_topics(db, course.id, params)
+    return queries.get_topics(db, params)
 
 
 @router.get('/{topic_id}', response_model=schemas.OneTopic)
-def get_topic(course_id: int,
-              topic_id: int,
+def get_topic(topic: Topic = Depends(current_topic),
               db: Session = Depends(get_db)):
-    course = courses.get_course(db, course_id)
-    if course is None:
-        raise not_found()
-    topic = queries.get_topic(db, topic_id, course_id)
-    if topic is None:
-        raise not_found()
-    return topic
+    return populate_next_topic(topic, db)
 
 
 @router.post('/', response_model=schemas.OneTopic)
-def create_topic(course_id: int,
-                 topic: schemas.CreateTopic,
+def create_topic(topic: schemas.CreateTopic,
+                 course: Course = Depends(current_course),
                  user: User = Depends(get_current_user),
                  db: Session = Depends(get_db)):
     if not user.is_admin:
         raise unauthorized()
-    if courses.get_course(db, course_id) is None:
-        raise not_found()
 
     if topic.prev_topic_id is not None:
-        if queries.get_topic(db, topic.prev_topic_id, course_id) is None:
+        if queries.get_topic(db, topic.prev_topic_id) is None:
             raise not_found()
 
-    created_topic = queries.create_topic(db, topic, course_id)
-    return created_topic
+    created_topic = queries.create_topic(db, topic, course.id)
+    return populate_next_topic(created_topic, db)
 
 
 @router.delete('/{topic_id}', status_code=204)
-def delete_topic(course_id: int,
-                  topic_id: int,
-                  user: User = Depends(get_current_user),
-                  db: Session = Depends(get_db)):
+def delete_topic(topic: Topic = Depends(current_topic),
+                 user: User = Depends(get_current_user),
+                 db: Session = Depends(get_db)):
     if not user.is_admin:
         raise unauthorized()
-    topic = queries.get_topic(db, topic_id, course_id)
-    if topic is None:
-        raise not_found()
-
     queries.delete_topic(db, topic)
     return {}
 
 
-@router.patch('/{topic_id}', response_model=schemas.Topic)
-def patch_topic(course_id: int,
-                 topic_id: int,
-                 topic: schemas.PatchTopic,
-                 user: User = Depends(get_current_user),
-                 db: Session = Depends(get_db)):
+@router.patch('/{topic_id}', response_model=schemas.OneTopic)
+def patch_topic(topic: schemas.PatchTopic,
+                topic_to_patch: Topic = Depends(current_topic),
+                user: User = Depends(get_current_user),
+                db: Session = Depends(get_db)):
     if not user.is_admin:
         raise unauthorized()
-    topic_to_patch = queries.get_topic(db, topic_id, course_id)
-    if topic_to_patch is None:
-        raise not_found()
-
     queries.patch_topic(db, topic_to_patch, topic)
-
-    return topic_to_patch
+    return populate_next_topic(topic_to_patch, db)

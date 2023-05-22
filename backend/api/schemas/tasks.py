@@ -8,19 +8,23 @@ class Task(BaseSchema):
     prev_task_id: int | None
     task_type: TaskType
 
+
 class OneTask(BaseSchema):
     id: int
     topic_id: int
     name: str
     description: str
     prev_task_id: int | None
+    next_task_id: int | None
     task_type: TaskType
+
 
 class CreateTask(BaseSchema):
     name: str
     description: str
     prev_task_id: int | None
     task_type: TaskType
+
 
 class PatchTask(BaseSchema):
     name: str | None
