@@ -1794,8 +1794,7 @@
           {
             "required": true,
             "schema": {
-              "title": "Subdivision Id",
-              "type": "integer"
+              "title": "Subdivision Id"
             },
             "name": "subdivision_id",
             "in": "path"

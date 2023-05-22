@@ -1390,7 +1390,7 @@ export interface operations {
   delete_subdivision_api_subdivisions__subdivision_id__delete: {
     parameters: {
       path: {
-        subdivision_id: number;
+        subdivision_id: unknown;
       };
     };
     responses: {
