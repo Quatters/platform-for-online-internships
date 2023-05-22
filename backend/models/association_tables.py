@@ -16,3 +16,11 @@ UserPostAssociation = Table(
     PKColumn('user_id', fk('User')),
     PKColumn('post_id', fk('Post')),
 )
+
+
+CoursePostAssociation = Table(
+    tablename('course_post_association'),
+    BaseModel.metadata,
+    PKColumn('course_id', fk('Course')),
+    PKColumn('post_id', fk('Post')),
+)

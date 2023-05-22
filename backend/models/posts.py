@@ -3,11 +3,14 @@ from sqlalchemy import Column, String, Text, ForeignKey, Integer
 from sqlalchemy.orm import relationship, Mapped
 from backend.models.base import BaseModel
 from backend.models import Subdivision
-from backend.models.association_tables import UserPostAssociation
+from backend.models.association_tables import (
+    UserPostAssociation,
+    CoursePostAssociation,
+)
 
 
 if TYPE_CHECKING:
-    from backend.models import User
+    from backend.models import User, Course
 
 
 class Post(BaseModel):
@@ -21,4 +24,13 @@ class Post(BaseModel):
         back_populates='posts',
     )
 
-    users: Mapped[list['User']] = relationship('User', secondary=UserPostAssociation, back_populates='posts')
+    users: Mapped[list['User']] = relationship(
+        'User',
+        secondary=UserPostAssociation,
+        back_populates='posts',
+    )
+    courses: Mapped[list['Course']] = relationship(
+        'Course',
+        secondary=CoursePostAssociation,
+        back_populates='posts',
+    )
