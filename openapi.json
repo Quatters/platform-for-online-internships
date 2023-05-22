@@ -17,7 +17,6 @@
               "minimum": 1.0,
               "type": "integer",
               "default": 20
-              "default": 20
             },
             "name": "limit",
             "in": "query"
@@ -2315,6 +2314,108 @@
           }
         }
       },
+      "CreateAnswer": {
+        "title": "CreateAnswer",
+        "required": [
+          "value",
+          "is_correct"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "is_correct": {
+            "title": "Is Correct",
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateSubdivision": {
+        "title": "CreateSubdivision",
+        "required": [
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "CreateSubdivisionPost": {
+        "title": "CreateSubdivisionPost",
+        "required": [
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "CreateTask": {
+        "title": "CreateTask",
+        "required": [
+          "name",
+          "description",
+          "task_type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "prev_task_id": {
+            "title": "Prev Task Id",
+            "type": "integer"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          }
+        }
+      },
+      "CreateTopic": {
+        "title": "CreateTopic",
+        "required": [
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "prev_topic_id": {
+            "title": "Prev Topic Id",
+            "type": "integer"
+          }
+        }
+      },
       "HTTPValidationError": {
         "title": "HTTPValidationError",
         "type": "object",
@@ -2424,6 +2525,248 @@
           }
         }
       },
+      "LimitOffsetPage_Post_": {
+        "title": "LimitOffsetPage[Post]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_SubdivisionPost_": {
+        "title": "LimitOffsetPage[SubdivisionPost]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubdivisionPost"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_Subdivision_": {
+        "title": "LimitOffsetPage[Subdivision]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subdivision"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_Task_": {
+        "title": "LimitOffsetPage[Task]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Task"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_Topic_": {
+        "title": "LimitOffsetPage[Topic]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Topic"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_Union_AnswerAdmin__Answer__": {
+        "title": "LimitOffsetPage[Union[AnswerAdmin, Answer]]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/AnswerAdmin"
+                },
+                {
+                  "$ref": "#/components/schemas/Answer"
+                }
+              ]
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "ListUser": {
+        "title": "ListUser",
+        "required": [
+          "id",
+          "email",
+          "first_name",
+          "last_name",
+          "patronymic",
+          "is_admin",
+          "is_teacher"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string"
+          },
+          "is_admin": {
+            "title": "Is Admin",
+            "type": "boolean"
+          },
+          "is_teacher": {
+            "title": "Is Teacher",
+            "type": "boolean"
+          }
+        }
+      },
       "NamedUserCourse": {
         "title": "NamedUserCourse",
         "required": [
@@ -2483,6 +2826,128 @@
           "description": {
             "title": "Description",
             "type": "string"
+          }
+        }
+      },
+      "OneSubdivision": {
+        "title": "OneSubdivision",
+        "required": [
+          "id",
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "OneSubdivisionPost": {
+        "title": "OneSubdivisionPost",
+        "required": [
+          "id",
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "OneTask": {
+        "title": "OneTask",
+        "required": [
+          "id",
+          "topic_id",
+          "name",
+          "description",
+          "task_type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "topic_id": {
+            "title": "Topic Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "prev_task_id": {
+            "title": "Prev Task Id",
+            "type": "integer"
+          },
+          "next_task_id": {
+            "title": "Next Task Id",
+            "type": "integer"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          }
+        }
+      },
+      "OneTopic": {
+        "title": "OneTopic",
+        "required": [
+          "id",
+          "course_id",
+          "name",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "course_id": {
+            "title": "Course Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "prev_topic_id": {
+            "title": "Prev Topic Id",
+            "type": "integer"
+          },
+          "next_topic_id": {
+            "title": "Next Topic Id",
+            "type": "integer"
           }
         }
       },
@@ -2557,6 +3022,201 @@
             "type": "string"
           }
         }
+      },
+      "PatchSubdivision": {
+        "title": "PatchSubdivision",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "PatchSubdivisionPost": {
+        "title": "PatchSubdivisionPost",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          }
+        }
+      },
+      "PatchTask": {
+        "title": "PatchTask",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "prev_topic_id": {
+            "title": "Prev Topic Id",
+            "type": "integer"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          }
+        }
+      },
+      "PatchTopic": {
+        "title": "PatchTopic",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "prev_topic_id": {
+            "title": "Prev Topic Id",
+            "type": "integer"
+          },
+          "next_topic_id": {
+            "title": "Next Topic Id",
+            "type": "integer"
+          }
+        }
+      },
+      "PatchUser": {
+        "title": "PatchUser",
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "Post": {
+        "title": "Post",
+        "required": [
+          "id",
+          "name",
+          "subdivision_id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "subdivision_id": {
+            "title": "Subdivision Id",
+            "type": "integer"
+          }
+        }
+      },
+      "Subdivision": {
+        "title": "Subdivision",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "SubdivisionPost": {
+        "title": "SubdivisionPost",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "Task": {
+        "title": "Task",
+        "required": [
+          "id",
+          "name",
+          "task_type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "prev_task_id": {
+            "title": "Prev Task Id",
+            "type": "integer"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          }
+        }
+      },
+      "TaskType": {
+        "title": "TaskType",
+        "enum": [
+          "single",
+          "multiple",
+          "text",
+          "excel"
+        ],
+        "description": "An enumeration."
       },
       "Token": {
         "title": "Token",

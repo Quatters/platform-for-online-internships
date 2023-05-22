@@ -158,7 +158,7 @@ export interface components {
       /** Password */
       password: string;
       /**
-       * Scope
+       * Scope 
        * @default
        */
       scope?: string;
@@ -346,7 +346,7 @@ export interface components {
       /** Progress */
       progress: number;
       /**
-       * Admission Date
+       * Admission Date 
        * Format: date-time
        */
       admission_date: string;
@@ -422,7 +422,7 @@ export interface components {
       /** Progress */
       progress: number;
       /**
-       * Admission Date
+       * Admission Date 
        * Format: date-time
        */
       admission_date: string;
@@ -527,8 +527,8 @@ export interface components {
       task_type: components["schemas"]["TaskType"];
     };
     /**
-     * TaskType
-     * @description An enumeration.
+     * TaskType 
+     * @description An enumeration. 
      * @enum {unknown}
      */
     TaskType: "single" | "multiple" | "text" | "excel";
@@ -578,7 +578,7 @@ export interface components {
       /** Progress */
       progress: number;
       /**
-       * Admission Date
+       * Admission Date 
        * Format: date-time
        */
       admission_date: string;
