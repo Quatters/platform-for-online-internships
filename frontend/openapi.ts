@@ -49,6 +49,48 @@ export interface paths {
     /** Delete User Course */
     delete: operations["delete_user_course_api_user__user_id__courses__course_id__delete"];
   };
+  "/api/courses/{course_id}/topics/": {
+    /** Get Topics */
+    get: operations["get_topics_api_courses__course_id__topics__get"];
+    /** Create Topic */
+    post: operations["create_topic_api_courses__course_id__topics__post"];
+  };
+  "/api/courses/{course_id}/topics/{topic_id}": {
+    /** Get Topic */
+    get: operations["get_topic_api_courses__course_id__topics__topic_id__get"];
+    /** Delete Topic */
+    delete: operations["delete_topic_api_courses__course_id__topics__topic_id__delete"];
+    /** Patch Topic */
+    patch: operations["patch_topic_api_courses__course_id__topics__topic_id__patch"];
+  };
+  "/api/courses/{course_id}/topics/{topic_id}/": {
+    /** Get Tasks */
+    get: operations["get_tasks_api_courses__course_id__topics__topic_id___get"];
+    /** Create Task */
+    post: operations["create_task_api_courses__course_id__topics__topic_id___post"];
+  };
+  "/api/courses/{course_id}/topics/{topic_id}/{task_id}": {
+    /** Get Task */
+    get: operations["get_task_api_courses__course_id__topics__topic_id___task_id__get"];
+    /** Delete Task */
+    delete: operations["delete_task_api_courses__course_id__topics__topic_id___task_id__delete"];
+    /** Patch Task */
+    patch: operations["patch_task_api_courses__course_id__topics__topic_id___task_id__patch"];
+  };
+  "/api/courses/{course_id}/topics/{topic_id}/tasks/{task_id}/answers/": {
+    /** Get Answers */
+    get: operations["get_answers_api_courses__course_id__topics__topic_id__tasks__task_id__answers__get"];
+    /** Create Answer */
+    post: operations["create_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__post"];
+  };
+  "/api/courses/{course_id}/topics/{topic_id}/tasks/{task_id}/answers/{answer_id}": {
+    /** Get Answer */
+    get: operations["get_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__get"];
+    /** Delete Answer */
+    delete: operations["delete_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__delete"];
+    /** Patch Answer */
+    patch: operations["patch_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__patch"];
+  };
   "/api/subdivisions/": {
     /** Get Subdivisions */
     get: operations["get_subdivisions_api_subdivisions__get"];
@@ -87,6 +129,26 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    /** Answer */
+    Answer: {
+      /** Id */
+      id: number;
+      /** Value */
+      value: string;
+      /** Task Id */
+      task_id: number;
+    };
+    /** AnswerAdmin */
+    AnswerAdmin: {
+      /** Id */
+      id: number;
+      /** Value */
+      value: string;
+      /** Task Id */
+      task_id: number;
+      /** Is Correct */
+      is_correct: boolean;
+    };
     /** Body_login_for_access_token_api_auth_token_post */
     Body_login_for_access_token_api_auth_token_post: {
       /** Grant Type */
@@ -96,7 +158,7 @@ export interface components {
       /** Password */
       password: string;
       /**
-       * Scope 
+       * Scope
        * @default
        */
       scope?: string;
@@ -112,6 +174,13 @@ export interface components {
       /** Name */
       name: string;
     };
+    /** CreateAnswer */
+    CreateAnswer: {
+      /** Value */
+      value: string;
+      /** Is Correct */
+      is_correct: boolean;
+    };
     /** CreateSubdivision */
     CreateSubdivision: {
       /** Name */
@@ -125,6 +194,25 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+    };
+    /** CreateTask */
+    CreateTask: {
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+      /** Prev Task Id */
+      prev_task_id?: number;
+      task_type: components["schemas"]["TaskType"];
+    };
+    /** CreateTopic */
+    CreateTopic: {
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+      /** Prev Topic Id */
+      prev_topic_id?: number;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -197,6 +285,39 @@ export interface components {
       /** Offset */
       offset?: number;
     };
+    /** LimitOffsetPage[Task] */
+    LimitOffsetPage_Task_: {
+      /** Items */
+      items: (components["schemas"]["Task"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[Topic] */
+    LimitOffsetPage_Topic_: {
+      /** Items */
+      items: (components["schemas"]["Topic"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[Union[AnswerAdmin, Answer]] */
+    LimitOffsetPage_Union_AnswerAdmin__Answer__: {
+      /** Items */
+      items: (components["schemas"]["AnswerAdmin"] | components["schemas"]["Answer"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
     /** ListUser */
     ListUser: {
       /** Id */
@@ -225,7 +346,7 @@ export interface components {
       /** Progress */
       progress: number;
       /**
-       * Admission Date 
+       * Admission Date
        * Format: date-time
        */
       admission_date: string;
@@ -259,6 +380,37 @@ export interface components {
       /** Description */
       description: string;
     };
+    /** OneTask */
+    OneTask: {
+      /** Id */
+      id: number;
+      /** Topic Id */
+      topic_id: number;
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+      /** Prev Task Id */
+      prev_task_id?: number;
+      /** Next Task Id */
+      next_task_id?: number;
+      task_type: components["schemas"]["TaskType"];
+    };
+    /** OneTopic */
+    OneTopic: {
+      /** Id */
+      id: number;
+      /** Course Id */
+      course_id: number;
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+      /** Prev Topic Id */
+      prev_topic_id?: number;
+      /** Next Topic Id */
+      next_topic_id?: number;
+    };
     /** OneUserCourse */
     OneUserCourse: {
       /** Id */
@@ -270,7 +422,7 @@ export interface components {
       /** Progress */
       progress: number;
       /**
-       * Admission Date 
+       * Admission Date
        * Format: date-time
        */
       admission_date: string;
@@ -278,6 +430,13 @@ export interface components {
       course_name: string;
       /** Course Description */
       course_description: string;
+    };
+    /** PatchAnswer */
+    PatchAnswer: {
+      /** Value */
+      value?: string;
+      /** Is Correct */
+      is_correct?: boolean;
     };
     /** PatchCourse */
     PatchCourse: {
@@ -299,6 +458,27 @@ export interface components {
       name?: string;
       /** Description */
       description?: string;
+    };
+    /** PatchTask */
+    PatchTask: {
+      /** Name */
+      name?: string;
+      /** Description */
+      description?: string;
+      /** Prev Topic Id */
+      prev_topic_id?: number;
+      task_type?: components["schemas"]["TaskType"];
+    };
+    /** PatchTopic */
+    PatchTopic: {
+      /** Name */
+      name?: string;
+      /** Description */
+      description?: string;
+      /** Prev Topic Id */
+      prev_topic_id?: number;
+      /** Next Topic Id */
+      next_topic_id?: number;
     };
     /** PatchUser */
     PatchUser: {
@@ -336,12 +516,37 @@ export interface components {
       /** Name */
       name: string;
     };
+    /** Task */
+    Task: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Prev Task Id */
+      prev_task_id?: number;
+      task_type: components["schemas"]["TaskType"];
+    };
+    /**
+     * TaskType
+     * @description An enumeration.
+     * @enum {unknown}
+     */
+    TaskType: "single" | "multiple" | "text" | "excel";
     /** Token */
     Token: {
       /** Access Token */
       access_token: string;
       /** Token Type */
       token_type: string;
+    };
+    /** Topic */
+    Topic: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Prev Topic Id */
+      prev_topic_id?: number;
     };
     /** User */
     User: {
@@ -373,7 +578,7 @@ export interface components {
       /** Progress */
       progress: number;
       /**
-       * Admission Date 
+       * Admission Date
        * Format: date-time
        */
       admission_date: string;
@@ -726,6 +931,393 @@ export interface operations {
       };
     };
   };
+  /** Get Topics */
+  get_topics_api_courses__course_id__topics__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+      path: {
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_Topic_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Topic */
+  create_topic_api_courses__course_id__topics__post: {
+    parameters: {
+      path: {
+        course_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTopic"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTopic"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Topic */
+  get_topic_api_courses__course_id__topics__topic_id__get: {
+    parameters: {
+      path: {
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTopic"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Topic */
+  delete_topic_api_courses__course_id__topics__topic_id__delete: {
+    parameters: {
+      path: {
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Patch Topic */
+  patch_topic_api_courses__course_id__topics__topic_id__patch: {
+    parameters: {
+      path: {
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchTopic"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTopic"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Tasks */
+  get_tasks_api_courses__course_id__topics__topic_id___get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+      path: {
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_Task_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Task */
+  create_task_api_courses__course_id__topics__topic_id___post: {
+    parameters: {
+      path: {
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTask"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTask"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Task */
+  get_task_api_courses__course_id__topics__topic_id___task_id__get: {
+    parameters: {
+      path: {
+        task_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTask"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Task */
+  delete_task_api_courses__course_id__topics__topic_id___task_id__delete: {
+    parameters: {
+      path: {
+        task_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Patch Task */
+  patch_task_api_courses__course_id__topics__topic_id___task_id__patch: {
+    parameters: {
+      path: {
+        task_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchTask"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTask"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Answers */
+  get_answers_api_courses__course_id__topics__topic_id__tasks__task_id__answers__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+      path: {
+        task_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_Union_AnswerAdmin__Answer__"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Answer */
+  create_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__post: {
+    parameters: {
+      path: {
+        task_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateAnswer"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AnswerAdmin"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Answer */
+  get_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__get: {
+    parameters: {
+      path: {
+        answer_id: number;
+        task_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AnswerAdmin"] | components["schemas"]["Answer"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Answer */
+  delete_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__delete: {
+    parameters: {
+      path: {
+        answer_id: number;
+        task_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Patch Answer */
+  patch_answer_api_courses__course_id__topics__topic_id__tasks__task_id__answers__answer_id__patch: {
+    parameters: {
+      path: {
+        answer_id: number;
+        task_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchAnswer"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AnswerAdmin"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
   /** Get Subdivisions */
   get_subdivisions_api_subdivisions__get: {
     parameters: {
@@ -798,7 +1390,7 @@ export interface operations {
   delete_subdivision_api_subdivisions__subdivision_id__delete: {
     parameters: {
       path: {
-        subdivision_id: number;
+        subdivision_id: unknown;
       };
     };
     responses: {

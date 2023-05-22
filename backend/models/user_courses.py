@@ -10,7 +10,6 @@ class UserCourse(BaseModel):
     course = Relationship(Course, primaryjoin=course_id == Course.id)
     progress = Column(Float, default=0)
     admission_date = Column(DateTime)
-
     __table_args__ = (
-        UniqueConstraint('user_id', 'course_id', name='unique_user_course'),
+            UniqueConstraint(user_id, course_id, name="u_user_course"),
     )

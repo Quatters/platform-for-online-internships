@@ -37,12 +37,9 @@ def create_subdivision(subdivision: schemas.CreateSubdivision, db: Session = Dep
 
 @router.delete('/{subdivision_id}', status_code=204, dependencies=[Depends(admin_only)])
 def delete_subdivision(
-    subdivision_id: int,
+    subdivision: Subdivision = Depends(current_subdivision),
     db: Session = Depends(get_db),
 ):
-    subdivision = queries.get_subdivision(db, subdivision_id)
-    if subdivision is None:
-        raise not_found()
     queries.delete_subdivision(db, subdivision)
     return {}
 
@@ -57,6 +54,4 @@ def patch_subdivision(
     subdivision: Subdivision = Depends(current_subdivision),
     db: Session = Depends(get_db),
 ):
-    if subdivision_to_patch is None:
-        raise not_found()
     return queries.update_subdivision(db, subdivision, subdivision_to_patch)
