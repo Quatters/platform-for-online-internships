@@ -10,6 +10,7 @@ from backend.api.queries.users import get_user_by_email
 from backend.api.schemas.users import TokenData
 from backend.database import get_db
 from backend.settings import AUTH
+from backend.api.errors.errors import no_permission
 
 oauth2 = OAuth2PasswordBearer(tokenUrl=AUTH['TOKEN_URL'])
 crypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
@@ -67,3 +68,17 @@ async def get_current_user_data(token: Annotated[str, Depends(oauth2)], db: Sess
 async def get_current_user(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
     user = await get_current_user_data(token, db)
     return User.from_orm(user)
+
+
+async def admin_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
+    user = await get_current_user(token, db)
+    if user.is_admin:
+        return user
+    raise no_permission()
+
+
+async def admin_or_teacher_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
+    user = await get_current_user(token, db)
+    if user.is_admin or user.is_teacher:
+        return user
+    raise no_permission()

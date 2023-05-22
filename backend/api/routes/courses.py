@@ -14,7 +14,7 @@ router = APIRouter(prefix='/courses')
 
 
 @router.get('/', response_model=LimitOffsetPage[schemas.Course])
-def get_courses(params: ListPageParams = Depends(), db: Session = Depends(get_db),):
+def get_courses(params: ListPageParams = Depends(), db: Session = Depends(get_db)):
     return queries.get_courses(db, params)
 
 

@@ -5,6 +5,8 @@ from . import (
     topics,
     tasks,
     answers,
+    subdivisions,
+    posts,
 )
 
 routers = (
@@ -14,4 +16,6 @@ routers = (
     topics.router,
     tasks.router,
     answers.router,
+    subdivisions.router,
+    posts.router,
 )
