@@ -19,7 +19,7 @@ class User(BaseModel):
     is_admin = Column(Boolean, server_default=expression.false(), index=True, nullable=False)
     is_teacher = Column(Boolean, server_default=expression.false(), index=True, nullable=False)
 
-    posts: Mapped[set['Post']] = relationship('Post', secondary=UserPostAssociation, back_populates='users')
+    posts: Mapped[list['Post']] = relationship('Post', secondary=UserPostAssociation, back_populates='users')
 
     __table_args__ = (
         CheckConstraint('NOT (is_admin AND is_teacher)', name='check_one_role'),

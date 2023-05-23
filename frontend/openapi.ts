@@ -194,6 +194,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Courses */
+      courses: (number)[];
     };
     /** CreateTask */
     CreateTask: {
@@ -379,6 +381,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Courses */
+      courses: (components["schemas"]["Course"])[];
     };
     /** OneTask */
     OneTask: {
@@ -458,6 +462,8 @@ export interface components {
       name?: string;
       /** Description */
       description?: string;
+      /** Courses */
+      courses?: (number)[];
     };
     /** PatchTask */
     PatchTask: {

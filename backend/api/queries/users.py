@@ -1,10 +1,9 @@
 from sqlalchemy.orm import Session
 from fastapi_pagination.ext.sqlalchemy import paginate
-from backend.api.errors.errors import bad_request
 from backend.models.posts import Post
 from backend.models.users import User
 from backend.api.dependencies import ListPageParams
-from backend.api.queries.helpers import with_search
+from backend.api.queries.helpers import get_instances_or_400, with_search
 from backend.api.schemas import users as schemas
 
 
@@ -31,13 +30,7 @@ def get_users(db: Session, params: ListPageParams):
 def update_user(db: Session, user: User, patch_data: schemas.PatchUser):
     dict_ = patch_data.dict(exclude_unset=True)
     if 'posts' in dict_:
-        post_ids = dict_.pop('posts') or set()
-        posts = set()
-        if post_ids:
-            posts = set(db.query(Post).filter(Post.id.in_(post_ids)).all())
-        if len(post_ids) != len(posts):
-            raise bad_request('Some of the posts not exist.')
-        user.posts = posts
+        user.posts = get_instances_or_400(db, Post, dict_.pop('posts'))
     for key, value in dict_.items():
         setattr(user, key, value)
     db.commit()

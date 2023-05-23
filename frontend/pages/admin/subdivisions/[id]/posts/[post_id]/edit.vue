@@ -9,6 +9,7 @@
             <ControlForm @submit="save">
                 <ControlFormInput v-model="patchData.name" class="mb-4" label="Название" />
                 <ControlFormTextArea v-model="patchData.description" class="mb-4" label="Описание" />
+                <ControlFormM2MField v-model="patchData.courses" path="/api/courses/" label="Курсы" class="mb-3" />
             </ControlForm>
         </CommonContent>
     </div>

@@ -11,6 +11,7 @@ export default defineI18nConfig(() => ({
             'Is admin': 'Администратор',
             'Is teacher': 'Наставник',
             Posts: 'Должности',
+            Courses: 'Курсы',
         },
     },
 }));
