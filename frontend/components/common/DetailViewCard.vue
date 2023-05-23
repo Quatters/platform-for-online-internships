@@ -3,11 +3,9 @@
         <div class="bg-white shadow-md rounded-md px-8 py-6">
             <div v-for="([key, value], idx) in Object.entries(item)" :key="idx" class="mb-3">
                 <div class="font-medium">
-                    {{ $t(capitalize(key)) }}
+                    {{ $t(capitalize(key.replaceAll('_', ' '))) }}
                 </div>
-                <div class="whitespace-pre-wrap">
-                    {{ value }}
-                </div>
+                <FieldAbstract :value="value" />
             </div>
         </div>
     </div>

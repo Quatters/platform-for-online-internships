@@ -48,3 +48,7 @@ interface SidebarSeparatorItem {
 }
 
 export type SidebarItem = SidebarLinkItem | SidebarActionItem | SidebarSeparatorItem;
+
+export interface FieldProps {
+    value: unknown;
+}

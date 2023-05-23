@@ -9,12 +9,12 @@ export default defineNuxtPlugin(nuxtApp => {
         }
         const toastOptions: ToastProps = {
             type: 'danger',
-            title: 'Неизвестная ошибка',
+            title: 'Ошибка',
+            message: String(error),
             timeout: 4,
         };
-        if (error instanceof FetchError) {
-            toastOptions.title = 'Ошибка соединения с сервером';
-            toastOptions.message = 'Не удалось выполнить запрос или запрос выполнен неуспешно.';
+        if (error instanceof FetchError && error.data) {
+            toastOptions.message = JSON.stringify(error.data);
         }
         $toast.show(toastOptions);
         console.error(error);

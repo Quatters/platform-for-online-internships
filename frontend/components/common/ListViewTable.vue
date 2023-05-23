@@ -10,12 +10,12 @@
                 v-for="(item, idx) in items"
                 :key="idx"
                 v-slot="{ navigate, href }"
-                :to="{ ...getDetailLink(item) }"
+                :to="getDetailLink(item)"
                 :custom="true"
             >
                 <tr class="border-b hover:bg-gray-100 hover:cursor-pointer" :data-href="href" @click.stop="navigate">
                     <td v-for="(value, valueIdx) in getItemValues(item)" :key="valueIdx" class="px-4 py-2">
-                        {{ value }}
+                        <FieldAbstract :value="value" />
                     </td>
                 </tr>
             </NuxtLink>
@@ -29,15 +29,27 @@
         [key: string]: unknown;
     }
 
-    const props = defineProps<{
-        items: Item[];
-        withId?: boolean;
-    }>();
+    const props = withDefaults(
+        defineProps<{
+            items: Item[];
+            withId?: boolean;
+            linkParamName?: string;
+            additionalParams?: Record<string, string>;
+        }>(),
+        {
+            linkParamName: 'id',
+            additionalParams: () => ({}),
+            withId: false,
+        },
+    );
 
     const route = useRoute();
 
     function getDetailLink(item: Item) {
-        return { name: `${String(route.name)}-id`, params: { id: String(item.id) } };
+        return {
+            name: `${String(route.name)}-${props.linkParamName}`,
+            params: { [props.linkParamName]: String(item.id) },
+        };
     }
 
     function getItemValues(item: Record<string, unknown>) {
@@ -57,6 +69,6 @@
         if (!props.withId) {
             keys = keys.filter(key => key !== 'id');
         }
-        return keys.map(value => capitalize(value));
+        return keys.map(value => capitalize(value.replaceAll('_', ' ')));
     });
 </script>

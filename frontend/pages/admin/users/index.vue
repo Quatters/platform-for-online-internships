@@ -1,0 +1,23 @@
+<template>
+    <div>
+        <ControlPanel>
+            <template #buttons></template>
+            <template #inputs>
+                <ControlSearchInput v-model="search" />
+            </template>
+        </ControlPanel>
+        <CommonContent>
+            <CommonListViewTable :items="data!.items" />
+            <CommonLoadMore :response="data" @load-needed="loadMore" />
+        </CommonContent>
+    </div>
+</template>
+
+<script setup lang="ts">
+    const { data, loadMore } = await useListLoader({ path: '/api/users', method: 'get' });
+    usePageStore().name = 'Пользователи';
+
+    const route = useRoute();
+
+    const search = ref<string | null | undefined>(getFirstQueryValue(route.query.search));
+</script>
