@@ -1,6 +1,6 @@
 <template>
     <div v-if="canLoad" class="flex justify-center mt-2 mb-4">
-        <button class="text-blue-700 hover:underline" type="button" @click.prevent="loadNeeded">Показать больше</button>
+        <button class="link" type="button" @click.prevent="loadNeeded">Показать больше</button>
     </div>
 </template>
 

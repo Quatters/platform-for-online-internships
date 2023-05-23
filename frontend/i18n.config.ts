@@ -3,6 +3,7 @@ export default defineI18nConfig(() => ({
     locale: 'ru',
     messages: {
         ru: {
+            Id: 'Идентификатор',
             Name: 'Название',
             Description: 'Описание',
             'First name': 'Имя',

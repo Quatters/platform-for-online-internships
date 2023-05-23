@@ -18,6 +18,13 @@
 
     const route = useRoute();
 
+    const pageStore = usePageStore();
+    pageStore.name = 'Пользователи';
+    pageStore.name = 'Должности';
+    pageStore.fkInstancePathMap = {
+        posts: { name: 'admin-subdivisions-id-posts-post_id', params: { id: route.params.id } },
+    };
+
     const { data } = await useAsyncData(() => {
         return $api({
             path: '/api/users/{user_id}',

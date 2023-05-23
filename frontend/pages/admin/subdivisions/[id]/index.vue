@@ -10,9 +10,9 @@
                 />
             </template>
             <template #links>
-                <ControlNestedLink :to="{ name: 'admin-subdivisions-id-posts', params: { id: route.params.id } }">
+                <NuxtLink :to="{ name: 'admin-subdivisions-id-posts', params: { id: route.params.id } }" class="link">
                     Должности
-                </ControlNestedLink>
+                </NuxtLink>
             </template>
         </ControlPanel>
         <CommonContent>
@@ -22,6 +22,8 @@
 </template>
 
 <script setup lang="ts">
+    usePageStore().name = 'Подразделения';
+
     const { $api } = useNuxtApp();
 
     const route = useRoute();

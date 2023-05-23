@@ -1,5 +1,5 @@
 import { isParenthesizedTypeNode } from 'typescript';
-import type { RouteLocationRaw } from 'vue-router';
+import type { RouteLocationRaw, RouteLocationNamedRaw } from 'vue-router';
 import { paths } from './openapi';
 
 export type HttpMethod = 'get' | 'post' | 'patch' | 'delete';
@@ -50,5 +50,6 @@ interface SidebarSeparatorItem {
 export type SidebarItem = SidebarLinkItem | SidebarActionItem | SidebarSeparatorItem;
 
 export interface FieldProps {
+    fieldName: string;
     value: unknown;
 }

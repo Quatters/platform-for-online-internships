@@ -26,11 +26,12 @@ def get_post(db: Session, post_id):
 
 
 def create_post(db: Session, post: schemas.CreateSubdivisionPost, subdivision_id: int):
-    post = Post(subdivision_id=subdivision_id, **post.dict())
-    db.add(post)
+    created_post = Post(subdivision_id=subdivision_id, **post.dict(exclude={'courses'}))
+    created_post.courses = get_instances_or_400(db, Course, post.courses)
+    db.add(created_post)
     db.commit()
-    db.refresh(post)
-    return post
+    db.refresh(created_post)
+    return created_post
 
 
 def delete_post(db: Session, post: Post):
