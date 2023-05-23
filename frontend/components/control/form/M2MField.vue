@@ -2,7 +2,7 @@
     <div>
         <ControlFormLabel :value="label" :required="required" />
         <ControlSearchInput v-model="search" class="w-full mb-3" emit-only />
-        <div class="shadow border rounded p-3">
+        <div class="shadow border rounded p-3 max-h-[8.5rem] overflow-y-auto">
             <div v-if="typedData.items.length">
                 <label v-for="item in typedData!.items" :key="item.id" class="block cursor-pointer">
                     <input

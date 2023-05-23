@@ -67,7 +67,7 @@
                     },
                 });
             } else {
-                console.error(e);
+                throw e;
             }
         }
     });

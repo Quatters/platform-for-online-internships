@@ -35,22 +35,12 @@
             primary: {
                 label: props.text,
                 action: async () => {
-                    try {
-                        await $api({
-                            path: props.path,
-                            // @ts-expect-error must support delete
-                            method: 'delete',
-                            params: props.params,
-                        });
-                    } catch (e) {
-                        $toast.show({
-                            title: 'Ошибка',
-                            message: String(e),
-                            type: 'danger',
-                            timeout: 4,
-                        });
-                        return;
-                    }
+                    await $api({
+                        path: props.path,
+                        // @ts-expect-error must support delete
+                        method: 'delete',
+                        params: props.params,
+                    });
                     $toast.show({
                         title: props.successTitle ?? `Действие "${props.text}" успешно выполнено`,
                         message: props.successMessage,
