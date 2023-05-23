@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(to => {
     for (const part of parts.slice(2)) {
         names.push(part);
         breadcrumbs.push({
-            name: capitalize(part),
+            name: capitalize(part.replaceAll('_', ' ')),
             to: {
                 path: '/' + names.join('/'),
             },
