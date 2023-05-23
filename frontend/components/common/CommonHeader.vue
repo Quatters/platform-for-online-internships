@@ -3,7 +3,7 @@
         <div class="me-auto flex items-center ml-4 md:ml-0 w-full h-full overflow-x-auto">
             <div v-for="(breadcrumb, idx) in pageStore.breadcrumbs" :key="idx">
                 <NuxtLink :to="breadcrumb.to" class="link mx-1 inline">
-                    {{ typeof breadcrumb.name === 'string' ? $t(breadcrumb.name) : breadcrumb.name }}
+                    {{ $t(breadcrumb.name) }}
                 </NuxtLink>
                 <span>/</span>
             </div>

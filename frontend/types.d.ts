@@ -55,6 +55,6 @@ export interface FieldProps {
 }
 
 export interface Breadcrumb {
-    name: string | number;
+    name: string;
     to: RouteLocationRaw;
 }
