@@ -1,8 +1,13 @@
 <template>
     <div class="flex justify-end items-center h-20 mx-8 border-b-2 border-blue-100">
-        <h1 class="me-auto font-medium text-xl ml-6 md:ml-0">
-            {{ pageStore.name }}
-        </h1>
+        <div class="me-auto flex items-center ml-4 md:ml-0 w-full h-full overflow-x-auto">
+            <div v-for="(breadcrumb, idx) in pageStore.breadcrumbs" :key="idx">
+                <NuxtLink :to="breadcrumb.to" class="link mx-1 inline">
+                    {{ typeof breadcrumb.name === 'string' ? $t(breadcrumb.name) : breadcrumb.name }}
+                </NuxtLink>
+                <span>/</span>
+            </div>
+        </div>
         <div class="flex items-center">
             <div class="w-14 h-14 me-2 rounded-full bg-blue-200"></div>
             <div>

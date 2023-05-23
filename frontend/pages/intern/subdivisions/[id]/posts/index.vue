@@ -23,7 +23,6 @@
     const route = useRoute();
 
     const pageStore = usePageStore();
-    pageStore.name = 'Должности';
     pageStore.fkInstancePathMap = {
         courses: { name: 'intern-courses-id' },
     };

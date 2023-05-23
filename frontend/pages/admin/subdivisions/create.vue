@@ -17,8 +17,6 @@
 <script setup lang="ts">
     import { components } from '~/openapi';
 
-    usePageStore().name = 'Подразделения';
-
     const { $api } = useNuxtApp();
     const { navigateBackwards } = useRouteUtils();
 

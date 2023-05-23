@@ -18,8 +18,6 @@
 <script setup lang="ts">
     import { components } from '~/openapi';
 
-    usePageStore().name = 'Должности';
-
     const { $api } = useNuxtApp();
     const route = useRoute();
     const { navigateBackwards } = useRouteUtils();

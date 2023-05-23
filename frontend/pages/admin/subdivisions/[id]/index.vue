@@ -22,8 +22,6 @@
 </template>
 
 <script setup lang="ts">
-    usePageStore().name = 'Подразделения';
-
     const { $api } = useNuxtApp();
 
     const route = useRoute();

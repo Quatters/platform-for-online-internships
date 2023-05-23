@@ -17,8 +17,6 @@
 </template>
 
 <script setup lang="ts">
-    usePageStore().name = 'Курсы';
-
     const { $api } = useNuxtApp();
 
     const route = useRoute();

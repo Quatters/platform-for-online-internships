@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
     const { data, loadMore } = await useListLoader({ path: '/api/users', method: 'get' });
-    usePageStore().name = 'Пользователи';
 
     const route = useRoute();
 

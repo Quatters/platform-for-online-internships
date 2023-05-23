@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-    usePageStore().name = 'Курсы';
     const route = useRoute();
 
     const search = ref<string | null | undefined>(getFirstQueryValue(route.query.search));

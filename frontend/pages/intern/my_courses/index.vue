@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-    usePageStore().name = 'Мои курсы';
     const userStore = useUserStore();
     const route = useRoute();
 
