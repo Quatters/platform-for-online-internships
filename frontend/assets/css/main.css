@@ -27,3 +27,7 @@ body {
 #modals div.fixed.top-0.right-0 {
     display: none;
 }
+
+.link {
+    @apply text-blue-800 hover:text-blue-600 hover:underline transition-all duration-100;
+}

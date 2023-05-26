@@ -3,6 +3,7 @@ export default defineI18nConfig(() => ({
     locale: 'ru',
     messages: {
         ru: {
+            Id: 'Идентификатор',
             Name: 'Название',
             Description: 'Описание',
             'First name': 'Имя',
@@ -10,7 +11,16 @@ export default defineI18nConfig(() => ({
             Patronymic: 'Отчество',
             'Is admin': 'Администратор',
             'Is teacher': 'Наставник',
+            Email: 'Эл. почта',
+
+            Dashboard: 'Личный кабинет',
             Posts: 'Должности',
+            Courses: 'Курсы',
+            Subdivisions: 'Подразделения',
+            Users: 'Пользователи',
+
+            Create: 'Создать',
+            Edit: 'Редактировать',
         },
     },
 }));

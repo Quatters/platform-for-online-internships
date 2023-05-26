@@ -1,5 +1,5 @@
 <template>
-    <component :is="resolveField(value)" :value="value" />
+    <component :is="resolveField(value)" :field-name="fieldName" :value="value" />
 </template>
 
 <script setup lang="ts">

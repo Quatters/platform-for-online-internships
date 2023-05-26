@@ -44,7 +44,6 @@
     const userStore = useUserStore();
     const alreadyEnrolled = ref(true);
     const course = ref<OneCourse | OneUserCourse>();
-    usePageStore().name = 'Курсы';
 
     await useAsyncData(async () => {
         try {
@@ -67,7 +66,7 @@
                     },
                 });
             } else {
-                console.error(e);
+                throw e;
             }
         }
     });

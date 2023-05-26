@@ -6,7 +6,7 @@ from backend.api.queries import subdivisions as subdivisions_queries
 from backend.database import get_db
 from backend.api.dependencies import ListPageParams
 from backend.settings import LimitOffsetPage
-from backend.models import Subdivision
+from backend.models import Subdivision, Post
 from backend.api.errors.errors import not_found
 from backend.api.auth import admin_only
 
@@ -74,7 +74,7 @@ def create_subdivision_post(
 )
 def update_subdivision_post(
     patch_data: schemas.PatchSubdivisionPost,
-    current_post: schemas.OneSubdivisionPost = Depends(current_post),
+    current_post: Post = Depends(current_post),
     db: Session = Depends(get_db),
 ):
     return queries.update_post(db, current_post, patch_data)
@@ -86,7 +86,7 @@ def update_subdivision_post(
     status_code=204,
 )
 def delete_subdivision_post(
-    post: schemas.OneSubdivisionPost = Depends(current_post),
+    post: Post = Depends(current_post),
     db: Session = Depends(get_db),
 ):
     queries.delete_post(db, post)

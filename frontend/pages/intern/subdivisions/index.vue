@@ -14,7 +14,6 @@
 
 <script setup lang="ts">
     const { data, loadMore } = await useListLoader({ path: '/api/subdivisions/', method: 'get' });
-    usePageStore().name = 'Подразделения';
 
     const route = useRoute();
 

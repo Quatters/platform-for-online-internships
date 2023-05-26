@@ -14,8 +14,8 @@
                 :custom="true"
             >
                 <tr class="border-b hover:bg-gray-100 hover:cursor-pointer" :data-href="href" @click.stop="navigate">
-                    <td v-for="(value, valueIdx) in getItemValues(item)" :key="valueIdx" class="px-4 py-2">
-                        <FieldAbstract :value="value" />
+                    <td v-for="([key, value], valueIdx) in getEntries(item)" :key="valueIdx" class="px-4 py-2">
+                        <FieldAbstract :field-name="key" :value="value" />
                     </td>
                 </tr>
             </NuxtLink>
@@ -52,13 +52,11 @@
         };
     }
 
-    function getItemValues(item: Record<string, unknown>) {
+    function getEntries(item: Record<string, unknown>) {
         if (props.withId) {
-            return Object.values(item);
+            return Object.entries(item);
         }
-        return Object.entries(item)
-            .filter(obj => obj[0] !== 'id')
-            .map(obj => obj[1]);
+        return Object.entries(item).filter(([key]) => key !== 'id');
     }
 
     const headerKeys = computed(() => {

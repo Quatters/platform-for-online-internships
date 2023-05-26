@@ -2354,7 +2354,8 @@
         "title": "CreateSubdivisionPost",
         "required": [
           "name",
-          "description"
+          "description",
+          "courses"
         ],
         "type": "object",
         "properties": {
@@ -2365,6 +2366,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           }
         }
       },
@@ -2857,7 +2865,8 @@
         "required": [
           "id",
           "name",
-          "description"
+          "description",
+          "courses"
         ],
         "type": "object",
         "properties": {
@@ -2872,6 +2881,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Course"
+            }
           }
         }
       },
@@ -3048,6 +3064,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           }
         }
       },

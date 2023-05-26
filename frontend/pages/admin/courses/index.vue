@@ -17,7 +17,6 @@
 
 <script setup lang="ts">
     const { data, loadMore } = await useListLoader({ path: '/api/courses/', method: 'get' });
-    usePageStore().name = 'Курсы';
 
     const route = useRoute();
 

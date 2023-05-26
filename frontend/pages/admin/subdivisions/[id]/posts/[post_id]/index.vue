@@ -17,9 +17,14 @@
 </template>
 
 <script setup lang="ts">
-    const { $api } = useNuxtApp();
-
     const route = useRoute();
+
+    const pageStore = usePageStore();
+    pageStore.fkInstancePathMap = {
+        courses: { name: 'admin-courses-id' },
+    };
+
+    const { $api } = useNuxtApp();
 
     const { data } = await useAsyncData(() => {
         return $api({

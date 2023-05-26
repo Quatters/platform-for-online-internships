@@ -33,7 +33,7 @@ export default defineStore('user', () => {
             if (e instanceof FetchError && e.status === 401) {
                 return;
             }
-            console.error(e);
+            throw e;
         }
     }
 

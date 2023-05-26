@@ -8,8 +8,6 @@
 <script setup lang="ts">
     const { $api } = useNuxtApp();
 
-    usePageStore().name = 'Личный кабинет';
-
     const { data } = await useAsyncData(() => {
         return Promise.all([
             $api({

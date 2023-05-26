@@ -27,7 +27,6 @@
         method: 'get',
         params: { subdivision_id: route.params.id as string },
     });
-    usePageStore().name = 'Должности';
 
     const search = ref<string | null | undefined>(getFirstQueryValue(route.query.search));
 </script>

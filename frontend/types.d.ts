@@ -50,5 +50,11 @@ interface SidebarSeparatorItem {
 export type SidebarItem = SidebarLinkItem | SidebarActionItem | SidebarSeparatorItem;
 
 export interface FieldProps {
+    fieldName: string;
     value: unknown;
+}
+
+export interface Breadcrumb {
+    name: string;
+    to: RouteLocationRaw;
 }

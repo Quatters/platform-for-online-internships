@@ -37,8 +37,6 @@
     const userStore = useUserStore();
     const route = useRoute();
 
-    usePageStore().name = 'Мои курсы';
-
     const myCourseParams = {
         user_id: userStore.user!.id,
         course_id: route.params.id as string,

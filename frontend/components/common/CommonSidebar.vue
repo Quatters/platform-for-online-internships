@@ -38,7 +38,7 @@
                         <div v-if="item.separator" class="my-6" />
                         <button
                             v-else-if="item.action"
-                            class="flex flex-row items-center text-blue-900 mx-3 mt-2 py-1 ps-7 link"
+                            class="flex flex-row items-center text-blue-900 mx-3 mt-2 py-1 ps-7 sidebar-link"
                             @click="item.action"
                         >
                             <div class="w-5 h-5 rounded-full bg-blue-200 circle transition-all duration-100" />
@@ -47,7 +47,7 @@
                         <NuxtLink
                             v-else-if="item.link"
                             :to="item.link"
-                            class="flex flex-row items-center text-blue-900 mx-3 mt-2 py-1 ps-7 link"
+                            class="flex flex-row items-center text-blue-900 mx-3 mt-2 py-1 ps-7 sidebar-link"
                         >
                             <div
                                 class="w-5 h-5 rounded-full circle transition-all duration-100"
@@ -92,11 +92,11 @@
 </script>
 
 <style scoped lang="scss">
-    .link:hover > .title {
+    .sidebar-link:hover > .title {
         @apply text-blue-700;
     }
 
-    .link:hover > .circle {
+    .sidebar-link:hover > .circle {
         @apply bg-blue-400;
     }
 </style>

@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session, load_only
 from fastapi_pagination.ext.sqlalchemy import paginate
 from backend.api.dependencies import ListPageParams
-from backend.models import Post
+from backend.models import Post, Course
 from backend.api.schemas import posts as schemas
-from backend.api.queries.helpers import with_search
+from backend.api.queries.helpers import get_instances_or_400, with_search
 
 
 def get_posts(db: Session, params: ListPageParams):
@@ -25,12 +25,13 @@ def get_post(db: Session, post_id):
     return db.query(Post).get(post_id)
 
 
-def create_post(db: Session, post: Post, subdivision_id: int):
-    post = Post(subdivision_id=subdivision_id, **post.dict())
-    db.add(post)
+def create_post(db: Session, post: schemas.CreateSubdivisionPost, subdivision_id: int):
+    created_post = Post(subdivision_id=subdivision_id, **post.dict(exclude={'courses'}))
+    created_post.courses = get_instances_or_400(db, Course, post.courses)
+    db.add(created_post)
     db.commit()
-    db.refresh(post)
-    return post
+    db.refresh(created_post)
+    return created_post
 
 
 def delete_post(db: Session, post: Post):
@@ -39,7 +40,11 @@ def delete_post(db: Session, post: Post):
 
 
 def update_post(db: Session, post: Post, patch_data: schemas.PatchSubdivisionPost):
-    db.query(Post).filter(Post.id == post.id).update(patch_data.dict(exclude_unset=True))
+    dict_ = patch_data.dict(exclude_unset=True)
+    if 'courses' in dict_:
+        post.courses = get_instances_or_400(db, Course, dict_.pop('courses'))
+    for key, value in dict_.items():
+        setattr(post, key, value)
     db.commit()
     db.refresh(post)
     return post

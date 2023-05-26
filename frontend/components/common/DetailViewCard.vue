@@ -5,7 +5,7 @@
                 <div class="font-medium">
                     {{ $t(capitalize(key.replaceAll('_', ' '))) }}
                 </div>
-                <FieldAbstract :value="value" />
+                <FieldAbstract :field-name="key" :value="value" />
             </div>
         </div>
     </div>
