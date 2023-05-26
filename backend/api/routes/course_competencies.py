@@ -6,6 +6,7 @@ from backend.api.dependencies import ListPageParams
 from backend.api.errors.errors import not_found
 from backend.database import get_db
 from backend.api.queries import course_competencies as queries
+from backend.api.queries import competencies as queries_competencies
 from backend.api.schemas import course_competencies as schemas
 from backend.models.course_competencies import CourseCompetence
 from backend.models.courses import Course
@@ -37,7 +38,9 @@ def get_course_competencies(course: Course = Depends(current_course),
 def create_competence(course_competence: schemas.CreateCourseCompetence,
                       course: Course = Depends(current_course),
                       db: Session = Depends(get_db)):
-
+    competence = queries_competencies.get_competence(db, course_competence.competence_id)
+    if competence is None:
+        raise not_found()
     created = queries.create_course_competence(db, course_competence, course.id)
     created.course_name = created.course.name
     created.competence_name = created.competence.name

@@ -7,6 +7,8 @@ from backend.database import get_db
 import backend.api.queries.courses as queries_courses
 import backend.api.queries.topics as queries_topics
 import backend.api.queries.tasks as queries_tasks
+import backend.api.queries.subdivisions as queries_subdivisions
+import backend.api.queries.posts as queries_posts
 
 
 def current_course(course_id: int, db: Session = Depends(get_db)):
@@ -34,3 +36,17 @@ def current_task(
     if task is None or task.topic_id != topic.id:
         raise not_found()
     return task
+
+
+def current_subdivision(subdivision_id: int, db: Session = Depends(get_db)):
+    subdivision = queries_subdivisions.get_subdivision(db, subdivision_id)
+    if subdivision is None:
+        raise not_found()
+    return subdivision
+
+
+def current_post(post_id, db: Session = Depends(get_db)):
+    post = queries_posts.get_post(db, post_id)
+    if post is None:
+        raise not_found()
+    return post
