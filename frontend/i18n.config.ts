@@ -12,12 +12,15 @@ export default defineI18nConfig(() => ({
             'Is admin': 'Администратор',
             'Is teacher': 'Наставник',
             Email: 'Эл. почта',
+            'Prev topic': 'Предыдущая тема',
+            'Next topic': 'Следующая тема',
 
             Dashboard: 'Личный кабинет',
             Posts: 'Должности',
             Courses: 'Курсы',
             Subdivisions: 'Подразделения',
             Users: 'Пользователи',
+            Topics: 'Темы',
 
             Create: 'Создать',
             Edit: 'Редактировать',

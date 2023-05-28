@@ -9,7 +9,14 @@
             <ControlForm @submit="save">
                 <ControlFormInput v-model="patchData.name" class="mb-4" label="Название" />
                 <ControlFormTextArea v-model="patchData.description" class="mb-4" label="Описание" />
-                <ControlFormM2MField v-model="patchData.courses" path="/api/courses/" label="Курсы" class="mb-3" />
+                <ControlFormFkField
+                    v-model="patchData.prev_topic_id"
+                    v-model:view-value="currentPrevTopicName"
+                    path="/api/courses/{course_id}/topics/"
+                    :params="{ course_id: route.params.id as string }"
+                    class="mb-4"
+                    label="Предыдущая тема"
+                />
             </ControlForm>
         </CommonContent>
     </div>
@@ -22,28 +29,29 @@
     const route = useRoute();
     const { navigateBackwards } = useRouteUtils();
 
-    type schema = components['schemas']['PatchSubdivisionPost'];
+    type schema = components['schemas']['PatchTopic'];
 
     const { data } = await useAsyncData(() => {
         return $api({
-            path: '/api/subdivisions/{subdivision_id}/posts/{post_id}',
+            path: '/api/courses/{course_id}/topics/{topic_id}',
             method: 'get',
             params: {
-                subdivision_id: route.params.id as string,
-                post_id: route.params.post_id as string,
+                course_id: route.params.id as string,
+                topic_id: route.params.topic_id as string,
             },
         });
     });
 
-    const { patchData } = usePatchDataInitializer<schema>(data, { m2mFields: ['courses'] });
+    const { patchData } = usePatchDataInitializer<schema>(data, { fkFields: ['prev_topic'] });
+    const currentPrevTopicName = ref(data.value?.prev_topic?.name);
 
     async function save() {
         await $api({
-            path: '/api/subdivisions/{subdivision_id}/posts/{post_id}',
+            path: '/api/courses/{course_id}/topics/{topic_id}',
             method: 'patch',
             params: {
-                subdivision_id: route.params.id as string,
-                post_id: route.params.post_id as string,
+                course_id: route.params.id as string,
+                topic_id: route.params.topic_id as string,
             },
             body: patchData.value,
         });

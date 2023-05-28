@@ -36,18 +36,7 @@
         });
     });
 
-    const patchData = ref<schema>({});
-
-    watch(
-        data,
-        value => {
-            patchData.value = {
-                ...value,
-                posts: value!.posts.map(obj => obj.id),
-            };
-        },
-        { immediate: true },
-    );
+    const { patchData } = usePatchDataInitializer<schema>(data, { m2mFields: ['posts'] });
 
     async function save() {
         await $api({

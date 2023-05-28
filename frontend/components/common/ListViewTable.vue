@@ -35,11 +35,13 @@
             withId?: boolean;
             linkParamName?: string;
             additionalParams?: Record<string, string>;
+            hideFields?: Array<string>;
         }>(),
         {
             linkParamName: 'id',
             additionalParams: () => ({}),
             withId: false,
+            hideFields: () => [],
         },
     );
 
@@ -53,10 +55,14 @@
     }
 
     function getEntries(item: Record<string, unknown>) {
-        if (props.withId) {
-            return Object.entries(item);
+        let entries = Object.entries(item);
+        if (!props.withId) {
+            entries = entries.filter(([key]) => key !== 'id');
         }
-        return Object.entries(item).filter(([key]) => key !== 'id');
+        if (props.hideFields.length) {
+            entries = entries.filter(([key]) => !props.hideFields.includes(key));
+        }
+        return entries;
     }
 
     const headerKeys = computed(() => {
@@ -66,6 +72,9 @@
         let keys = Object.keys(props.items[0]);
         if (!props.withId) {
             keys = keys.filter(key => key !== 'id');
+        }
+        if (props.hideFields.length) {
+            keys = keys.filter(key => !props.hideFields.includes(key));
         }
         return keys.map(value => capitalize(value.replaceAll('_', ' ')));
     });

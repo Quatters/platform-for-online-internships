@@ -1,4 +1,4 @@
-import { FieldBoolean, FieldString, FieldArray } from '#components';
+import { FieldBoolean, FieldString, FieldArray, FieldObject } from '#components';
 
 export default function () {
     function resolveField(value: unknown) {
@@ -7,6 +7,9 @@ export default function () {
         }
         if (Array.isArray(value)) {
             return FieldArray;
+        }
+        if (typeof value === 'object') {
+            return FieldObject;
         }
         return FieldString;
     }
