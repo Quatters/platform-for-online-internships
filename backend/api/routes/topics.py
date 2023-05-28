@@ -22,11 +22,11 @@ def populate_next_topic(topic: Topic, db: Session) -> schemas.OneTopic:
 
 
 @router.get('/',
-            response_model=LimitOffsetPage[schemas.Topic],
-            dependencies=[Depends(current_course)])
+            response_model=LimitOffsetPage[schemas.Topic])
 def get_topics(params: ListPageParams = Depends(),
+               course: Course = Depends(current_course),
                db: Session = Depends(get_db)):
-    return queries.get_topics(db, params)
+    return queries.get_topics(db, params, course.id)
 
 
 @router.get('/{topic_id}', response_model=schemas.OneTopic)

@@ -1,17 +1,15 @@
 from operator import attrgetter
 from fastapi_pagination import paginate as pypaginate
-from fastapi_pagination.ext.sqlalchemy import paginate
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams
 from backend.models.topics import Topic
 from backend.api.schemas import topics as schemas
+from backend.api.queries.helpers import with_search
 
 
-def get_topics(db: Session, params: ListPageParams):
-    query = db.query(Topic)
-    if s := params.search:
-        query = query.filter(func.lower(Topic.name).like(f'%{s.lower()}%'))
+def get_topics(db: Session, params: ListPageParams, course_id: int):
+    query = db.query(Topic).filter(Topic.course_id == course_id)
+    query = with_search(Topic.name, query=query, search=params.search)
 
     topics = query.all()
 
