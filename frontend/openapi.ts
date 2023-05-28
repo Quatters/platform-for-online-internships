@@ -216,6 +216,13 @@ export interface components {
       /** Prev Topic Id */
       prev_topic_id?: number;
     };
+    /** FkTopic */
+    FkTopic: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -404,16 +411,12 @@ export interface components {
     OneTopic: {
       /** Id */
       id: number;
-      /** Course Id */
-      course_id: number;
       /** Name */
       name: string;
       /** Description */
       description: string;
-      /** Prev Topic Id */
-      prev_topic_id?: number;
-      /** Next Topic Id */
-      next_topic_id?: number;
+      prev_topic?: components["schemas"]["FkTopic"];
+      next_topic?: components["schemas"]["FkTopic"];
     };
     /** OneUserCourse */
     OneUserCourse: {

@@ -2424,6 +2424,24 @@
           }
         }
       },
+      "FkTopic": {
+        "title": "FkTopic",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "HTTPValidationError": {
         "title": "HTTPValidationError",
         "type": "object",
@@ -2935,7 +2953,6 @@
         "title": "OneTopic",
         "required": [
           "id",
-          "course_id",
           "name",
           "description"
         ],
@@ -2943,10 +2960,6 @@
         "properties": {
           "id": {
             "title": "Id",
-            "type": "integer"
-          },
-          "course_id": {
-            "title": "Course Id",
             "type": "integer"
           },
           "name": {
@@ -2957,13 +2970,11 @@
             "title": "Description",
             "type": "string"
           },
-          "prev_topic_id": {
-            "title": "Prev Topic Id",
-            "type": "integer"
+          "prev_topic": {
+            "$ref": "#/components/schemas/FkTopic"
           },
-          "next_topic_id": {
-            "title": "Next Topic Id",
-            "type": "integer"
+          "next_topic": {
+            "$ref": "#/components/schemas/FkTopic"
           }
         }
       },

@@ -1,4 +1,5 @@
-from typing import List
+from operator import attrgetter
+from fastapi_pagination import paginate as pypaginate
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -7,26 +8,33 @@ from backend.models.topics import Topic
 from backend.api.schemas import topics as schemas
 
 
-def get_topics(db: Session, params: ListPageParams) -> List[Topic]:
+def get_topics(db: Session, params: ListPageParams):
     query = db.query(Topic)
     if s := params.search:
         query = query.filter(func.lower(Topic.name).like(f'%{s.lower()}%'))
-    vals = paginate(query, params)
 
-    firsts = [item for item in vals.items if item.prev_topic_id is None]
-    cur = firsts[0]
+    topics = query.all()
+
+    if not topics:
+        return pypaginate(topics, params)
+
+    cur = None
+    firsts = [item for item in topics if item.prev_topic_id is None]
+    if firsts:
+        cur = firsts[0]
+    else:
+        cur = min(topics, key=attrgetter('prev_topic_id'))
 
     result = [cur]
-    vals.items.remove(cur)
-    while len(vals.items) > 0:
-        for obj in vals.items:
+    topics.remove(cur)
+    while len(topics) > 0:
+        for obj in topics:
             if obj.prev_topic_id == cur.id:
                 cur = obj
                 result.append(cur)
-                vals.items.remove(obj)
+                topics.remove(obj)
 
-    vals.items = result
-    return vals
+    return pypaginate(result, params, length_function=lambda _: query.count())
 
 
 def get_topic(db: Session, topic_id: int) -> Topic | None:
