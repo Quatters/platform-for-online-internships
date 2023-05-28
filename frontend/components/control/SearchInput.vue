@@ -31,12 +31,10 @@
             modelValue?: string | null;
             emitOnly?: boolean;
             inputClass?: string;
-            noFocusRing?: boolean;
         }>(),
         {
             inputClass: '',
             modelValue: undefined,
-            noFocusRing: false,
         },
     );
 
