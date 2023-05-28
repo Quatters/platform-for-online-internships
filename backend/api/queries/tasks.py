@@ -1,32 +1,25 @@
+from operator import attrgetter
 from typing import List
 from fastapi_pagination.ext.sqlalchemy import paginate
+from fastapi_pagination import paginate as pypaginate
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams
 from backend.models.tasks import Task
 from backend.api.schemas import tasks as schemas
+from backend.api.queries.helpers import sort_by_self_fk, with_search
 
 
-def get_tasks(db: Session, topic_id: int, params: ListPageParams) -> List[Task]:
+def get_tasks(db: Session, topic_id: int, params: ListPageParams):
     query = db.query(Task).filter(Task.topic_id == topic_id)
-    if s := params.search:
-        query = query.filter(func.lower(Task.name).like(f'%{s.lower()}%'))
-    vals = paginate(query, params)
+    query = with_search(Task.name, query=query, search=params.search)
 
-    firsts = [item for item in vals.items if item.prev_task_id is None]
-    cur = firsts[0]
-
-    result = [cur]
-    vals.items.remove(cur)
-    while len(vals.items) > 0:
-        for obj in vals.items:
-            if obj.prev_task_id == cur.id:
-                cur = obj
-                result.append(cur)
-                vals.items.remove(obj)
-
-    vals.items = result
-    return vals
+    tasks = sort_by_self_fk(query, 'prev_task_id')
+    return pypaginate(
+        tasks,
+        params,
+        length_function=lambda _: query.count(),
+    )
 
 
 def get_task(db: Session, task_id: int) -> Task | None:

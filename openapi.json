@@ -945,10 +945,10 @@
         ]
       }
     },
-    "/api/courses/{course_id}/topics/{topic_id}/": {
+    "/api/courses/{course_id}/topics/{topic_id}/tasks/": {
       "get": {
         "summary": "Get Tasks",
-        "operationId": "get_tasks_api_courses__course_id__topics__topic_id___get",
+        "operationId": "get_tasks_api_courses__course_id__topics__topic_id__tasks__get",
         "parameters": [
           {
             "required": true,
@@ -1025,7 +1025,7 @@
       },
       "post": {
         "summary": "Create Task",
-        "operationId": "create_task_api_courses__course_id__topics__topic_id___post",
+        "operationId": "create_task_api_courses__course_id__topics__topic_id__tasks__post",
         "parameters": [
           {
             "required": true,
@@ -1085,10 +1085,10 @@
         ]
       }
     },
-    "/api/courses/{course_id}/topics/{topic_id}/{task_id}": {
+    "/api/courses/{course_id}/topics/{topic_id}/tasks/{task_id}": {
       "get": {
         "summary": "Get Task",
-        "operationId": "get_task_api_courses__course_id__topics__topic_id___task_id__get",
+        "operationId": "get_task_api_courses__course_id__topics__topic_id__tasks__task_id__get",
         "parameters": [
           {
             "required": true,
@@ -1143,7 +1143,7 @@
       },
       "delete": {
         "summary": "Delete Task",
-        "operationId": "delete_task_api_courses__course_id__topics__topic_id___task_id__delete",
+        "operationId": "delete_task_api_courses__course_id__topics__topic_id__tasks__task_id__delete",
         "parameters": [
           {
             "required": true,
@@ -1196,7 +1196,7 @@
       },
       "patch": {
         "summary": "Patch Task",
-        "operationId": "patch_task_api_courses__course_id__topics__topic_id___task_id__patch",
+        "operationId": "patch_task_api_courses__course_id__topics__topic_id__tasks__task_id__patch",
         "parameters": [
           {
             "required": true,
@@ -2237,7 +2237,6 @@
         "required": [
           "id",
           "value",
-          "task_id",
           "is_correct"
         ],
         "type": "object",
@@ -2249,10 +2248,6 @@
           "value": {
             "title": "Value",
             "type": "string"
-          },
-          "task_id": {
-            "title": "Task Id",
-            "type": "integer"
           },
           "is_correct": {
             "title": "Is Correct",
@@ -2421,6 +2416,24 @@
           "prev_topic_id": {
             "title": "Prev Topic Id",
             "type": "integer"
+          }
+        }
+      },
+      "FkTask": {
+        "title": "FkTask",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
           }
         }
       },
@@ -2913,7 +2926,6 @@
         "title": "OneTask",
         "required": [
           "id",
-          "topic_id",
           "name",
           "description",
           "task_type"
@@ -2924,10 +2936,6 @@
             "title": "Id",
             "type": "integer"
           },
-          "topic_id": {
-            "title": "Topic Id",
-            "type": "integer"
-          },
           "name": {
             "title": "Name",
             "type": "string"
@@ -2936,13 +2944,11 @@
             "title": "Description",
             "type": "string"
           },
-          "prev_task_id": {
-            "title": "Prev Task Id",
-            "type": "integer"
+          "prev_task": {
+            "$ref": "#/components/schemas/FkTask"
           },
-          "next_task_id": {
-            "title": "Next Task Id",
-            "type": "integer"
+          "next_task": {
+            "$ref": "#/components/schemas/FkTask"
           },
           "task_type": {
             "$ref": "#/components/schemas/TaskType"
@@ -3029,10 +3035,6 @@
           "value": {
             "title": "Value",
             "type": "string"
-          },
-          "is_correct": {
-            "title": "Is Correct",
-            "type": "boolean"
           }
         }
       },
@@ -3097,12 +3099,9 @@
             "title": "Description",
             "type": "string"
           },
-          "prev_topic_id": {
-            "title": "Prev Topic Id",
+          "prev_task_id": {
+            "title": "Prev Task Id",
             "type": "integer"
-          },
-          "task_type": {
-            "$ref": "#/components/schemas/TaskType"
           }
         }
       },
@@ -3233,10 +3232,6 @@
             "title": "Name",
             "type": "string"
           },
-          "prev_task_id": {
-            "title": "Prev Task Id",
-            "type": "integer"
-          },
           "task_type": {
             "$ref": "#/components/schemas/TaskType"
           }
@@ -3285,10 +3280,6 @@
           "name": {
             "title": "Name",
             "type": "string"
-          },
-          "prev_topic_id": {
-            "title": "Prev Topic Id",
-            "type": "integer"
           }
         }
       },

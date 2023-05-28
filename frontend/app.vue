@@ -10,7 +10,7 @@
     .layout-enter-active,
     .page-leave-active,
     .layout-leave-active {
-        transition: all 0.2s;
+        transition: all 100ms;
     }
     .page-enter-from,
     .layout-enter-from,

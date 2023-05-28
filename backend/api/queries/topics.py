@@ -4,35 +4,19 @@ from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams
 from backend.models.topics import Topic
 from backend.api.schemas import topics as schemas
-from backend.api.queries.helpers import with_search
+from backend.api.queries.helpers import sort_by_self_fk, with_search
 
 
 def get_topics(db: Session, params: ListPageParams, course_id: int):
     query = db.query(Topic).filter(Topic.course_id == course_id)
     query = with_search(Topic.name, query=query, search=params.search)
 
-    topics = query.all()
-
-    if not topics:
-        return pypaginate(topics, params)
-
-    cur = None
-    firsts = [item for item in topics if item.prev_topic_id is None]
-    if firsts:
-        cur = firsts[0]
-    else:
-        cur = min(topics, key=attrgetter('prev_topic_id'))
-
-    result = [cur]
-    topics.remove(cur)
-    while len(topics) > 0:
-        for obj in topics:
-            if obj.prev_topic_id == cur.id:
-                cur = obj
-                result.append(cur)
-                topics.remove(obj)
-
-    return pypaginate(result, params, length_function=lambda _: query.count())
+    topics = sort_by_self_fk(query, 'prev_topic_id')
+    return pypaginate(
+        topics,
+        params,
+        length_function=lambda _: query.count(),
+    )
 
 
 def get_topic(db: Session, topic_id: int) -> Topic | None:

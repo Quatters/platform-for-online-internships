@@ -2,7 +2,7 @@
     <input
         :placeholder="placeholder"
         :value="modelValue"
-        class="bg-white shadow border border-gray-300 sm:text-sm rounded py-2 px-3 transition-all duration-100"
+        class="bg-white shadow border border-gray-300 text-sm rounded py-2 px-3 transition-all duration-100"
         @input="(e) => onInput((e.target as HTMLInputElement).value)"
     />
 </template>

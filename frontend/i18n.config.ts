@@ -14,6 +14,11 @@ export default defineI18nConfig(() => ({
             Email: 'Эл. почта',
             'Prev topic': 'Предыдущая тема',
             'Next topic': 'Следующая тема',
+            'Task type': 'Тип задания',
+            'Prev task': 'Предыдущее задание',
+            'Next task': 'Следующее задание',
+            'Is correct': 'Правильный ответ',
+            Value: 'Значение',
 
             Dashboard: 'Личный кабинет',
             Posts: 'Должности',
@@ -21,9 +26,15 @@ export default defineI18nConfig(() => ({
             Subdivisions: 'Подразделения',
             Users: 'Пользователи',
             Topics: 'Темы',
+            Tasks: 'Задания',
+            Answers: 'Ответы',
 
             Create: 'Создать',
             Edit: 'Редактировать',
+
+            single: 'один ответ',
+            multiple: 'несколько ответов',
+            text: 'развернутый ответ',
         },
     },
 }));

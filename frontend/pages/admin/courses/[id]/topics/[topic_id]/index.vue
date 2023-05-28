@@ -9,6 +9,14 @@
                     :params="{ course_id: route.params.id as string, topic_id: route.params.topic_id as string}"
                 />
             </template>
+            <template #links>
+                <NuxtLink
+                    :to="{ name: 'admin-courses-id-topics-topic_id-tasks', params: { id: route.params.id, topic_id: route.params.topic_id as string} }"
+                    class="link"
+                >
+                    Задания
+                </NuxtLink>
+            </template>
         </ControlPanel>
         <CommonContent>
             <CommonDetailViewCard :item="data!" :hide-fields="['course_id']" />

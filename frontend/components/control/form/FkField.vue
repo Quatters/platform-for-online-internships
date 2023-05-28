@@ -29,7 +29,7 @@
                 />
                 <ul
                     v-if="typedData.items.length"
-                    class="absolute w-full shadow border rounded rounded-t-none bg-white max-h-96 overflow-y-auto"
+                    class="absolute w-full shadow border rounded rounded-t-none bg-white max-h-96 overflow-y-auto z-50"
                     @click="hideDropdown"
                 >
                     <li
@@ -44,7 +44,7 @@
                 </ul>
                 <ul
                     v-else
-                    class="absolute w-full shadow border rounded rounded-t-none bg-white max-h-96 overflow-y-auto"
+                    class="absolute w-full shadow border rounded rounded-t-none bg-white max-h-96 overflow-y-auto z-50"
                     @click="hideDropdown"
                 >
                     <li class="py-1 px-3 border-t text-gray-600">Не найдено</li>

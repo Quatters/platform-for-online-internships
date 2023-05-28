@@ -18,7 +18,6 @@ class Task(BaseModel):
     description = Column(String, nullable=False, server_default="")
     task_type = Column(Enum(TaskType), nullable=False, index=True)
     prev_task_id = Column(Integer, ForeignKey('app_task.id'), index=True, unique=True)
-    prev_task = Relationship('Task', remote_side=[prev_task_id])
     topic_id = Column(Integer, ForeignKey(Topic.id), index=True, nullable=False)
     topic = Relationship(Topic, primaryjoin=topic_id == Topic.id)
 
@@ -26,3 +25,5 @@ class Task(BaseModel):
         UniqueConstraint(topic_id, prev_task_id, name="u_prev_task_for_topic"),
         CheckConstraint('prev_task_id <> id', name='check_prev_task_id_is_not_self'),
     )
+
+Task.prev_task = Relationship(Task, remote_side=[Task.id], uselist=False)

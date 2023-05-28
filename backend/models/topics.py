@@ -22,4 +22,4 @@ class Topic(BaseModel):
         CheckConstraint('prev_topic_id <> id', name='check_prev_topic_id_is_not_self')
     )
 
-Topic.prev_topic = Relationship('Topic', remote_side=[Topic.id], uselist=False)
+Topic.prev_topic = Relationship(Topic, remote_side=[Topic.id], uselist=False)

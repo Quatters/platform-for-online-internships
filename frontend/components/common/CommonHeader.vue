@@ -1,9 +1,9 @@
 <template>
-    <div class="flex justify-end items-center h-20 mx-8 border-b-2 border-blue-100">
-        <div class="me-auto flex items-center ml-4 md:ml-0 w-full h-full overflow-x-auto">
+    <div class="flex items-center h-20 mx-8 border-b-2 border-blue-100">
+        <div class="me-auto flex items-center ml-4 md:ml-0 h-full overflow-x-auto">
             <div v-for="(breadcrumb, idx) in pageStore.breadcrumbs" :key="idx">
                 <NuxtLink :to="breadcrumb.to" class="link mx-1 inline">
-                    {{ $t(breadcrumb.name) }}
+                    {{ $te(breadcrumb.name) ? $t(breadcrumb.name) : breadcrumb.name }}
                 </NuxtLink>
                 <span>/</span>
             </div>
