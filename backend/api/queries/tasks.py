@@ -1,8 +1,4 @@
-from operator import attrgetter
-from typing import List
-from fastapi_pagination.ext.sqlalchemy import paginate
 from fastapi_pagination import paginate as pypaginate
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams
 from backend.models.tasks import Task

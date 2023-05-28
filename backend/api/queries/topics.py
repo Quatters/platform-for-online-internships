@@ -1,4 +1,3 @@
-from operator import attrgetter
 from fastapi_pagination import paginate as pypaginate
 from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams

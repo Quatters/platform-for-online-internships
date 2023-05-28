@@ -32,7 +32,7 @@ def delete_answer(db: Session, answer: Answer):
 
 def patch_answer(db: Session, answer: Answer, data: schemas.PatchAnswer) -> Answer:
     if answer.task.task_type is TaskType.single and data.is_correct:
-        another_correct_answer = db.query(Answer).filter(Answer.is_correct == True).one_or_none()
+        another_correct_answer = db.query(Answer).filter(Answer.is_correct).one_or_none()
         if another_correct_answer is not None:
             another_correct_answer.is_correct = False
     db.query(Answer).filter(Answer.id == answer.id).update(data.dict(exclude_unset=True))

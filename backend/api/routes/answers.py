@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from backend.api.auth import admin_only, get_current_user
 from backend.api.current_dependencies import current_task
 from backend.api.dependencies import ListPageParams
-from backend.api.errors.errors import not_found, unauthorized, bad_request
+from backend.api.errors.errors import not_found, bad_request
 from backend.api.schemas.tasks import Task
 from backend.api.schemas.users import User
 from backend.database import get_db

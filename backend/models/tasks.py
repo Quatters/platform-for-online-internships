@@ -26,4 +26,5 @@ class Task(BaseModel):
         CheckConstraint('prev_task_id <> id', name='check_prev_task_id_is_not_self'),
     )
 
+
 Task.prev_task = Relationship(Task, remote_side=[Task.id], uselist=False)

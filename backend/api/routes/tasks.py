@@ -1,11 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.api.auth import get_current_user
 from backend.api.current_dependencies import current_task, current_topic
 from backend.api.dependencies import ListPageParams
 from backend.api.errors.errors import not_found
 from backend.api.schemas.topics import Topic
-from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import tasks as queries
 from backend.api.schemas import tasks as schemas
