@@ -373,6 +373,8 @@ export interface components {
        * Format: date-time
        */
       admission_date: string;
+      /** Posts */
+      posts: (components["schemas"]["FkPost"])[];
       /** Course Name */
       course_name: string;
     };
@@ -445,6 +447,8 @@ export interface components {
        * Format: date-time
        */
       admission_date: string;
+      /** Posts */
+      posts: (components["schemas"]["FkPost"])[];
       /** Course Name */
       course_name: string;
       /** Course Description */
@@ -598,6 +602,8 @@ export interface components {
        * Format: date-time
        */
       admission_date: string;
+      /** Posts */
+      posts: (components["schemas"]["FkPost"])[];
     };
     /** ValidationError */
     ValidationError: {

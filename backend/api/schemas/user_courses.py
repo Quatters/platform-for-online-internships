@@ -1,5 +1,6 @@
 from datetime import datetime
 from backend.api.schemas.base import BaseSchema
+from backend.api.schemas.courses import FkPost
 
 
 class UserCourse(BaseSchema):
@@ -16,6 +17,7 @@ class NamedUserCourse(UserCourse):
 
 class OneUserCourse(NamedUserCourse):
     course_description: str
+    posts: list[FkPost]
 
 
 class CreateCourse(BaseSchema):

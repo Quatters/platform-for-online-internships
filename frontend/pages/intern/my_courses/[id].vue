@@ -15,6 +15,10 @@
         <CommonContent>
             <InternNameDescriptionCard :name="course!.course_name" :description="course?.course_description">
                 <template #additional-content>
+                    <label class="block mb-6 w-full">
+                        <span class="inline-block mb-1">Должности, осваиваемые этим курсом</span>
+                        <FieldArray :value="course!.posts" field-name="posts" />
+                    </label>
                     <div class="text-gray-600">
                         <div>Дата поступления: {{ new Date(course!.admission_date).toLocaleDateString() }}</div>
                         <div>Прогресс обучения: {{ course!.progress }}%</div>
@@ -29,6 +33,7 @@
     const { $api } = useNuxtApp();
     const userStore = useUserStore();
     const route = useRoute();
+    const pageStore = usePageStore();
 
     const myCourseParams = {
         user_id: userStore.user!.id,
@@ -42,6 +47,19 @@
             params: myCourseParams,
         });
     });
+
+    pageStore.fkInstancePathMap = {
+        posts: {
+            name: 'intern-subdivisions-id-posts-post_id',
+            params: {
+                id: '<<from-response>>',
+            },
+            response: course.value?.posts,
+            routerToResponseParamsMap: {
+                id: 'subdivision_id',
+            },
+        },
+    };
 
     const leaveCourseConfirmBody = computed(() => {
         return `Вы действительно хотите покинуть курс "${course.value?.course_name}"?`;

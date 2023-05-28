@@ -2837,6 +2837,7 @@
           "course_id",
           "progress",
           "admission_date",
+          "posts",
           "course_name"
         ],
         "type": "object",
@@ -2861,6 +2862,13 @@
             "title": "Admission Date",
             "type": "string",
             "format": "date-time"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FkPost"
+            }
           },
           "course_name": {
             "title": "Course Name",
@@ -3023,6 +3031,7 @@
           "course_id",
           "progress",
           "admission_date",
+          "posts",
           "course_name",
           "course_description"
         ],
@@ -3048,6 +3057,13 @@
             "title": "Admission Date",
             "type": "string",
             "format": "date-time"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FkPost"
+            }
           },
           "course_name": {
             "title": "Course Name",
@@ -3376,7 +3392,8 @@
           "user_id",
           "course_id",
           "progress",
-          "admission_date"
+          "admission_date",
+          "posts"
         ],
         "type": "object",
         "properties": {
@@ -3400,6 +3417,13 @@
             "title": "Admission Date",
             "type": "string",
             "format": "date-time"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FkPost"
+            }
           }
         }
       },

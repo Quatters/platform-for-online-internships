@@ -22,6 +22,13 @@
     const { $api } = useNuxtApp();
 
     const route = useRoute();
+    const pageStore = usePageStore();
+
+    pageStore.fkInstancePathMap = {
+        courses: {
+            name: 'intern-courses-id',
+        },
+    };
 
     const { data } = await useAsyncData(() => {
         return $api({

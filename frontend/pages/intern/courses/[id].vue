@@ -8,6 +8,10 @@
         <CommonContent>
             <InternNameDescriptionCard :name="courseName" :description="courseDescription">
                 <template #additional-content>
+                    <label class="block mb-6 w-full">
+                        <span class="inline-block mb-1">Должности, осваиваемые этим курсом</span>
+                        <FieldArray :value="course!.posts" field-name="posts" />
+                    </label>
                     <div v-if="course && 'name' in course">
                         <ControlButton @click="enroll">Записаться</ControlButton>
                     </div>
@@ -35,6 +39,7 @@
     const { $api, $toast, $modal } = useNuxtApp();
     const route = useRoute();
     const userStore = useUserStore();
+    const pageStore = usePageStore();
     const alreadyEnrolled = ref(true);
     const course = ref<OneCourse | OneUserCourse>();
 
@@ -63,6 +68,19 @@
             }
         }
     });
+
+    pageStore.fkInstancePathMap = {
+        posts: {
+            name: 'intern-subdivisions-id-posts-post_id',
+            params: {
+                id: '<<from-response>>',
+            },
+            response: course.value?.posts,
+            routerToResponseParamsMap: {
+                id: 'subdivision_id',
+            },
+        },
+    };
 
     const courseName = computed(() => {
         if (!course.value) {
