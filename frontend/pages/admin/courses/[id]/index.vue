@@ -25,6 +25,7 @@
     const { $api } = useNuxtApp();
 
     const route = useRoute();
+    const pageStore = usePageStore();
 
     const { data } = await useAsyncData(() => {
         return $api({
@@ -35,4 +36,17 @@
             },
         });
     });
+
+    pageStore.fkInstancePathMap = {
+        posts: {
+            name: 'admin-subdivisions-id-posts-post_id',
+            params: {
+                id: '<<from-response>>',
+            },
+            response: data.value?.posts,
+            routerToResponseParamsMap: {
+                id: 'subdivision_id',
+            },
+        },
+    };
 </script>

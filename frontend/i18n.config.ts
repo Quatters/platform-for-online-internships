@@ -23,6 +23,7 @@ export default defineI18nConfig(() => ({
             Dashboard: 'Личный кабинет',
             Posts: 'Должности',
             Courses: 'Курсы',
+            'My courses': 'Мои курсы',
             Subdivisions: 'Подразделения',
             Users: 'Пользователи',
             Topics: 'Темы',

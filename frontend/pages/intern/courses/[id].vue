@@ -6,28 +6,21 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <CommonCard>
-                <div class="text-lg border-b pb-3 mb-3">
-                    {{ courseName }}
-                </div>
-                <div class="pb-3 mb-3 border-b">
-                    <div v-if="!courseDescription" class="text-gray-600">Об этом курсе нет информации.</div>
-                    <div v-else class="whitespace-pre-wrap">
-                        {{ courseDescription }}
+            <InternNameDescriptionCard :name="courseName" :description="courseDescription">
+                <template #additional-content>
+                    <div v-if="course && 'name' in course">
+                        <ControlButton @click="enroll">Записаться</ControlButton>
                     </div>
-                </div>
-                <div v-if="course && 'name' in course">
-                    <ControlButton @click="enroll">Записаться</ControlButton>
-                </div>
-                <div v-else-if="course" class="text-gray-600">
-                    <div>Дата поступления: {{ new Date(course.admission_date).toLocaleDateString() }}</div>
-                    <div class="mb-3">Прогресс обучения: {{ course.progress }}%</div>
-                    <CommonLink
-                        :to="{ name: `intern-my_courses-id`, params: { id: route.params.id } }"
-                        text="Перейти в мой курс"
-                    />
-                </div>
-            </CommonCard>
+                    <div v-else-if="course" class="text-gray-600">
+                        <div>Дата поступления: {{ new Date(course.admission_date).toLocaleDateString() }}</div>
+                        <div class="mb-3">Прогресс обучения: {{ course.progress }}%</div>
+                        <CommonLink
+                            :to="{ name: `intern-my_courses-id`, params: { id: route.params.id } }"
+                            text="Перейти в мой курс"
+                        />
+                    </div>
+                </template>
+            </InternNameDescriptionCard>
         </CommonContent>
     </div>
 </template>

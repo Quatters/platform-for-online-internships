@@ -13,21 +13,14 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <CommonCard>
-                <div class="text-lg border-b pb-3 mb-3">
-                    {{ course?.course_name }}
-                </div>
-                <div class="pb-3 mb-3 border-b">
-                    <div v-if="!course?.course_description" class="text-gray-600">Об этом курсе нет информации.</div>
-                    <div v-else class="whitespace-pre-wrap">
-                        {{ course.course_description }}
+            <InternNameDescriptionCard :name="course!.course_name" :description="course?.course_description">
+                <template #additional-content>
+                    <div class="text-gray-600">
+                        <div>Дата поступления: {{ new Date(course!.admission_date).toLocaleDateString() }}</div>
+                        <div>Прогресс обучения: {{ course!.progress }}%</div>
                     </div>
-                </div>
-                <div class="text-gray-600">
-                    <div>Дата поступления: {{ new Date(course!.admission_date).toLocaleDateString() }}</div>
-                    <div>Прогресс обучения: {{ course!.progress }}%</div>
-                </div>
-            </CommonCard>
+                </template>
+            </InternNameDescriptionCard>
         </CommonContent>
     </div>
 </template>

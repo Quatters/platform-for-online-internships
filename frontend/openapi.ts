@@ -214,6 +214,15 @@ export interface components {
       /** Prev Topic Id */
       prev_topic_id?: number;
     };
+    /** FkPost */
+    FkPost: {
+      /** Id */
+      id: number;
+      /** Subdivision Id */
+      subdivision_id: number;
+      /** Name */
+      name: string;
+    };
     /** FkTask */
     FkTask: {
       /** Id */
@@ -375,6 +384,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Posts */
+      posts: (components["schemas"]["FkPost"])[];
     };
     /** OneSubdivision */
     OneSubdivision: {
@@ -443,6 +454,8 @@ export interface components {
     PatchAnswer: {
       /** Value */
       value?: string;
+      /** Is Correct */
+      is_correct?: boolean;
     };
     /** PatchCourse */
     PatchCourse: {

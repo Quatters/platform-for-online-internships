@@ -2419,6 +2419,29 @@
           }
         }
       },
+      "FkPost": {
+        "title": "FkPost",
+        "required": [
+          "id",
+          "subdivision_id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "subdivision_id": {
+            "title": "Subdivision Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "FkTask": {
         "title": "FkTask",
         "required": [
@@ -2850,7 +2873,8 @@
         "required": [
           "id",
           "name",
-          "description"
+          "description",
+          "posts"
         ],
         "type": "object",
         "properties": {
@@ -2865,6 +2889,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FkPost"
+            }
           }
         }
       },
@@ -3035,6 +3066,10 @@
           "value": {
             "title": "Value",
             "type": "string"
+          },
+          "is_correct": {
+            "title": "Is Correct",
+            "type": "boolean"
           }
         }
       },

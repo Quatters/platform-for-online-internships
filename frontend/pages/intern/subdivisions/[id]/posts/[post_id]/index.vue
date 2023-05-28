@@ -6,7 +6,14 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <CommonDetailViewCard :item="data!" />
+            <InternNameDescriptionCard :name="data!.name" :description="data?.description">
+                <template #additional-content>
+                    <label class="block pt-2 border-t">
+                        <span class="inline-block pb-1">Курсы для освоения этой должности</span>
+                        <FieldArray :value="data?.courses" field-name="courses" />
+                    </label>
+                </template>
+            </InternNameDescriptionCard>
         </CommonContent>
     </div>
 </template>
