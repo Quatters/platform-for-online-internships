@@ -2837,7 +2837,6 @@
           "course_id",
           "progress",
           "admission_date",
-          "posts",
           "course_name"
         ],
         "type": "object",
@@ -2862,13 +2861,6 @@
             "title": "Admission Date",
             "type": "string",
             "format": "date-time"
-          },
-          "posts": {
-            "title": "Posts",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FkPost"
-            }
           },
           "course_name": {
             "title": "Course Name",
@@ -3031,9 +3023,9 @@
           "course_id",
           "progress",
           "admission_date",
-          "posts",
           "course_name",
-          "course_description"
+          "course_description",
+          "posts"
         ],
         "type": "object",
         "properties": {
@@ -3058,13 +3050,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "posts": {
-            "title": "Posts",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FkPost"
-            }
-          },
           "course_name": {
             "title": "Course Name",
             "type": "string"
@@ -3072,6 +3057,13 @@
           "course_description": {
             "title": "Course Description",
             "type": "string"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FkPost"
+            }
           }
         }
       },
@@ -3392,8 +3384,7 @@
           "user_id",
           "course_id",
           "progress",
-          "admission_date",
-          "posts"
+          "admission_date"
         ],
         "type": "object",
         "properties": {
@@ -3417,13 +3408,6 @@
             "title": "Admission Date",
             "type": "string",
             "format": "date-time"
-          },
-          "posts": {
-            "title": "Posts",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FkPost"
-            }
           }
         }
       },
