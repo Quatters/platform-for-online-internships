@@ -1,14 +1,18 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from backend.api.errors.errors import not_found
-from backend.api.schemas.courses import Course
-from backend.api.schemas.topics import Topic
+from backend.models.courses import Course
+from backend.models.posts import Post
+from backend.models.topics import Topic
 from backend.database import get_db
 import backend.api.queries.courses as queries_courses
 import backend.api.queries.topics as queries_topics
 import backend.api.queries.tasks as queries_tasks
 import backend.api.queries.subdivisions as queries_subdivisions
 import backend.api.queries.posts as queries_posts
+import backend.api.queries.course_competencies as queries_course_competencies
+import backend.api.queries.competencies as queries_competencies
+import backend.api.queries.post_competencies as queries_post_competencies
 
 
 def current_course(course_id: int, db: Session = Depends(get_db)):
@@ -50,3 +54,33 @@ def current_post(post_id, db: Session = Depends(get_db)):
     if post is None:
         raise not_found()
     return post
+
+
+async def get_current_course_competence(course_competence_id: int,
+                                        course: Course = Depends(current_course),
+                                        db: Session = Depends(get_db)):
+    course_competence = queries_course_competencies.get_course_competence(db, course_competence_id)
+    if course_competence is None:
+        raise not_found()
+    if course_competence.course_id != course.id:
+        raise not_found()
+    return course_competence
+
+
+async def get_current_competence(competence_id: int,
+                                 db: Session = Depends(get_db)):
+    competence = queries_competencies.get_competence(db, competence_id)
+    if competence is None:
+        raise not_found()
+    return competence
+
+
+async def get_current_post_competence(post_competence_id: int,
+                                      post: Post = Depends(current_post),
+                                      db: Session = Depends(get_db)):
+    post_competence = queries_post_competencies.get_post_competence(db, post_competence_id)
+    if post_competence is None:
+        raise not_found()
+    if post_competence.post_id != post.id:
+        raise not_found()
+    return post_competence

@@ -1758,7 +1758,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Subdivision Id"
+              "title": "Subdivision Id",
+              "type": "integer"
             },
             "name": "subdivision_id",
             "in": "path"
@@ -1794,7 +1795,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Subdivision Id"
+              "title": "Subdivision Id",
+              "type": "integer"
             },
             "name": "subdivision_id",
             "in": "path"
@@ -1828,7 +1830,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Subdivision Id"
+              "title": "Subdivision Id",
+              "type": "integer"
             },
             "name": "subdivision_id",
             "in": "path"
@@ -2205,6 +2208,702 @@
           }
         ]
       }
+    },
+    "/api/competencies/": {
+      "get": {
+        "summary": "Get Competencies",
+        "operationId": "get_competencies_api_competencies__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_Competence_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Competence",
+        "operationId": "create_competence_api_competencies__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompetence"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/competencies/{competence_id}": {
+      "get": {
+        "summary": "Get Competence",
+        "operationId": "get_competence_api_competencies__competence_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Competence Id",
+              "type": "integer"
+            },
+            "name": "competence_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Compentence",
+        "operationId": "delete_compentence_api_competencies__competence_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Competence Id",
+              "type": "integer"
+            },
+            "name": "competence_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Patch Competence",
+        "operationId": "patch_competence_api_competencies__competence_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Competence Id",
+              "type": "integer"
+            },
+            "name": "competence_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchCompetence"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Competence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/courses/{course_id}/competencies/": {
+      "get": {
+        "summary": "Get Course Competencies",
+        "operationId": "get_course_competencies_api_courses__course_id__competencies__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_CourseCompetence_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Competence",
+        "operationId": "create_competence_api_courses__course_id__competencies__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCourseCompetence"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseCompetence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/competencies/{competence_id}/courses/": {
+      "get": {
+        "summary": "Get Related Courses",
+        "operationId": "get_related_courses_api_competencies__competence_id__courses__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Competence Id",
+              "type": "integer"
+            },
+            "name": "competence_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_Course_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/courses/{course_id}/competencies/{course_competence_id}": {
+      "delete": {
+        "summary": "Delete Compentence",
+        "operationId": "delete_compentence_api_courses__course_id__competencies__course_competence_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Competence Id",
+              "type": "integer"
+            },
+            "name": "course_competence_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/subdivisions/{subdivision_id}/posts/{post_id}/competencies/": {
+      "get": {
+        "summary": "Get Post Competencies",
+        "operationId": "get_post_competencies_api_subdivisions__subdivision_id__posts__post_id__competencies__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Id"
+            },
+            "name": "post_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_PostCompetence_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Competence",
+        "operationId": "create_competence_api_subdivisions__subdivision_id__posts__post_id__competencies__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Id"
+            },
+            "name": "post_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostCompetence"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostCompetence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/competencies/{competence_id}/posts/": {
+      "get": {
+        "summary": "Get Related Posts",
+        "operationId": "get_related_posts_api_competencies__competence_id__posts__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Competence Id",
+              "type": "integer"
+            },
+            "name": "competence_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_Post_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/subdivisions/{subdivision_id}/posts/{post_id}/competencies/{post_competence_id}": {
+      "delete": {
+        "summary": "Delete Compentence",
+        "operationId": "delete_compentence_api_subdivisions__subdivision_id__posts__post_id__competencies__post_competence_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Competence Id",
+              "type": "integer"
+            },
+            "name": "post_competence_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Id"
+            },
+            "name": "post_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -2296,6 +2995,24 @@
           }
         }
       },
+      "Competence": {
+        "title": "Competence",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "Course": {
         "title": "Course",
         "required": [
@@ -2310,6 +3027,39 @@
           },
           "name": {
             "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "CourseCompetence": {
+        "title": "CourseCompetence",
+        "required": [
+          "id",
+          "course_id",
+          "course_name",
+          "competence_id",
+          "competence_name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "course_id": {
+            "title": "Course Id",
+            "type": "integer"
+          },
+          "course_name": {
+            "title": "Course Name",
+            "type": "string"
+          },
+          "competence_id": {
+            "title": "Competence Id",
+            "type": "integer"
+          },
+          "competence_name": {
+            "title": "Competence Name",
             "type": "string"
           }
         }
@@ -2329,6 +3079,45 @@
           "is_correct": {
             "title": "Is Correct",
             "type": "boolean"
+          }
+        }
+      },
+      "CreateCompetence": {
+        "title": "CreateCompetence",
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "CreateCourseCompetence": {
+        "title": "CreateCourseCompetence",
+        "required": [
+          "competence_id"
+        ],
+        "type": "object",
+        "properties": {
+          "competence_id": {
+            "title": "Competence Id",
+            "type": "integer"
+          }
+        }
+      },
+      "CreatePostCompetence": {
+        "title": "CreatePostCompetence",
+        "required": [
+          "competence_id"
+        ],
+        "type": "object",
+        "properties": {
+          "competence_id": {
+            "title": "Competence Id",
+            "type": "integer"
           }
         }
       },
@@ -2437,6 +3226,70 @@
           }
         }
       },
+      "LimitOffsetPage_Competence_": {
+        "title": "LimitOffsetPage[Competence]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Competence"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_CourseCompetence_": {
+        "title": "LimitOffsetPage[CourseCompetence]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CourseCompetence"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
       "LimitOffsetPage_Course_": {
         "title": "LimitOffsetPage[Course]",
         "required": [
@@ -2514,6 +3367,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/NamedUserCourse"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_PostCompetence_": {
+        "title": "LimitOffsetPage[PostCompetence]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostCompetence"
             }
           },
           "total": {
@@ -3025,6 +3910,16 @@
           }
         }
       },
+      "PatchCompetence": {
+        "title": "PatchCompetence",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "PatchCourse": {
         "title": "PatchCourse",
         "type": "object",
@@ -3166,6 +4061,39 @@
           "subdivision_id": {
             "title": "Subdivision Id",
             "type": "integer"
+          }
+        }
+      },
+      "PostCompetence": {
+        "title": "PostCompetence",
+        "required": [
+          "id",
+          "post_id",
+          "post_name",
+          "competence_id",
+          "competence_name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "post_id": {
+            "title": "Post Id",
+            "type": "integer"
+          },
+          "post_name": {
+            "title": "Post Name",
+            "type": "string"
+          },
+          "competence_id": {
+            "title": "Competence Id",
+            "type": "integer"
+          },
+          "competence_name": {
+            "title": "Competence Name",
+            "type": "string"
           }
         }
       },

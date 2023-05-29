@@ -36,4 +36,3 @@ def patch_competence(db: Session, competence: Competence, data: schemas.PatchCom
     db.commit()
     db.refresh(competence)
     return competence
-

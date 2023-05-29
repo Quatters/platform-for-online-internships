@@ -15,9 +15,9 @@ def get_post_competencies(db: Session, params: ListPageParams, post_id: int):
                 joinedload(PostCompetence.competence, innerjoin=True).load_only(CompetenceModel.name)
               )
     objects = query \
-            .limit(params.limit) \
-            .offset(params.offset) \
-            .all()
+        .limit(params.limit) \
+        .offset(params.offset) \
+        .all()
     for obj in objects:
         obj.post_name = obj.post.name
         obj.competence_name = obj.competence.name
@@ -27,6 +27,19 @@ def get_post_competencies(db: Session, params: ListPageParams, post_id: int):
 
 def get_post_competence(db: Session, post_competence_id: int):
     return db.query(PostCompetence).get(post_competence_id)
+
+
+def get_posts(db: Session, params: ListPageParams, competence_id: int):
+    query = db.query(PostCompetence) \
+              .filter(PostCompetence.competence_id == competence_id) \
+              .options(
+                joinedload(PostCompetence.post, innerjoin=True)
+              )
+    objects = query \
+        .limit(params.limit) \
+        .offset(params.offset) \
+        .all()
+    return paginate([obj.post for obj in objects], params, length_function=lambda _: query.count())
 
 
 def create_post_competence(db: Session, post_competence: schemas.CreatePostCompetence, post_id: int):
@@ -41,4 +54,3 @@ def create_post_competence(db: Session, post_competence: schemas.CreatePostCompe
 def delete_post_competence(db: Session, competence: PostCompetence):
     db.delete(competence)
     db.commit()
-

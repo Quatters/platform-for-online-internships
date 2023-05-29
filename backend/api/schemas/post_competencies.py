@@ -11,4 +11,3 @@ class PostCompetence(BaseSchema):
 
 class CreatePostCompetence(BaseSchema):
     competence_id: int
-

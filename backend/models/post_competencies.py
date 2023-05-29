@@ -13,4 +13,3 @@ class PostCompetence(BaseModel):
     __table_args__ = (
             UniqueConstraint(post_id, competence_id, name='u_post_competence'),
     )
-

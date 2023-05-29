@@ -15,9 +15,9 @@ def get_course_competencies(db: Session, params: ListPageParams, course_id: int)
                 joinedload(CourseCompetence.competence, innerjoin=True).load_only(CompetenceModel.name)
               )
     objects = query \
-            .limit(params.limit) \
-            .offset(params.offset) \
-            .all()
+        .limit(params.limit) \
+        .offset(params.offset) \
+        .all()
     for obj in objects:
         obj.course_name = obj.course.name
         obj.competence_name = obj.competence.name
@@ -27,6 +27,19 @@ def get_course_competencies(db: Session, params: ListPageParams, course_id: int)
 
 def get_course_competence(db: Session, course_competence_id: int):
     return db.query(CourseCompetence).get(course_competence_id)
+
+
+def get_courses(db: Session, params: ListPageParams, competence_id: int):
+    query = db.query(CourseCompetence) \
+              .filter(CourseCompetence.competence_id == competence_id) \
+              .options(
+                joinedload(CourseCompetence.course, innerjoin=True)
+              )
+    objects = query \
+        .limit(params.limit) \
+        .offset(params.offset) \
+        .all()
+    return paginate([obj.course for obj in objects], params, length_function=lambda _: query.count())
 
 
 def create_course_competence(db: Session, course_competence: schemas.CreateCourseCompetence, course_id: int):
