@@ -19,6 +19,8 @@ export default defineI18nConfig(() => ({
             'Next task': 'Следующее задание',
             'Is correct': 'Правильный ответ',
             Value: 'Значение',
+            'Course name': 'Название курса',
+            Progress: 'Прогресс',
 
             Dashboard: 'Личный кабинет',
             Posts: 'Должности',

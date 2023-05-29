@@ -1,6 +1,6 @@
 <template>
     <table class="table-auto border-collapse rounded-md w-full bg-white shadow">
-        <thead>
+        <thead v-if="!hideHead">
             <tr class="border-b">
                 <th v-for="(key, idx) in headerKeys" :key="idx" class="text-left px-4 py-2">{{ $t(key) }}</th>
             </tr>
@@ -34,14 +34,18 @@
             items: Item[];
             withId?: boolean;
             linkParamName?: string;
+            apiValueFieldName?: string;
             additionalParams?: Record<string, string>;
             hideFields?: Array<string>;
+            hideHead?: boolean;
         }>(),
         {
             linkParamName: 'id',
+            apiValueFieldName: 'id',
             additionalParams: () => ({}),
             withId: false,
             hideFields: () => [],
+            hideHead: false,
         },
     );
 
@@ -50,7 +54,7 @@
     function getDetailLink(item: Item) {
         return {
             name: `${String(route.name)}-${props.linkParamName}`,
-            params: { [props.linkParamName]: String(item.id) },
+            params: { [props.linkParamName]: String(item[props.apiValueFieldName]) },
         };
     }
 

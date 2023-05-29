@@ -12,6 +12,7 @@
             <CommonListViewTable
                 :items="data!.items"
                 link-param-name="post_id"
+                hide-head
                 :additional-params="{ id: route.params.id as string }"
             />
             <CommonLoadMore :response="data" @load-needed="loadMore" />

@@ -6,13 +6,7 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <div v-for="course in data?.items" :key="course.id">
-                <NuxtLink v-if="course.id" :to="{ name: 'intern-courses-id', params: { id: course.id } }">
-                    <div class="bg-white rounded-md px-6 py-4 mb-3 shadow">
-                        {{ course.name }}
-                    </div>
-                </NuxtLink>
-            </div>
+            <CommonListViewTable :items="data!.items" hide-head />
             <CommonLoadMore :response="data" @load-needed="loadMore" />
         </CommonContent>
     </div>
