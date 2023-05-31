@@ -63,19 +63,19 @@ export interface paths {
     /** Patch Topic */
     patch: operations["patch_topic_api_courses__course_id__topics__topic_id__patch"];
   };
-  "/api/courses/{course_id}/topics/{topic_id}/": {
+  "/api/courses/{course_id}/topics/{topic_id}/tasks/": {
     /** Get Tasks */
-    get: operations["get_tasks_api_courses__course_id__topics__topic_id___get"];
+    get: operations["get_tasks_api_courses__course_id__topics__topic_id__tasks__get"];
     /** Create Task */
-    post: operations["create_task_api_courses__course_id__topics__topic_id___post"];
+    post: operations["create_task_api_courses__course_id__topics__topic_id__tasks__post"];
   };
-  "/api/courses/{course_id}/topics/{topic_id}/{task_id}": {
+  "/api/courses/{course_id}/topics/{topic_id}/tasks/{task_id}": {
     /** Get Task */
-    get: operations["get_task_api_courses__course_id__topics__topic_id___task_id__get"];
+    get: operations["get_task_api_courses__course_id__topics__topic_id__tasks__task_id__get"];
     /** Delete Task */
-    delete: operations["delete_task_api_courses__course_id__topics__topic_id___task_id__delete"];
+    delete: operations["delete_task_api_courses__course_id__topics__topic_id__tasks__task_id__delete"];
     /** Patch Task */
-    patch: operations["patch_task_api_courses__course_id__topics__topic_id___task_id__patch"];
+    patch: operations["patch_task_api_courses__course_id__topics__topic_id__tasks__task_id__patch"];
   };
   "/api/courses/{course_id}/topics/{topic_id}/tasks/{task_id}/answers/": {
     /** Get Answers */
@@ -144,8 +144,6 @@ export interface components {
       id: number;
       /** Value */
       value: string;
-      /** Task Id */
-      task_id: number;
       /** Is Correct */
       is_correct: boolean;
     };
@@ -215,6 +213,29 @@ export interface components {
       description: string;
       /** Prev Topic Id */
       prev_topic_id?: number;
+    };
+    /** FkPost */
+    FkPost: {
+      /** Id */
+      id: number;
+      /** Subdivision Id */
+      subdivision_id: number;
+      /** Name */
+      name: string;
+    };
+    /** FkTask */
+    FkTask: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+    };
+    /** FkTopic */
+    FkTopic: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -363,6 +384,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Posts */
+      posts: (components["schemas"]["FkPost"])[];
     };
     /** OneSubdivision */
     OneSubdivision: {
@@ -388,32 +411,24 @@ export interface components {
     OneTask: {
       /** Id */
       id: number;
-      /** Topic Id */
-      topic_id: number;
       /** Name */
       name: string;
       /** Description */
       description: string;
-      /** Prev Task Id */
-      prev_task_id?: number;
-      /** Next Task Id */
-      next_task_id?: number;
+      prev_task?: components["schemas"]["FkTask"];
+      next_task?: components["schemas"]["FkTask"];
       task_type: components["schemas"]["TaskType"];
     };
     /** OneTopic */
     OneTopic: {
       /** Id */
       id: number;
-      /** Course Id */
-      course_id: number;
       /** Name */
       name: string;
       /** Description */
       description: string;
-      /** Prev Topic Id */
-      prev_topic_id?: number;
-      /** Next Topic Id */
-      next_topic_id?: number;
+      prev_topic?: components["schemas"]["FkTopic"];
+      next_topic?: components["schemas"]["FkTopic"];
     };
     /** OneUserCourse */
     OneUserCourse: {
@@ -434,6 +449,8 @@ export interface components {
       course_name: string;
       /** Course Description */
       course_description: string;
+      /** Posts */
+      posts: (components["schemas"]["FkPost"])[];
     };
     /** PatchAnswer */
     PatchAnswer: {
@@ -471,9 +488,8 @@ export interface components {
       name?: string;
       /** Description */
       description?: string;
-      /** Prev Topic Id */
-      prev_topic_id?: number;
-      task_type?: components["schemas"]["TaskType"];
+      /** Prev Task Id */
+      prev_task_id?: number;
     };
     /** PatchTopic */
     PatchTopic: {
@@ -528,8 +544,6 @@ export interface components {
       id: number;
       /** Name */
       name: string;
-      /** Prev Task Id */
-      prev_task_id?: number;
       task_type: components["schemas"]["TaskType"];
     };
     /**
@@ -551,8 +565,6 @@ export interface components {
       id: number;
       /** Name */
       name: string;
-      /** Prev Topic Id */
-      prev_topic_id?: number;
     };
     /** User */
     User: {
@@ -1062,7 +1074,7 @@ export interface operations {
     };
   };
   /** Get Tasks */
-  get_tasks_api_courses__course_id__topics__topic_id___get: {
+  get_tasks_api_courses__course_id__topics__topic_id__tasks__get: {
     parameters: {
       query: {
         limit?: number;
@@ -1090,7 +1102,7 @@ export interface operations {
     };
   };
   /** Create Task */
-  create_task_api_courses__course_id__topics__topic_id___post: {
+  create_task_api_courses__course_id__topics__topic_id__tasks__post: {
     parameters: {
       path: {
         topic_id: number;
@@ -1118,7 +1130,7 @@ export interface operations {
     };
   };
   /** Get Task */
-  get_task_api_courses__course_id__topics__topic_id___task_id__get: {
+  get_task_api_courses__course_id__topics__topic_id__tasks__task_id__get: {
     parameters: {
       path: {
         task_id: number;
@@ -1142,7 +1154,7 @@ export interface operations {
     };
   };
   /** Delete Task */
-  delete_task_api_courses__course_id__topics__topic_id___task_id__delete: {
+  delete_task_api_courses__course_id__topics__topic_id__tasks__task_id__delete: {
     parameters: {
       path: {
         task_id: number;
@@ -1162,7 +1174,7 @@ export interface operations {
     };
   };
   /** Patch Task */
-  patch_task_api_courses__course_id__topics__topic_id___task_id__patch: {
+  patch_task_api_courses__course_id__topics__topic_id__tasks__task_id__patch: {
     parameters: {
       path: {
         task_id: number;

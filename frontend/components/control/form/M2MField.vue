@@ -2,7 +2,7 @@
     <div>
         <ControlFormLabel :value="label" :required="required" />
         <ControlSearchInput v-model="search" class="w-full mb-3" emit-only />
-        <div class="shadow border rounded p-3 max-h-[8.5rem] overflow-y-auto">
+        <div class="shadow border border-gray-300 rounded p-3 max-h-[8.5rem] overflow-y-auto">
             <div v-if="typedData.items.length">
                 <label v-for="item in typedData!.items" :key="item.id" class="block cursor-pointer">
                     <input
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-    import { APIPath } from '~/types';
+    import type { APIPath, ListItems } from '~/types';
 
     const props = withDefaults(
         defineProps<{
@@ -59,16 +59,6 @@
         }
     }
 
-    interface DataType {
-        items: Array<{
-            id: number;
-            [key: string]: string | number;
-        }>;
-        count: number;
-        limit: number;
-        offset: number;
-    }
-
     const { data, loadMore } = await useListLoader({
         path: props.path,
         // @ts-expect-error must be list path
@@ -78,5 +68,5 @@
         },
     });
 
-    const typedData = computed(() => data.value as DataType);
+    const typedData = computed(() => data.value as ListItems);
 </script>

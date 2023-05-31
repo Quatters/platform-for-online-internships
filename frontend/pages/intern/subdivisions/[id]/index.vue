@@ -11,7 +11,7 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <CommonDetailViewCard :item="data!" />
+            <InternNameDescriptionCard :name="data!.name" :description="data?.description"></InternNameDescriptionCard>
         </CommonContent>
     </div>
 </template>

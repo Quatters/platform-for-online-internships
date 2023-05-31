@@ -58,3 +58,13 @@ export interface Breadcrumb {
     name: string;
     to: RouteLocationRaw;
 }
+
+export interface ListItems {
+    items: Array<{
+        id: number;
+        [key: string]: string | number;
+    }>;
+    count: number;
+    limit: number;
+    offset: number;
+}

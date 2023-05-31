@@ -10,7 +10,6 @@ class Answer(BaseSchema):
 class AnswerAdmin(BaseSchema):
     id: int
     value: str
-    task_id: int
     is_correct: bool
 
 

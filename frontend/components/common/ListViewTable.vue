@@ -1,6 +1,6 @@
 <template>
     <table class="table-auto border-collapse rounded-md w-full bg-white shadow">
-        <thead>
+        <thead v-if="!hideHead">
             <tr class="border-b">
                 <th v-for="(key, idx) in headerKeys" :key="idx" class="text-left px-4 py-2">{{ $t(key) }}</th>
             </tr>
@@ -34,12 +34,18 @@
             items: Item[];
             withId?: boolean;
             linkParamName?: string;
+            apiValueFieldName?: string;
             additionalParams?: Record<string, string>;
+            hideFields?: Array<string>;
+            hideHead?: boolean;
         }>(),
         {
             linkParamName: 'id',
+            apiValueFieldName: 'id',
             additionalParams: () => ({}),
             withId: false,
+            hideFields: () => [],
+            hideHead: false,
         },
     );
 
@@ -48,15 +54,19 @@
     function getDetailLink(item: Item) {
         return {
             name: `${String(route.name)}-${props.linkParamName}`,
-            params: { [props.linkParamName]: String(item.id) },
+            params: { [props.linkParamName]: String(item[props.apiValueFieldName]) },
         };
     }
 
     function getEntries(item: Record<string, unknown>) {
-        if (props.withId) {
-            return Object.entries(item);
+        let entries = Object.entries(item);
+        if (!props.withId) {
+            entries = entries.filter(([key]) => key !== 'id');
         }
-        return Object.entries(item).filter(([key]) => key !== 'id');
+        if (props.hideFields.length) {
+            entries = entries.filter(([key]) => !props.hideFields.includes(key));
+        }
+        return entries;
     }
 
     const headerKeys = computed(() => {
@@ -66,6 +76,9 @@
         let keys = Object.keys(props.items[0]);
         if (!props.withId) {
             keys = keys.filter(key => key !== 'id');
+        }
+        if (props.hideFields.length) {
+            keys = keys.filter(key => !props.hideFields.includes(key));
         }
         return keys.map(value => capitalize(value.replaceAll('_', ' ')));
     });

@@ -17,21 +17,16 @@ router = APIRouter(prefix='/courses/{course_id}/topics')
 
 
 def populate_next_topic(topic: Topic, db: Session) -> schemas.OneTopic:
-    next_topic = queries.get_next_topic(db, topic.id)
-    if next_topic is None:
-        return topic
-
-    result = schemas.OneTopic.from_orm(topic)
-    result.next_topic_id = next_topic.id
-    return result
+    topic.next_topic = queries.get_next_topic(db, topic.id)
+    return schemas.OneTopic.from_orm(topic)
 
 
 @router.get('/',
-            response_model=LimitOffsetPage[schemas.Topic],
-            dependencies=[Depends(current_course)])
+            response_model=LimitOffsetPage[schemas.Topic])
 def get_topics(params: ListPageParams = Depends(),
+               course: Course = Depends(current_course),
                db: Session = Depends(get_db)):
-    return queries.get_topics(db, params)
+    return queries.get_topics(db, params, course.id)
 
 
 @router.get('/{topic_id}', response_model=schemas.OneTopic)
