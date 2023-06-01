@@ -52,6 +52,13 @@ jobs:
       - name: Run tests
         run: |
           pytest --cov
+          pytest --cov-report xml:/coverage.xml
+
+      - name: Get coverage
+        uses: orgoro/coverage@v3.1
+        with:
+          coverageFile: /coverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   frontend:
     runs-on: ubuntu-22.04
