@@ -16,6 +16,7 @@ permissions:
 jobs:
   backend:
     runs-on: ubuntu-22.04
+    permissions: write-all
 
     services:
       postgres:
