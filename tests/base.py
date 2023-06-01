@@ -1,4 +1,5 @@
 from fastapi import Depends
+from sqlalchemy.orm import Session
 from pydantic import BaseModel as BaseSchema
 from fastapi.testclient import TestClient
 from backend import app
@@ -20,7 +21,6 @@ class TestUser(BaseSchema):
     is_teacher: bool = False
 
 
-
 test_admin = TestUser(
     email='admin@test.com',
     password='admin',
@@ -35,7 +35,7 @@ test_intern = TestUser(
 )
 
 
-def create_user(user: TestUser, db = Depends(get_db), commit=False):
+def create_user(user: TestUser, db: Session = Depends(get_db), commit=False):
     dict_ = user.dict()
     dict_.update(password=hash_password(user.password))
     db_user = User(**dict_)

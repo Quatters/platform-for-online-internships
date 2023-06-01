@@ -1,5 +1,3 @@
-from fastapi import Depends
-from sqlalchemy.orm import Session
 from argparse import ArgumentParser
 from pydantic import validate_email
 from backend.settings import APP_NAME
