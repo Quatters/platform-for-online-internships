@@ -14,7 +14,7 @@ BACKEND_ROOT: Path = Path(__file__).parent.resolve().absolute()
 PROJECT_ROOT: Path = BACKEND_ROOT.parent.absolute()
 
 load_dotenv(PROJECT_ROOT / '.env')
-if 'pytest' in sys.modules:
+if bool(os.getenv('GITLAB_CI')):
     load_dotenv(PROJECT_ROOT / '.env.ci', override=True)
 
 DEBUG = bool(os.getenv('DEBUG', False))
@@ -72,5 +72,5 @@ class LimitOffsetParams(LimitOffsetParamsBase):
 
 
 if 'pytest' in sys.modules:
-    if not DATABASE_URL.endswith('/'):  # e.g."sqlite://" (in-memory db)
+    if not DATABASE_URL.endswith('/'):  # e.g. "sqlite://" (in-memory db)
         DATABASE_URL += '_test'
