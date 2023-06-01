@@ -18,32 +18,30 @@ parser.add_argument('--last-name', default='')
 parser.add_argument('--patronymic', default='')
 
 
-def create_user(db: Session = Depends(get_db)):
-    args = parser.parse_args()
+args = parser.parse_args()
 
-    args.role = args.role.lower()
-    assert args.role in ('intern', 'teacher', 'admin'), (
-        'role must be either "intern", "teacher" or "admin"'
-    )
+args.role = args.role.lower()
+assert args.role in ('intern', 'teacher', 'admin'), (
+    'role must be either "intern", "teacher" or "admin"'
+)
 
-    validate_email(args.email)
-    assert len(args.password) >= 3, 'password is too short (min length is 3)'
+validate_email(args.email)
+assert len(args.password) >= 3, 'password is too short (min length is 3)'
 
-    user = User(
-        first_name=args.first_name,
-        last_name=args.last_name,
-        patronymic=args.patronymic,
-        email=args.email,
-        password=hash_password(args.password),
-        is_admin=args.role == 'admin',
-        is_teacher=args.role == 'teacher',
-    )
+user = User(
+    first_name=args.first_name,
+    last_name=args.last_name,
+    patronymic=args.patronymic,
+    email=args.email,
+    password=hash_password(args.password),
+    is_admin=args.role == 'admin',
+    is_teacher=args.role == 'teacher',
+)
 
-    db.add(user)
-    db.commit()
-    db.close()
+db = next(get_db())
 
+db.add(user)
+db.commit()
+db.close()
 
-if __name__ == '__main__':
-    create_user()
-    print('User successfully created.')
+print('User successfully created.')

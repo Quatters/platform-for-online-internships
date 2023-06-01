@@ -4,6 +4,7 @@ python-jose[cryptography]~=3.3.0
 passlib[bcrypt]~=1.7.4
 
 alembic~=1.10.3
+sqlalchemy-utils~=0.41.1
 PyMySQL==1.0.3
 
 orjson~=3.8.10

@@ -14,11 +14,10 @@ BACKEND_ROOT: Path = Path(__file__).parent.resolve().absolute()
 PROJECT_ROOT: Path = BACKEND_ROOT.parent.absolute()
 
 load_dotenv(PROJECT_ROOT / '.env')
+if 'pytest' in sys.modules:
+    load_dotenv(PROJECT_ROOT / '.env.ci', override=True)
 
 DEBUG = bool(os.getenv('DEBUG', False))
-
-if 'pytest' in sys.modules:
-    load_dotenv(PROJECT_ROOT / '.env.ci')
 
 APP_NAME = 'platform_for_online_internships_backend'
 API_VERSION = 'v1'
@@ -70,3 +69,8 @@ class LimitOffsetParams(LimitOffsetParamsBase):
         ge=1,
         description='Page size limit',
     )
+
+
+if 'pytest' in sys.modules:
+    if not DATABASE_URL.endswith('/'):  # e.g."sqlite://" (in-memory db)
+        DATABASE_URL += '_test'
