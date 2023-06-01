@@ -1,0 +1,12 @@
+[run]
+source =
+    backend
+parallel = True
+concurrency =
+    thread
+    multiprocessing
+
+[report]
+show_missing = True
+exclude_lines =
+    nocv

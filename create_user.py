@@ -1,3 +1,5 @@
+from fastapi import Depends
+from sqlalchemy.orm import Session
 from argparse import ArgumentParser
 from pydantic import validate_email
 from backend.settings import APP_NAME
@@ -15,29 +17,33 @@ parser.add_argument('--first-name', default='')
 parser.add_argument('--last-name', default='')
 parser.add_argument('--patronymic', default='')
 
-args = parser.parse_args()
 
-args.role = args.role.lower()
-assert args.role in ('intern', 'teacher', 'admin'), (
-    'role must be either "intern", "teacher" or "admin"'
-)
+def create_user(db: Session = Depends(get_db)):
+    args = parser.parse_args()
 
-validate_email(args.email)
-assert len(args.password) >= 3, 'password is too short (min length is 3)'
+    args.role = args.role.lower()
+    assert args.role in ('intern', 'teacher', 'admin'), (
+        'role must be either "intern", "teacher" or "admin"'
+    )
 
-user = User(
-    first_name=args.first_name,
-    last_name=args.last_name,
-    patronymic=args.patronymic,
-    email=args.email,
-    password=hash_password(args.password),
-    is_admin=args.role == 'admin',
-    is_teacher=args.role == 'teacher',
-)
+    validate_email(args.email)
+    assert len(args.password) >= 3, 'password is too short (min length is 3)'
 
-db = get_db().__next__()
-db.add(user)
-db.commit()
-db.close()
+    user = User(
+        first_name=args.first_name,
+        last_name=args.last_name,
+        patronymic=args.patronymic,
+        email=args.email,
+        password=hash_password(args.password),
+        is_admin=args.role == 'admin',
+        is_teacher=args.role == 'teacher',
+    )
 
-print('User successfully created.')
+    db.add(user)
+    db.commit()
+    db.close()
+
+
+if __name__ == '__main__':
+    create_user()
+    print('User successfully created.')
