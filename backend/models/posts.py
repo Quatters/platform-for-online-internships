@@ -9,7 +9,7 @@ from backend.models.association_tables import (
 )
 
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # nocv
     from backend.models import User, Course
 
 

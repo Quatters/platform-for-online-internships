@@ -8,9 +8,6 @@ from backend.database import get_db
 from backend.api.auth import create_access_token, hash_password
 
 
-client = TestClient(app)
-
-
 class TestUser(BaseSchema):
     email: str
     password: str
@@ -24,15 +21,24 @@ class TestUser(BaseSchema):
 test_admin = TestUser(
     email='admin@test.com',
     password='admin',
+    is_admin=True,
 )
 test_teacher = TestUser(
     email='teacher@test.com',
     password='teacher',
+    is_teacher=True,
 )
 test_intern = TestUser(
     email='intern@test.com',
     password='intern',
 )
+
+
+class TestAnonymous:
+    pass
+
+
+test_anonymous = TestAnonymous()
 
 
 def create_user(user: TestUser, db: Session = Depends(get_db), commit=False):
@@ -42,10 +48,15 @@ def create_user(user: TestUser, db: Session = Depends(get_db), commit=False):
     db.add(db_user)
     if commit:
         db.commit()
+        db.refresh(db_user)
+    return db_user
 
 
-def login_as(user: TestUser) -> TestClient:
+def login_as(user: TestUser | TestAnonymous) -> TestClient:
+    if isinstance(user, TestAnonymous):
+        with TestClient(app) as client:
+            return client
+
     token = create_access_token({'sub': user.email})
-    return TestClient(app, headers={
-        'Authorization': f'Bearer {token}'
-    })
+    with TestClient(app, headers={'Authorization': f'Bearer {token}'}) as client:
+        return client

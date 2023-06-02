@@ -65,7 +65,7 @@ LimitOffsetPage = LimitOffsetPageBase.with_custom_options(
 
 class LimitOffsetParams(LimitOffsetParamsBase):
     limit: int = Query(
-        PAGINATION['DEFAULT_LIMIT'],
+        default=PAGINATION['DEFAULT_LIMIT'],
         ge=1,
         description='Page size limit',
     )
