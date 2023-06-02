@@ -1,6 +1,10 @@
 [run]
 source =
     backend
+omit =
+    backend/migrations/*
+    backend/__main__.py
+    backend/settings.py
 parallel = True
 concurrency =
     thread
