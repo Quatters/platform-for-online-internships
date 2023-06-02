@@ -53,10 +53,10 @@ def create_user(user: TestUser, db: Session = Depends(get_db), commit=False):
 
 
 def login_as(user: TestUser | TestAnonymous) -> TestClient:
-    if isinstance(user, TestAnonymous):
-        with TestClient(app) as client:
-            return client
+    headers = {}
+    if isinstance(user, TestUser):
+        token = create_access_token({'sub': user.email})
+        headers['Authorization'] = f'Bearer {token}'
 
-    token = create_access_token({'sub': user.email})
-    with TestClient(app, headers={'Authorization': f'Bearer {token}'}) as client:
+    with TestClient(app, headers=headers) as client:
         return client
