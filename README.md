@@ -109,10 +109,10 @@ DATABASE_URL="postgresql://postgres:postgres@localhost/my_db"
 "postgresql://postgres:postgres@localhost/my_db_test"
 ```
 
-If database is not exist it will be created automatically, migrations will
-be applied and tests users will be created. Each unit test running under
-transaction which is rolled back afterwards, so you are free to do everything
-needed. At the end of test session database will be dropped.
+If database not exists it will be created automatically, migrations will
+be applied and test users will be created. Each unit test runs in
+transaction which is rolled back after it ends, so you are free to do
+everything is needed. At the end of test session database will be dropped.
 
 ---
 
