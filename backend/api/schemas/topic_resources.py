@@ -20,12 +20,13 @@ class OneTopicResource(ListTopicResource):
 
 
 class PatchTopicResource(BaseSchema):
-    type: TopicResourceType | None
     name: str | None
     value: str | None
+    prev_resource_id: int | None
 
 
 class CreateTopicResource(BaseSchema):
     type: TopicResourceType
     name: str
     value: str
+    prev_resource_id: int | None

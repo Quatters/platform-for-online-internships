@@ -18,6 +18,7 @@ if bool(os.getenv('GITHUB_ACTIONS')):
     load_dotenv(PROJECT_ROOT / '.env.ci', override=True)
 
 DEBUG = bool(os.getenv('DEBUG', False))
+ECHO_SQL = bool(os.getenv('ECHO_SQL', False))
 
 APP_NAME = 'platform_for_online_internships_backend'
 API_VERSION = 'v1'

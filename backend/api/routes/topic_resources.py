@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.api.auth import get_current_user
-from backend.api.current_dependencies import current_course, current_topic
+from backend.api.auth import admin_only, get_current_user
+from backend.api.current_dependencies import current_topic, current_topic_resource
 from backend.api.dependencies import ListPageParams
-from backend.api.errors.errors import not_found, unauthorized
+from backend.api.errors.errors import bad_request, not_found, unauthorized
 from backend.api.schemas.courses import Course
 from backend.api.schemas.users import User
 from backend.database import get_db
@@ -23,3 +23,37 @@ def get_resources(
     db: Session = Depends(get_db),
 ):
     return queries.get_topic_resources(db, params, topic.id)
+
+
+@router.get(
+    '/{resource_id}',
+    response_model=schemas.OneTopicResource,
+)
+def get_one_resource(resource: TopicResource = Depends(current_topic_resource)):
+    return resource
+
+
+@router.post(
+    '/',
+    response_model=schemas.OneTopicResource,
+    dependencies=[Depends(admin_only)],
+)
+def create_resource(
+    resource: schemas.CreateTopicResource,
+    topic: Topic = Depends(current_topic),
+    db: Session = Depends(get_db),
+):
+    return queries.create_resource(db, resource, topic.id)
+
+
+@router.patch(
+    '/{resource_id}',
+    response_model=schemas.OneTopicResource,
+    dependencies=[Depends(admin_only)],
+)
+def create_resource(
+    resource_to_patch: schemas.PatchTopicResource,
+    resource: TopicResource = Depends(current_topic_resource),
+    db: Session = Depends(get_db),
+):
+    return queries.update_resource(db, resource, resource_to_patch)
