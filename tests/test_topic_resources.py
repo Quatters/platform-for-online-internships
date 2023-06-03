@@ -111,7 +111,7 @@ def test_topic_resources_crud():
         },
     )
     assert response.status_code == 400
-    assert response.json()['detail'] == 'Resource with id -1 does not exist.'
+    assert response.json()['detail'] == 'Instance with id -1 does not exist.'
 
     # test create first resource if first already exists
     response = client.post(
