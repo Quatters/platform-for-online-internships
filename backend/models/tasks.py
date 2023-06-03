@@ -9,8 +9,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Relationship
 from backend.models import BaseModel
-from backend.models.task_types import TaskType
 from backend.models.topics import Topic
+from backend.constants import TaskType
 
 
 class Task(BaseModel):

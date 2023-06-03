@@ -1,5 +1,5 @@
 from backend.api.schemas.base import BaseSchema
-from backend.models.task_types import TaskType
+from backend.constants import TaskType
 
 
 class Task(BaseSchema):
