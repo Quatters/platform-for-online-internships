@@ -31,7 +31,7 @@ Topic.prev_topic = Relationship(Topic, remote_side=[Topic.id], uselist=False)
 
 class TopicResource(BaseModel):
     type = Column(Enum(TopicResourceType), nullable=False, index=True)
-    name = Column(String, nullable=False, server_default='')
+    name = Column(String, nullable=False)
     value = Column(Text, nullable=False)
     prev_resource_id = Column(Integer, ForeignKey('app_topicresource.id'), index=True)
     topic_id = Column(Integer, ForeignKey(Topic.id), index=True, nullable=False)
