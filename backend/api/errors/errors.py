@@ -2,7 +2,7 @@ from fastapi import HTTPException
 
 
 def not_found() -> HTTPException:
-    return HTTPException(404, 'Not found')
+    return HTTPException(404, 'Not found.')
 
 
 def bad_request(detail: str) -> HTTPException:
@@ -10,7 +10,7 @@ def bad_request(detail: str) -> HTTPException:
 
 
 def unauthorized() -> HTTPException:
-    return HTTPException(401, 'Unauthorized')
+    return HTTPException(401, 'Unauthorized.')
 
 
 def no_permission() -> HTTPException:

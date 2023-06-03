@@ -15,6 +15,7 @@ parser.add_argument('--first-name', default='')
 parser.add_argument('--last-name', default='')
 parser.add_argument('--patronymic', default='')
 
+
 args = parser.parse_args()
 
 args.role = args.role.lower()
@@ -35,7 +36,8 @@ user = User(
     is_teacher=args.role == 'teacher',
 )
 
-db = get_db().__next__()
+db = next(get_db())
+
 db.add(user)
 db.commit()
 db.close()

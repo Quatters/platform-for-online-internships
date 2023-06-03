@@ -5,7 +5,7 @@ from backend.models import BaseModel
 from backend.models.association_tables import CoursePostAssociation
 
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # nocv
     from backend.models import Post
 
 
