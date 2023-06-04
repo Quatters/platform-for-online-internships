@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.api.auth import get_current_user, admin_only
+from backend.api.auth import admin_only
 from backend.api.errors.errors import not_found
-from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import courses as queries
 from backend.api.schemas import courses as schemas
