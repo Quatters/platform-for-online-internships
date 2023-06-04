@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import admin_only
-from backend.api.current_dependencies import current_course, current_topic
+from backend.api.current_dependencies import get_current_course, current_topic
 from backend.api.dependencies import ListPageParams
 from backend.api.errors.errors import not_found
 from backend.api.schemas.courses import Course
@@ -18,7 +18,7 @@ router = APIRouter(prefix='/courses/{course_id}/topics')
 @router.get('/',
             response_model=LimitOffsetPage[schemas.Topic])
 def get_topics(params: ListPageParams = Depends(),
-               course: Course = Depends(current_course),
+               course: Course = Depends(get_current_course),
                db: Session = Depends(get_db)):
     return queries.get_topics(db, params, course.id)
 
@@ -30,7 +30,7 @@ def get_topic(topic: Topic = Depends(current_topic)):
 
 @router.post('/', response_model=schemas.OneTopic, dependencies=[Depends(admin_only)])
 def create_topic(topic: schemas.CreateTopic,
-                 course: Course = Depends(current_course),
+                 course: Course = Depends(get_current_course),
                  db: Session = Depends(get_db)):
     if topic.prev_topic_id is not None:
         if queries.get_topic(db, topic.prev_topic_id) is None:

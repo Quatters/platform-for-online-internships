@@ -1,9 +1,10 @@
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams
-from backend.api.queries.helpers import with_search
+from backend.api.queries.helpers import get_instances_or_400, with_search
 from backend.api.schemas import competencies as schemas
 from backend.models.competencies import Competence
+from backend.models.courses import Course
 
 
 def get_competencies(db: Session, params: ListPageParams):
@@ -17,11 +18,12 @@ def get_competence(db: Session, competence_id: int) -> Competence | None:
 
 
 def create_competence(db: Session, competence: schemas.CreateCompetence) -> Competence:
-    competence = Competence(**competence.dict())
-    db.add(competence)
+    created_competence = Competence(**competence.dict(exclude={'courses'}))
+    created_competence.courses = get_instances_or_400(db, Course, competence.courses)
+    db.add(created_competence)
     db.commit()
-    db.refresh(competence)
-    return competence
+    db.refresh(created_competence)
+    return created_competence
 
 
 def delete_competence(db: Session, competence: Competence):
