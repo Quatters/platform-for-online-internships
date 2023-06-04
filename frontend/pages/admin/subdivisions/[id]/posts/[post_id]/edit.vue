@@ -35,7 +35,7 @@
         });
     });
 
-    const patchData = ref<schema>(data as schema);
+    const { patchData } = usePatchDataInitializer<schema>(data, { m2mFields: ['courses'] });
 
     async function save() {
         await $api({

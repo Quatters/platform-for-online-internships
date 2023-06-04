@@ -2,11 +2,13 @@
     <div class="relative w-fit ml-auto">
         <button
             class="absolute top-0 bottom-0 right-0 text-gray-500 font-bold focus:text-blue-800 hover:text-blue-600 transition-colors duration-100 px-3"
+            type="button"
             @click="() => setSearch(undefined)"
         >
             ⨯
         </button>
         <ControlInput
+            ref="controlInput"
             class="ml-auto w-full"
             :class="inputClass"
             placeholder="Найти..."
@@ -18,8 +20,11 @@
 </template>
 
 <script setup lang="ts">
+    import type { ControlInput } from '~/.nuxt/components';
+
     const route = useRoute();
     const router = useRouter();
+    const controlInput = ref<InstanceType<typeof ControlInput>>();
 
     const props = withDefaults(
         defineProps<{
@@ -50,4 +55,6 @@
         }
         emit('update:modelValue', value);
     }
+
+    defineExpose({ controlInput });
 </script>

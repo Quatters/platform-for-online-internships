@@ -9,16 +9,15 @@ from fastapi_pagination import (
     LimitOffsetParams as LimitOffsetParamsBase,
 )
 
+
 BACKEND_ROOT: Path = Path(__file__).parent.resolve().absolute()
 PROJECT_ROOT: Path = BACKEND_ROOT.parent.absolute()
 
 load_dotenv(PROJECT_ROOT / '.env')
+if bool(os.getenv('GITHUB_ACTIONS')):
+    load_dotenv(PROJECT_ROOT / '.env.ci', override=True)
 
 DEBUG = bool(os.getenv('DEBUG', False))
-
-if 'pytest' in sys.modules:
-    load_dotenv(PROJECT_ROOT / '.env.ci')
-    DEBUG = bool(os.getenv('TESTS_DEBUG', True))
 
 APP_NAME = 'platform_for_online_internships_backend'
 API_VERSION = 'v1'
@@ -29,7 +28,7 @@ UVICORN_CONFIG = {
     'host': os.getenv('UVICORN_HOST', '0.0.0.0'),
     'port': int(os.getenv('UVICORN_PORT', 8000)),
     'reload': bool(os.getenv('UVICORN_HOT_RELOAD', False)),
-    'log_level': 'debug' if bool(os.getenv('DEBUG', False)) else 'info',
+    'log_level': 'debug' if DEBUG else 'info',
 }
 
 STATIC_DIR = PROJECT_ROOT / 'static'
@@ -66,7 +65,12 @@ LimitOffsetPage = LimitOffsetPageBase.with_custom_options(
 
 class LimitOffsetParams(LimitOffsetParamsBase):
     limit: int = Query(
-        PAGINATION['DEFAULT_LIMIT'],
+        default=PAGINATION['DEFAULT_LIMIT'],
         ge=1,
         description='Page size limit',
     )
+
+
+if 'pytest' in sys.modules:
+    if not DATABASE_URL.endswith('/'):  # e.g. "sqlite://" (in-memory db)
+        DATABASE_URL += '_test'

@@ -31,7 +31,11 @@ export default defineNuxtPlugin(nuxtApp => {
         if (error instanceof FetchError && error.data) {
             toastOptions.message = getMessage(error.data);
         }
-        $toast.show(toastOptions);
+        // suppress these errors because they look like vue-router bug
+        // @ts-expect-error i'm too lazy to solve this
+        if (!(typeof error.message === 'string' && error.message.startsWith('Missing required param'))) {
+            $toast.show(toastOptions);
+        }
         console.error(error);
     };
 });

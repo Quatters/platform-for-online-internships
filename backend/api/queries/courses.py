@@ -8,6 +8,7 @@ from backend.api.queries.helpers import with_search
 
 def get_courses(db: Session, params: ListPageParams):
     query = with_search(Course.name, query=db.query(Course), search=params.search)
+    query = query.order_by(Course.name)
     return paginate(query, params)
 
 

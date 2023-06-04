@@ -1,11 +1,21 @@
 <template>
     <div class="whitespace-pre-wrap">
-        {{ value }}
+        {{ computedValue }}
     </div>
 </template>
 
 <script setup lang="ts">
     import { FieldProps } from '~/types';
 
-    defineProps<FieldProps>();
+    const props = defineProps<FieldProps>();
+
+    const i18n = useI18n();
+
+    const computedValue = computed(() => {
+        const v = String(props.value);
+        if (i18n.te(v)) {
+            return i18n.t(v);
+        }
+        return v;
+    });
 </script>

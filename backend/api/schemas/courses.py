@@ -1,5 +1,4 @@
 from backend.api.schemas.base import BaseSchema
-from backend.api.schemas.competencies import Competence
 
 
 class Course(BaseSchema):
@@ -7,9 +6,23 @@ class Course(BaseSchema):
     name: str
 
 
-class OneCourse(Course):
+class FkPost(BaseSchema):
+    id: int
+    subdivision_id: int
+    name: str
+
+
+class FkCompetence(BaseSchema):
+    id: int
+    name: str
+
+
+class OneCourse(BaseSchema):
+    id: int
+    name: str
     description: str
-    competencies: list[Competence]
+    posts: list[FkPost]
+    competencies: list[FkCompetence]
 
 
 class CreateCourse(BaseSchema):

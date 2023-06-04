@@ -6,7 +6,7 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <CommonListViewTable :items="data!.items" />
+            <CommonListViewTable :items="data!.items" hide-head />
             <CommonLoadMore :response="data" @load-needed="loadMore" />
         </CommonContent>
     </div>

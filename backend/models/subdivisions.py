@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship, Mapped
 from backend.models.base import BaseModel
 
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # nocv
     from backend.models import Post
 
 

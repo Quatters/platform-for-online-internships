@@ -67,22 +67,63 @@ alembic check
 alembic upgrade head
 ```
 
-Before opening PR, make sure there are no `flake8` errors:
+### Testing
+
+Run `flake8` linter with
 
 ```sh
+flake8
+# or
 python -m flake8
 ```
 
-all tests are passed:
+Run tests with
 
 ```sh
-python -m pytest tests.py
+pytest
+# or
+python -m pytest
 ```
+
+`pytest` is smart enough to discover test modules (classes, functions) by their
+names prefixed with `test_`. Refer to
+[`pytest` documentation](https://docs.pytest.org/en/7.3.x/contents.html)
+to learn more.
+
+Use `--cov` argument to show coverage report:
+
+```sh
+pytest --cov
+```
+
+---
+
+**NOTE**
+
+Tests use database specified by `DATABASE_URL` env suffixed with `_test`. E.g.
+
+```sh
+# if your env specifies
+DATABASE_URL="postgresql://postgres:postgres@localhost/my_db"
+# then tests will use
+"postgresql://postgres:postgres@localhost/my_db_test"
+```
+
+If database not exists it will be created automatically, migrations will
+be applied and test users will be created. Each unit test runs in
+transaction which is rolled back after it ends, so you are free to do
+everything is needed. At the end of test session database will be dropped.
+
+---
+
+Before opening PR, make sure there are no `flake8` errors
+and all tests are passed:
 
 #### create_user.py
 
 You can use `create_user.py` CLI tool to quickly create user with any role.
-User saves in database with hashed password as it was a real registration.
+User will be saved to database with hashed password as it was a real
+registration.
 
 ```sh
 # get help

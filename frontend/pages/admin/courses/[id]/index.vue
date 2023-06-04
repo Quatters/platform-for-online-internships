@@ -9,6 +9,11 @@
                     :params="{ course_id: route.params.id as string}"
                 />
             </template>
+            <template #links>
+                <NuxtLink :to="{ name: 'admin-courses-id-topics', params: { id: route.params.id } }" class="link">
+                    Темы
+                </NuxtLink>
+            </template>
         </ControlPanel>
         <CommonContent>
             <CommonDetailViewCard :item="data!" />
@@ -20,6 +25,7 @@
     const { $api } = useNuxtApp();
 
     const route = useRoute();
+    const pageStore = usePageStore();
 
     const { data } = await useAsyncData(() => {
         return $api({
@@ -30,4 +36,17 @@
             },
         });
     });
+
+    pageStore.fkInstancePathMap = {
+        posts: {
+            name: 'admin-subdivisions-id-posts-post_id',
+            params: {
+                id: '<<from-response>>',
+            },
+            response: data.value?.posts,
+            routerToResponseParamsMap: {
+                id: 'subdivision_id',
+            },
+        },
+    };
 </script>
