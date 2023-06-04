@@ -1,16 +1,14 @@
-from typing import List
 from fastapi_pagination.ext.sqlalchemy import paginate
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams
+from backend.api.queries.helpers import with_search
 from backend.api.schemas import competencies as schemas
 from backend.models.competencies import Competence
 
 
-def get_competencies(db: Session, params: ListPageParams) -> List[Competence]:
+def get_competencies(db: Session, params: ListPageParams):
     query = db.query(Competence)
-    if s := params.search:
-        query = query.filter(func.lower(Competence.name).like(f'%{s.lower()}%'))
+    query = with_search(Competence.name, query=db.query(Competence), search=params.search)
     return paginate(query, params)
 
 

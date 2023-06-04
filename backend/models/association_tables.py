@@ -24,3 +24,11 @@ CoursePostAssociation = Table(
     PKColumn('course_id', fk('Course')),
     PKColumn('post_id', fk('Post')),
 )
+
+
+CourseCompetenceAssociation = Table(
+    tablename('course_competence_association'),
+    BaseModel.metadata,
+    PKColumn('course_id', fk('Course')),
+    PKColumn('post_id', fk('Competence')),
+)
