@@ -2,7 +2,6 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 from backend.api.errors.errors import not_found
 from backend.models.courses import Course
-from backend.models.posts import Post
 from backend.models.topics import Topic
 from backend.database import get_db
 import backend.api.queries.courses as queries_courses
