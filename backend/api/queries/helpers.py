@@ -72,7 +72,7 @@ def create_with_respect_to_prev_instance(
         if existing_first is not None:
 
             def callback(created_instance):
-                existing_first.prev_resource_id = created_instance.id
+                setattr(existing_first, prev_id_attr_name, created_instance.id)
 
             after_add_callback = callback  # noqa: F811
     else:
@@ -86,7 +86,7 @@ def create_with_respect_to_prev_instance(
             next_instance = getattr(existing_prev, next_instance_attr_name)
             if next_instance is not None:
                 setattr(next_instance, prev_id_attr_name, created_instance.id)
-            created_instance.prev_resource_id = existing_prev.id
+            setattr(created_instance, prev_id_attr_name, existing_prev.id)
 
         after_add_callback = callback
 
@@ -117,7 +117,7 @@ def update_with_respect_to_prev_instance(
     additional_filters_to_search_for_instance_to_update = \
         additional_filters_to_search_for_instance_to_update or []
 
-    def after_update_callback(resource_to_update, prev_resource_id):
+    def after_update_callback(instance_to_update, prev_instance_id):
         pass
 
     if prev_id_attr_name in update_data:
@@ -136,10 +136,10 @@ def update_with_respect_to_prev_instance(
             setattr(instance, prev_id_attr_name, prev_instance_id_to_set)
 
             if instance_to_update is not None:
-                instance_to_update.prev_resource_id = None
+                setattr(instance_to_update, prev_id_attr_name, None)
 
-                def callback(resource_to_update, prev_resource_id):
-                    resource_to_update.prev_resource_id = prev_resource_id
+                def callback(instance_to_update, prev_instance_id):
+                    setattr(instance_to_update, prev_id_attr_name, prev_instance_id)
 
                 after_update_callback = callback  # noqa: F811
 

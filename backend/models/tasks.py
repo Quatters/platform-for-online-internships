@@ -19,6 +19,8 @@ class Task(BaseModel):
     task_type = Column(Enum(TaskType), nullable=False, index=True)
     prev_task_id = Column(Integer, ForeignKey('app_task.id'), index=True, unique=True)
     topic_id = Column(Integer, ForeignKey(Topic.id), index=True, nullable=False)
+
+    next_task = Relationship('Task', back_populates='prev_task', uselist=False)
     topic = Relationship(Topic, primaryjoin=topic_id == Topic.id)
 
     __table_args__ = (

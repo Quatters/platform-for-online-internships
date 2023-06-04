@@ -30,11 +30,9 @@ def get_topic_resource(db: Session, resource_id: int) -> TopicResource | None:
 
 
 def get_first_topic_resource(db: Session, topic_id: int) -> TopicResource | None:
-    return db.query(TopicResource)\
-        .filter(
-            (TopicResource.topic_id == topic_id) & (TopicResource.prev_resource_id == None)  # noqa: E711
-        )\
-        .one_or_none()
+    return db.query(TopicResource).filter(
+        (TopicResource.topic_id == topic_id) & (TopicResource.prev_resource_id == None)  # noqa: E711
+    ).one_or_none()
 
 
 def create_resource(db: Session, resource: schemas.CreateTopicResource, topic_id: int) -> TopicResource:

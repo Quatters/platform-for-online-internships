@@ -18,6 +18,8 @@ class Topic(BaseModel):
     description = Column(String, nullable=False, server_default="")
     prev_topic_id = Column(Integer, ForeignKey('app_topic.id'), index=True, unique=True)
     course_id = Column(Integer, ForeignKey(Course.id), index=True, nullable=False)
+
+    next_topic = Relationship('Topic', back_populates='prev_topic', uselist=False)
     course = Relationship(Course, primaryjoin=course_id == Course.id)
 
     __table_args__ = (
