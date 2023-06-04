@@ -64,7 +64,8 @@ def create_with_respect_to_prev_instance(
     get_first_func: Callable,
     get_prev_func: Callable,
 ):
-    after_add_callback = lambda _: None
+    def after_add_callback(created_instance):
+        pass
 
     if create_data[prev_id_attr_name] is None:
         existing_first = get_first_func()
@@ -73,7 +74,7 @@ def create_with_respect_to_prev_instance(
             def callback(created_instance):
                 existing_first.prev_resource_id = created_instance.id
 
-            after_add_callback = callback
+            after_add_callback = callback  # noqa: F811
     else:
         existing_prev = get_prev_func()
         if existing_prev is None:
@@ -112,10 +113,12 @@ def update_with_respect_to_prev_instance(
     next_instance_attr_name: str,
     additional_filters_to_search_for_instance_to_update: list | None = None,
 ):
-    after_update_callback = lambda *args, **kwargs: None
     instance_to_update = None
     additional_filters_to_search_for_instance_to_update = \
         additional_filters_to_search_for_instance_to_update or []
+
+    def after_update_callback(resource_to_update, prev_resource_id):
+        pass
 
     if prev_id_attr_name in update_data:
         prev_instance_id_to_set = update_data.pop(prev_id_attr_name)
@@ -138,7 +141,7 @@ def update_with_respect_to_prev_instance(
                 def callback(resource_to_update, prev_resource_id):
                     resource_to_update.prev_resource_id = prev_resource_id
 
-                after_update_callback = callback
+                after_update_callback = callback  # noqa: F811
 
     for key, value in update_data.items():
         setattr(instance, key, value)

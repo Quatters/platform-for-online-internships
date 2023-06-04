@@ -2403,8 +2403,8 @@
         }
       },
       "patch": {
-        "summary": "Create Resource",
-        "operationId": "create_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch",
+        "summary": "Patch Resource",
+        "operationId": "patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch",
         "parameters": [
           {
             "required": true,

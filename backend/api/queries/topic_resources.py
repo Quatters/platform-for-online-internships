@@ -2,7 +2,12 @@ from functools import partial
 from sqlalchemy.orm import Session
 from fastapi_pagination import paginate as pypaginate
 from backend.api.dependencies import ListPageParams
-from backend.api.queries.helpers import create_with_respect_to_prev_instance, sort_by_self_fk, update_with_respect_to_prev_instance, with_search
+from backend.api.queries.helpers import (
+    create_with_respect_to_prev_instance,
+    update_with_respect_to_prev_instance,
+    sort_by_self_fk,
+    with_search,
+)
 from backend.models import TopicResource
 from backend.api.schemas import topic_resources as schemas
 
@@ -25,7 +30,9 @@ def get_topic_resource(db: Session, resource_id: int) -> TopicResource | None:
 
 def get_first_topic_resource(db: Session, topic_id: int) -> TopicResource | None:
     return db.query(TopicResource)\
-        .filter((TopicResource.topic_id == topic_id) & (TopicResource.prev_resource_id == None))\
+        .filter(
+            (TopicResource.topic_id == topic_id) & (TopicResource.prev_resource_id == None)  # noqa: E711
+        )\
         .one_or_none()
 
 

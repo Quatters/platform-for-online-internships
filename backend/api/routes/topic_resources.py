@@ -1,11 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.api.auth import admin_only, get_current_user
+from backend.api.auth import admin_only
 from backend.api.current_dependencies import current_topic, current_topic_resource
 from backend.api.dependencies import ListPageParams
-from backend.api.errors.errors import bad_request, not_found, unauthorized
-from backend.api.schemas.courses import Course
-from backend.api.schemas.users import User
 from backend.database import get_db
 from backend.api.queries import topic_resources as queries
 from backend.api.schemas import topic_resources as schemas
@@ -51,7 +48,7 @@ def create_resource(
     response_model=schemas.OneTopicResource,
     dependencies=[Depends(admin_only)],
 )
-def create_resource(
+def patch_resource(
     resource_to_patch: schemas.PatchTopicResource,
     resource: TopicResource = Depends(current_topic_resource),
     db: Session = Depends(get_db),

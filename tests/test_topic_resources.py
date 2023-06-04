@@ -1,13 +1,8 @@
-from typing import Optional
-from fastapi import Depends
 import pytest
-from uuid import uuid1
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
 from tests.base import login_as, test_admin
-from backend.models import TopicResource, Topic, Course
+from backend.models import TopicResource
 from backend.database import get_db
-from backend.constants import TopicResourceType
 from tests import helpers
 
 

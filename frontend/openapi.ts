@@ -132,8 +132,8 @@ export interface paths {
   "/api/courses/{course_id}/topics/{topic_id}/resources/{resource_id}": {
     /** Get One Resource */
     get: operations["get_one_resource_api_courses__course_id__topics__topic_id__resources__resource_id__get"];
-    /** Create Resource */
-    patch: operations["create_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch"];
+    /** Patch Resource */
+    patch: operations["patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch"];
   };
 }
 
@@ -1754,8 +1754,8 @@ export interface operations {
       };
     };
   };
-  /** Create Resource */
-  create_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch: {
+  /** Patch Resource */
+  patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch: {
     parameters: {
       path: {
         resource_id: number;
