@@ -15,6 +15,9 @@ engine = create_engine(DATABASE_URL, connect_args=connect_args, **engine_kwargs)
 if not database_exists(DATABASE_URL):
     create_database(DATABASE_URL)
 
+if not database_exists(DATABASE_URL):
+    create_database(DATABASE_URL)
+
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,

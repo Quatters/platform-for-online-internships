@@ -10,10 +10,13 @@ from fastapi_pagination import (
 )
 
 
+
 BACKEND_ROOT: Path = Path(__file__).parent.resolve().absolute()
 PROJECT_ROOT: Path = BACKEND_ROOT.parent.absolute()
 
 load_dotenv(PROJECT_ROOT / '.env')
+if bool(os.getenv('GITHUB_ACTIONS')):
+    load_dotenv(PROJECT_ROOT / '.env.ci', override=True)
 if bool(os.getenv('GITHUB_ACTIONS')):
     load_dotenv(PROJECT_ROOT / '.env.ci', override=True)
 

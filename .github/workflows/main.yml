@@ -9,8 +9,14 @@ on:
   pull_request:
     branches: ["main"]
   workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
 
 permissions:
+  contents: read
   contents: read
 
 jobs:
@@ -32,7 +38,27 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+  backend:
+    runs-on: ubuntu-22.04
+    permissions: write-all
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_PORT: 5432
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
     steps:
       - uses: actions/checkout@v3
 
@@ -40,7 +66,15 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: "3.11"
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-test.txt -r requirements-ci.txt
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -62,6 +96,8 @@ jobs:
 
   frontend:
     runs-on: ubuntu-22.04
+  frontend:
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v3
@@ -71,6 +107,10 @@ jobs:
         run: |
           yarn
 
+      - name: Run eslint
+        working-directory: ./frontend
+        run: |
+          yarn lint
       - name: Run eslint
         working-directory: ./frontend
         run: |
