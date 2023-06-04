@@ -7,7 +7,7 @@ from backend.settings import DATABASE_URL, ECHO_SQL
 connect_args = {'check_same_thread': False} if DATABASE_URL.startswith('sqlite') else {}
 
 engine_kwargs = {}
-if ECHO_SQL:
+if ECHO_SQL:  # nocv
     engine_kwargs['echo'] = True
 
 engine = create_engine(DATABASE_URL, connect_args=connect_args, **engine_kwargs)

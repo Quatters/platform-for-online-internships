@@ -83,7 +83,8 @@ def create_with_respect_to_prev_instance(
 
         def callback(created_instance):
             next_instance = getattr(existing_prev, next_instance_attr_name)
-            setattr(next_instance, prev_id_attr_name, created_instance.id)
+            if next_instance is not None:
+                setattr(next_instance, prev_id_attr_name, created_instance.id)
             created_instance.prev_resource_id = existing_prev.id
 
         after_add_callback = callback

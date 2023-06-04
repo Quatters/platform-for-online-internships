@@ -37,6 +37,7 @@ class TopicResource(BaseModel):
     topic_id = Column(Integer, ForeignKey(Topic.id), index=True, nullable=False)
 
     topic = Relationship(Topic, primaryjoin=topic_id == Topic.id)
+    next_resource = Relationship('TopicResource', back_populates='prev_resource', uselist=False)
 
     __table_args__ = (
         UniqueConstraint(topic_id, prev_resource_id, name='u_prev_resource_per_topic'),
@@ -45,4 +46,3 @@ class TopicResource(BaseModel):
 
 
 TopicResource.prev_resource = Relationship(TopicResource, remote_side=[TopicResource.id], uselist=False)
-TopicResource.next_resource = Relationship(TopicResource, remote_side=[TopicResource.prev_resource_id], uselist=False)

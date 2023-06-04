@@ -68,3 +68,9 @@ export interface ListItems {
     limit: number;
     offset: number;
 }
+
+export interface TopicResourceListItem {
+    name: string;
+    value: string;
+    type: 'text' | 'image' | 'video' | 'embedded';
+}

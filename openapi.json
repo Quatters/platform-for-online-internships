@@ -2205,6 +2205,273 @@
           }
         ]
       }
+    },
+    "/api/courses/{course_id}/topics/{topic_id}/resources/": {
+      "get": {
+        "summary": "Get Resources",
+        "operationId": "get_resources_api_courses__course_id__topics__topic_id__resources__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_ListTopicResource_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Resource",
+        "operationId": "create_resource_api_courses__course_id__topics__topic_id__resources__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTopicResource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneTopicResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/courses/{course_id}/topics/{topic_id}/resources/{resource_id}": {
+      "get": {
+        "summary": "Get One Resource",
+        "operationId": "get_one_resource_api_courses__course_id__topics__topic_id__resources__resource_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Resource Id",
+              "type": "integer"
+            },
+            "name": "resource_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneTopicResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Create Resource",
+        "operationId": "create_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Resource Id",
+              "type": "integer"
+            },
+            "name": "resource_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchTopicResource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneTopicResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -2419,6 +2686,32 @@
           }
         }
       },
+      "CreateTopicResource": {
+        "title": "CreateTopicResource",
+        "required": [
+          "type",
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/TopicResourceType"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "prev_resource_id": {
+            "title": "Prev Resource Id",
+            "type": "integer"
+          }
+        }
+      },
       "FkPost": {
         "title": "FkPost",
         "required": [
@@ -2478,6 +2771,24 @@
           }
         }
       },
+      "FkTopicResource": {
+        "title": "FkTopicResource",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "HTTPValidationError": {
         "title": "HTTPValidationError",
         "type": "object",
@@ -2504,6 +2815,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Course"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_ListTopicResource_": {
+        "title": "LimitOffsetPage[ListTopicResource]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListTopicResource"
             }
           },
           "total": {
@@ -2786,6 +3129,33 @@
           }
         }
       },
+      "ListTopicResource": {
+        "title": "ListTopicResource",
+        "required": [
+          "id",
+          "type",
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TopicResourceType"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        }
+      },
       "ListUser": {
         "title": "ListUser",
         "required": [
@@ -3015,6 +3385,39 @@
           }
         }
       },
+      "OneTopicResource": {
+        "title": "OneTopicResource",
+        "required": [
+          "id",
+          "type",
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TopicResourceType"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "prev_resource": {
+            "$ref": "#/components/schemas/FkTopicResource"
+          },
+          "next_resource": {
+            "$ref": "#/components/schemas/FkTopicResource"
+          }
+        }
+      },
       "OneUserCourse": {
         "title": "OneUserCourse",
         "required": [
@@ -3166,6 +3569,24 @@
           },
           "next_topic_id": {
             "title": "Next Topic Id",
+            "type": "integer"
+          }
+        }
+      },
+      "PatchTopicResource": {
+        "title": "PatchTopicResource",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "prev_resource_id": {
+            "title": "Prev Resource Id",
             "type": "integer"
           }
         }
@@ -3325,6 +3746,16 @@
             "type": "string"
           }
         }
+      },
+      "TopicResourceType": {
+        "title": "TopicResourceType",
+        "enum": [
+          "text",
+          "image",
+          "video",
+          "embedded"
+        ],
+        "description": "An enumeration."
       },
       "User": {
         "title": "User",
