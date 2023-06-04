@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from backend.models import Course
 from backend.api.schemas import courses as schemas
 from backend.api.dependencies import ListPageParams
-from backend.api.queries.helpers import with_search
+from backend.api.queries.helpers import get_instances_or_400, with_search
+from backend.models.competencies import Competence
 
 
 def get_courses(db: Session, params: ListPageParams):
@@ -21,11 +22,12 @@ def get_course_by_name(db: Session, name: str) -> Course | None:
 
 
 def create_course(db: Session, course: schemas.CreateCourse) -> Course:
-    course = Course(**course.dict())
-    db.add(course)
+    created_course = Course(**course.dict())
+    created_course.competencies = get_instances_or_400(db, Competence, course.competencies)
+    db.add(created_course)
     db.commit()
-    db.refresh(course)
-    return course
+    db.refresh(created_course)
+    return created_course
 
 
 def delete_course(db: Session, course: Course):
@@ -34,7 +36,11 @@ def delete_course(db: Session, course: Course):
 
 
 def patch_course(db: Session, course: Course, data: schemas.PatchCourse) -> Course:
-    db.query(Course).filter(Course.id == course.id).update(data.dict(exclude_unset=True))
+    dict_ = data.dict(exclude_unset=True)
+    if 'competencies' in dict_:
+        course.competencies = get_instances_or_400(db, Competence, dict_.pop('competencies'))
+    for key, value in dict_.items():
+        setattr(course, key, value)
     db.commit()
     db.refresh(course)
     return course

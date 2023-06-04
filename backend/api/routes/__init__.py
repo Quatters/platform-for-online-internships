@@ -8,8 +8,6 @@ from . import (
     subdivisions,
     posts,
     competencies,
-    course_competencies,
-    post_competencies,
 )
 
 routers = (
@@ -22,6 +20,4 @@ routers = (
     subdivisions.router,
     posts.router,
     competencies.router,
-    course_competencies.router,
-    post_competencies.router,
 )

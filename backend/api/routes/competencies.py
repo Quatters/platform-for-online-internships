@@ -19,12 +19,12 @@ def get_competencies(params: ListPageParams = Depends(),
     return queries.get_competencies(db, params)
 
 
-@router.get('/{competence_id}', response_model=schemas.Competence)
+@router.get('/{competence_id}', response_model=schemas.OneCompetence)
 def get_competence(competence: Competence = Depends(get_current_competence)):
     return competence
 
 
-@router.post('/', response_model=schemas.Competence, dependencies=[Depends(admin_only)])
+@router.post('/', response_model=schemas.OneCompetence, dependencies=[Depends(admin_only)])
 def create_competence(competence: schemas.CreateCompetence,
                       db: Session = Depends(get_db)):
     return queries.create_competence(db, competence)
@@ -37,7 +37,7 @@ def delete_compentence(competence: Competence = Depends(get_current_competence),
     return {}
 
 
-@router.patch('/{competence_id}', response_model=schemas.Competence)
+@router.patch('/{competence_id}', response_model=schemas.OneCompetence)
 def patch_competence(competence: schemas.PatchCompetence,
                      competence_to_patch: Competence = Depends(get_current_competence),
                      db: Session = Depends(get_db)):

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import get_current_user
-from backend.api.current_dependencies import current_course, current_topic
+from backend.api.current_dependencies import get_current_course, current_topic
 from backend.api.dependencies import ListPageParams
 from backend.api.errors.errors import not_found, unauthorized
 from backend.api.schemas.courses import Course
@@ -24,7 +24,7 @@ def populate_next_topic(topic: Topic, db: Session) -> schemas.OneTopic:
 @router.get('/',
             response_model=LimitOffsetPage[schemas.Topic])
 def get_topics(params: ListPageParams = Depends(),
-               course: Course = Depends(current_course),
+               course: Course = Depends(get_current_course),
                db: Session = Depends(get_db)):
     return queries.get_topics(db, params, course.id)
 
@@ -37,7 +37,7 @@ def get_topic(topic: Topic = Depends(current_topic),
 
 @router.post('/', response_model=schemas.OneTopic)
 def create_topic(topic: schemas.CreateTopic,
-                 course: Course = Depends(current_course),
+                 course: Course = Depends(get_current_course),
                  user: User = Depends(get_current_user),
                  db: Session = Depends(get_db)):
     if not user.is_admin:
