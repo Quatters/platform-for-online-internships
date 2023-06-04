@@ -1,36 +1,25 @@
 <template>
-    <div class="mx-8 mt-4 flex" :class="$style.wrapper">
-        <slot name="buttons" />
-        <slot name="inputs" />
+    <div class="mx-8 mt-4 flex justify-between">
+        <div class="flex" :class="$style['module-style']">
+            <slot name="buttons" />
+        </div>
 
-        <slot name="links" />
+        <div class="flex" :class="$style['module-style']">
+            <slot name="links" />
+            <slot name="inputs" />
+        </div>
     </div>
 </template>
 
 <style module lang="scss">
-    .wrapper {
-        & > button:not(:first-child) {
-            margin-left: 0.5rem;
-        }
-
-        & > input:not(:last-child) {
-            margin-right: 0.5rem;
-        }
-
-        & > input {
-            margin-left: auto;
+    .module-style {
+        & > * {
             text-align: center;
             align-self: center;
         }
 
-        & > a:not(:last-child) {
-            margin-left: auto;
-        }
-
-        & > a {
+        & > *:not(:first-child) {
             margin-left: 0.5rem;
-            text-align: center;
-            align-self: center;
         }
     }
 </style>
