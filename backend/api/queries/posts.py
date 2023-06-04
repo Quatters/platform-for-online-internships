@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session, load_only
 from fastapi_pagination.ext.sqlalchemy import paginate
 from backend.api.dependencies import ListPageParams
-from backend.models import Post, Course
+from backend.models import Post, Course, Competence
 from backend.api.schemas import posts as schemas
 from backend.api.queries.helpers import get_instances_or_400, with_search
 
@@ -28,6 +28,7 @@ def get_post(db: Session, post_id):
 def create_post(db: Session, post: schemas.CreateSubdivisionPost, subdivision_id: int):
     created_post = Post(subdivision_id=subdivision_id, **post.dict(exclude={'courses'}))
     created_post.courses = get_instances_or_400(db, Course, post.courses)
+    created_post.competencies = get_instances_or_400(db, Competence, post.competencies)
     db.add(created_post)
     db.commit()
     db.refresh(created_post)
@@ -43,6 +44,8 @@ def update_post(db: Session, post: Post, patch_data: schemas.PatchSubdivisionPos
     dict_ = patch_data.dict(exclude_unset=True)
     if 'courses' in dict_:
         post.courses = get_instances_or_400(db, Course, dict_.pop('courses'))
+    if 'competencies' in dict_:
+        post.competencies = get_instances_or_400(db, Competence, dict_.pop('competencies'))
     for key, value in dict_.items():
         setattr(post, key, value)
     db.commit()

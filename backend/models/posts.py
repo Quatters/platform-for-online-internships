@@ -4,13 +4,14 @@ from sqlalchemy.orm import relationship, Mapped
 from backend.models.base import BaseModel
 from backend.models import Subdivision
 from backend.models.association_tables import (
+    PostCompetenceAssociation,
     UserPostAssociation,
     CoursePostAssociation,
 )
 
 
 if TYPE_CHECKING:  # nocv
-    from backend.models import User, Course
+    from backend.models import User, Course, Competence
 
 
 class Post(BaseModel):
@@ -32,5 +33,10 @@ class Post(BaseModel):
     courses: Mapped[list['Course']] = relationship(
         'Course',
         secondary=CoursePostAssociation,
+        back_populates='posts',
+    )
+    competencies: Mapped[list['Competence']] = relationship(
+        'Competence',
+        secondary=PostCompetenceAssociation,
         back_populates='posts',
     )

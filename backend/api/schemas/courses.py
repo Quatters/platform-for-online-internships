@@ -17,9 +17,7 @@ class FkCompetence(BaseSchema):
     name: str
 
 
-class OneCourse(BaseSchema):
-    id: int
-    name: str
+class OneCourse(Course):
     description: str
     posts: list[FkPost]
     competencies: list[FkCompetence]
