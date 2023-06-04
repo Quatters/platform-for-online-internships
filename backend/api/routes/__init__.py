@@ -8,6 +8,7 @@ from . import (
     subdivisions,
     posts,
     competencies,
+    topic_resources,
 )
 
 routers = (
@@ -20,4 +21,5 @@ routers = (
     subdivisions.router,
     posts.router,
     competencies.router,
+    topic_resources.router,
 )

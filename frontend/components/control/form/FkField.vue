@@ -8,8 +8,8 @@
                 class="flex shadow appearance-none border border-gray-300 rounded w-full h-[2.385rem] overflow-x-hidden text-ellipsis py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
                 @click="showDropdown"
             >
-                <span v-if="modelValue">{{ viewValue ?? modelValue }}</span>
-                <span v-else class="italic text-gray-500">нет</span>
+                <span v-if="modelValue !== undefined">{{ viewValue ?? modelValue }}</span>
+                <span v-else class="italic text-gray-500">не задано</span>
                 <button
                     v-if="!required"
                     class="absolute top-0 bottom-0 right-0 text-gray-500 font-bold focus:text-blue-800 hover:text-blue-600 transition-colors duration-100 px-3"
@@ -69,6 +69,7 @@
             valueFieldName: string;
             viewFieldName: string;
             label: string;
+            nullable?: boolean;
         }>(),
         {
             modelValue: undefined,
@@ -77,6 +78,7 @@
             required: false,
             valueFieldName: 'id',
             viewFieldName: 'name',
+            nullable: false,
         },
     );
 
@@ -101,7 +103,18 @@
         },
     });
 
-    const typedData = computed(() => data.value as ListItems);
+    const typedData = computed(() => {
+        const _typedData = data.value as ListItems;
+        if (props.nullable) {
+            // @ts-expect-error i'm too lazy to solve this
+            _typedData.items.unshift({
+                id: 0,
+                [props.valueFieldName]: null,
+                [props.viewFieldName]: 'пусто',
+            });
+        }
+        return _typedData;
+    });
 
     async function showDropdown() {
         dropdownShown.value = true;

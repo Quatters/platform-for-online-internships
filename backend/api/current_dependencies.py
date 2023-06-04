@@ -10,6 +10,7 @@ import backend.api.queries.tasks as queries_tasks
 import backend.api.queries.subdivisions as queries_subdivisions
 import backend.api.queries.posts as queries_posts
 import backend.api.queries.competencies as queries_competencies
+import backend.api.queries.topic_resources as queries_topic_resources
 
 
 def get_current_course(course_id: int, db: Session = Depends(get_db)):
@@ -59,3 +60,14 @@ async def get_current_competence(competence_id: int,
     if competence is None:
         raise not_found()
     return competence
+
+
+async def current_topic_resource(
+    resource_id: int,
+    topic: Topic = Depends(current_topic),
+    db: Session = Depends(get_db),
+):
+    resource = queries_topic_resources.get_topic_resource(db, resource_id)
+    if resource is None or resource.topic_id != topic.id:
+        raise not_found()
+    return resource

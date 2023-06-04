@@ -7,7 +7,7 @@
             <span v-else>{{ item.value }}</span>
         </li>
     </ul>
-    <div v-else class="text-gray-600 italic">нет</div>
+    <div v-else class="text-gray-600 italic">не задано</div>
 </template>
 
 <script setup lang="ts">

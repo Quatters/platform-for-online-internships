@@ -123,6 +123,20 @@ export interface paths {
     /** Update Subdivision Post */
     patch: operations["update_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__patch"];
   };
+  "/api/courses/{course_id}/topics/{topic_id}/resources/": {
+    /** Get Resources */
+    get: operations["get_resources_api_courses__course_id__topics__topic_id__resources__get"];
+    /** Create Resource */
+    post: operations["create_resource_api_courses__course_id__topics__topic_id__resources__post"];
+  };
+  "/api/courses/{course_id}/topics/{topic_id}/resources/{resource_id}": {
+    /** Get One Resource */
+    get: operations["get_one_resource_api_courses__course_id__topics__topic_id__resources__resource_id__get"];
+    /** Delete Resource */
+    delete: operations["delete_resource_api_courses__course_id__topics__topic_id__resources__resource_id__delete"];
+    /** Patch Resource */
+    patch: operations["patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -214,6 +228,16 @@ export interface components {
       /** Prev Topic Id */
       prev_topic_id?: number;
     };
+    /** CreateTopicResource */
+    CreateTopicResource: {
+      type: components["schemas"]["TopicResourceType"];
+      /** Name */
+      name: string;
+      /** Value */
+      value: string;
+      /** Prev Resource Id */
+      prev_resource_id?: number;
+    };
     /** FkPost */
     FkPost: {
       /** Id */
@@ -237,6 +261,13 @@ export interface components {
       /** Name */
       name: string;
     };
+    /** FkTopicResource */
+    FkTopicResource: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -246,6 +277,17 @@ export interface components {
     LimitOffsetPage_Course_: {
       /** Items */
       items: (components["schemas"]["Course"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[ListTopicResource] */
+    LimitOffsetPage_ListTopicResource_: {
+      /** Items */
+      items: (components["schemas"]["ListTopicResource"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -341,6 +383,16 @@ export interface components {
       /** Offset */
       offset?: number;
     };
+    /** ListTopicResource */
+    ListTopicResource: {
+      /** Id */
+      id: number;
+      type: components["schemas"]["TopicResourceType"];
+      /** Name */
+      name: string;
+      /** Value */
+      value: string;
+    };
     /** ListUser */
     ListUser: {
       /** Id */
@@ -430,6 +482,18 @@ export interface components {
       prev_topic?: components["schemas"]["FkTopic"];
       next_topic?: components["schemas"]["FkTopic"];
     };
+    /** OneTopicResource */
+    OneTopicResource: {
+      /** Id */
+      id: number;
+      type: components["schemas"]["TopicResourceType"];
+      /** Name */
+      name: string;
+      /** Value */
+      value: string;
+      prev_resource?: components["schemas"]["FkTopicResource"];
+      next_resource?: components["schemas"]["FkTopicResource"];
+    };
     /** OneUserCourse */
     OneUserCourse: {
       /** Id */
@@ -502,6 +566,15 @@ export interface components {
       /** Next Topic Id */
       next_topic_id?: number;
     };
+    /** PatchTopicResource */
+    PatchTopicResource: {
+      /** Name */
+      name?: string;
+      /** Value */
+      value?: string;
+      /** Prev Resource Id */
+      prev_resource_id?: number;
+    };
     /** PatchUser */
     PatchUser: {
       /** Email */
@@ -566,6 +639,12 @@ export interface components {
       /** Name */
       name: string;
     };
+    /**
+     * TopicResourceType 
+     * @description An enumeration. 
+     * @enum {unknown}
+     */
+    TopicResourceType: "text" | "image" | "video" | "embedded";
     /** User */
     User: {
       /** Id */
@@ -1587,6 +1666,135 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["OneSubdivisionPost"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Resources */
+  get_resources_api_courses__course_id__topics__topic_id__resources__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+      path: {
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_ListTopicResource_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Resource */
+  create_resource_api_courses__course_id__topics__topic_id__resources__post: {
+    parameters: {
+      path: {
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTopicResource"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTopicResource"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get One Resource */
+  get_one_resource_api_courses__course_id__topics__topic_id__resources__resource_id__get: {
+    parameters: {
+      path: {
+        resource_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTopicResource"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Resource */
+  delete_resource_api_courses__course_id__topics__topic_id__resources__resource_id__delete: {
+    parameters: {
+      path: {
+        resource_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Patch Resource */
+  patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch: {
+    parameters: {
+      path: {
+        resource_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchTopicResource"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTopicResource"];
         };
       };
       /** @description Validation Error */

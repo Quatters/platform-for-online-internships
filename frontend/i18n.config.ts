@@ -17,10 +17,13 @@ export default defineI18nConfig(() => ({
             'Task type': 'Тип задания',
             'Prev task': 'Предыдущее задание',
             'Next task': 'Следующее задание',
+            'Prev resource': 'Предыдущий ресурс',
+            'Next resource': 'Следующий ресурс',
             'Is correct': 'Правильный ответ',
             Value: 'Значение',
             'Course name': 'Название курса',
             Progress: 'Прогресс',
+            Type: 'Тип',
 
             Dashboard: 'Личный кабинет',
             Posts: 'Должности',
@@ -31,13 +34,17 @@ export default defineI18nConfig(() => ({
             Topics: 'Темы',
             Tasks: 'Задания',
             Answers: 'Ответы',
+            Resources: 'Ресурсы',
 
             Create: 'Создать',
             Edit: 'Редактировать',
 
             single: 'один ответ',
             multiple: 'несколько ответов',
-            text: 'развернутый ответ',
+            text: 'текст',
+            image: 'изображение',
+            video: 'видео',
+            embedded: 'встраиваемое',
         },
     },
 }));
