@@ -29,10 +29,6 @@ def get_topic(db: Session, topic_id: int) -> Topic | None:
     return db.query(Topic).get(topic_id)
 
 
-def get_next_topic(db: Session, topic_id: int) -> Topic | None:
-    return db.query(Topic).filter(Topic.prev_topic_id == topic_id).one_or_none()
-
-
 def get_first_topic(db: Session, course_id: int):
     return db.query(Topic).filter(
         (Topic.prev_topic_id == None) & (Topic.course_id == course_id)  # noqa: E711

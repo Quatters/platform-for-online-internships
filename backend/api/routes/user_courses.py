@@ -13,40 +13,41 @@ from backend.settings import LimitOffsetPage
 router = APIRouter(prefix='/user/{user_id}/courses')
 
 
-@router.get('/', response_model=LimitOffsetPage[schemas.NamedUserCourse])
+def user_himself_only(
+    user_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if user_id != user.id:
+        raise not_found()
+
+
+@router.get('/', response_model=LimitOffsetPage[schemas.NamedUserCourse], dependencies=[Depends(user_himself_only)])
 def get_user_courses(
     user_id: int,
     params: ListPageParams = Depends(),
-    user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    if user_id != user.id:
-        raise unauthorized()
     return queries.get_user_courses(db, user_id, params)
 
 
-@router.get('/{course_id}', response_model=schemas.OneUserCourse)
+@router.get('/{course_id}', response_model=schemas.OneUserCourse, dependencies=[Depends(user_himself_only)])
 def get_one_user_course(
     course_id: int,
     user_id: int,
-    user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    if user_id != user.id:
-        raise unauthorized()
     user_course = queries.get_user_course_by_course_id(db, course_id, user_id)
     if user_course is None:
         raise not_found()
     return user_course
 
 
-@router.post('/', response_model=schemas.UserCourse)
+@router.post('/', response_model=schemas.UserCourse, dependencies=[Depends(user_himself_only)])
 def create_user_course(course_data: schemas.CreateCourse,
                        user_id: int,
                        user: User = Depends(get_current_user),
                        db: Session = Depends(get_db)):
-    if user_id != user.id:
-        raise unauthorized()
     if queries.get_user_course_by_course_id(db,
                                             user_id,
                                             course_data.course_id) is not None:
@@ -57,13 +58,10 @@ def create_user_course(course_data: schemas.CreateCourse,
     return queries.create_user_course(db, user, course)
 
 
-@router.delete('/{course_id}', status_code=204)
+@router.delete('/{course_id}', status_code=204, dependencies=[Depends(user_himself_only)])
 def delete_user_course(course_id: int,
-                       user_id: int,
                        user: User = Depends(get_current_user),
                        db: Session = Depends(get_db)):
-    if user_id != user.id:
-        raise unauthorized()
     user_course = queries.get_user_course_by_course_id(db, course_id, user.id)
     if user_course is None:
         raise not_found()
