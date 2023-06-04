@@ -5,6 +5,7 @@ from backend.api.dependencies import ListPageParams
 from backend.api.queries.helpers import (
     create_with_respect_to_prev_instance,
     update_with_respect_to_prev_instance,
+    delete_with_respect_to_prev_instance,
     sort_by_self_fk,
     with_search,
 )
@@ -58,4 +59,13 @@ def update_resource(db: Session, resource: TopicResource, update_data: schemas.P
         additional_filters_to_search_for_instance_to_update=[
             TopicResource.topic_id == resource.topic_id,
         ]
+    )
+
+
+def delete_resource(db: Session, resource: TopicResource):
+    delete_with_respect_to_prev_instance(
+        db=db,
+        instance=resource,
+        prev_id_attr_name='prev_resource_id',
+        next_instance_attr_name='next_resource',
     )

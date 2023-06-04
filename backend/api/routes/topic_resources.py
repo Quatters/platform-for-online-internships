@@ -54,3 +54,16 @@ def patch_resource(
     db: Session = Depends(get_db),
 ):
     return queries.update_resource(db, resource, resource_to_patch)
+
+
+@router.delete(
+    '/{resource_id}',
+    status_code=204,
+    dependencies=[Depends(admin_only)],
+)
+def delete_resource(
+    resource: TopicResource = Depends(current_topic_resource),
+    db: Session = Depends(get_db),
+):
+    queries.delete_resource(db, resource)
+    return {}

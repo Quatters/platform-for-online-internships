@@ -153,3 +153,22 @@ def update_with_respect_to_prev_instance(
     db.commit()
 
     return instance
+
+
+def delete_with_respect_to_prev_instance(
+    *,
+    db: Session,
+    instance: BaseModel,
+    prev_id_attr_name: str,
+    next_instance_attr_name: str,
+):
+    next_instance = getattr(instance, next_instance_attr_name)
+    prev_id = getattr(instance, prev_id_attr_name)
+
+    db.delete(instance)
+    db.commit()
+
+    if next_instance is not None:
+        setattr(next_instance, prev_id_attr_name, prev_id)
+
+    db.commit()

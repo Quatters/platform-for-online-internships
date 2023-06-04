@@ -132,6 +132,8 @@ export interface paths {
   "/api/courses/{course_id}/topics/{topic_id}/resources/{resource_id}": {
     /** Get One Resource */
     get: operations["get_one_resource_api_courses__course_id__topics__topic_id__resources__resource_id__get"];
+    /** Delete Resource */
+    delete: operations["delete_resource_api_courses__course_id__topics__topic_id__resources__resource_id__delete"];
     /** Patch Resource */
     patch: operations["patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch"];
   };
@@ -1746,6 +1748,26 @@ export interface operations {
           "application/json": components["schemas"]["OneTopicResource"];
         };
       };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Resource */
+  delete_resource_api_courses__course_id__topics__topic_id__resources__resource_id__delete: {
+    parameters: {
+      path: {
+        resource_id: number;
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
       /** @description Validation Error */
       422: {
         content: {

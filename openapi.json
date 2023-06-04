@@ -2402,6 +2402,59 @@
           }
         }
       },
+      "delete": {
+        "summary": "Delete Resource",
+        "operationId": "delete_resource_api_courses__course_id__topics__topic_id__resources__resource_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Resource Id",
+              "type": "integer"
+            },
+            "name": "resource_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
       "patch": {
         "summary": "Patch Resource",
         "operationId": "patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch",

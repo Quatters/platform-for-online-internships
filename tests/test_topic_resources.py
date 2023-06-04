@@ -217,3 +217,58 @@ def test_topic_resources_crud():
     assert resource_5.next_resource is None
     assert resource_5.prev_resource.id == resource_1.id
     assert current_next_resource.prev_resource_id == current_prev_resource.id
+
+    # get result list
+    response = client.get(f'/api/courses/{course.id}/topics/{topic.id}/resources/')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['total'] == 5
+    assert [item['id'] for item in data['items']] == [
+        resource_4.id,
+        resource_2.id,
+        resource_3.id,
+        resource_1.id,
+        resource_5.id,
+    ]
+
+    # delete resource_3 (middle)
+    response = client.delete(f'/api/courses/{course.id}/topics/{topic.id}/resources/{resource_3.id}')
+    assert response.status_code == 204
+    # get result list
+    response = client.get(f'/api/courses/{course.id}/topics/{topic.id}/resources/')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['total'] == 4
+    assert [item['id'] for item in data['items']] == [
+        resource_4.id,
+        resource_2.id,
+        resource_1.id,
+        resource_5.id,
+    ]
+
+    # delete resource_4 (first)
+    response = client.delete(f'/api/courses/{course.id}/topics/{topic.id}/resources/{resource_4.id}')
+    assert response.status_code == 204
+    # get result list
+    response = client.get(f'/api/courses/{course.id}/topics/{topic.id}/resources/')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['total'] == 3
+    assert [item['id'] for item in data['items']] == [
+        resource_2.id,
+        resource_1.id,
+        resource_5.id,
+    ]
+
+    # delete resource_5 (last)
+    response = client.delete(f'/api/courses/{course.id}/topics/{topic.id}/resources/{resource_5.id}')
+    assert response.status_code == 204
+    # get result list
+    response = client.get(f'/api/courses/{course.id}/topics/{topic.id}/resources/')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['total'] == 2
+    assert [item['id'] for item in data['items']] == [
+        resource_2.id,
+        resource_1.id,
+    ]
