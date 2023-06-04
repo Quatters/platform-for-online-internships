@@ -49,7 +49,7 @@
         });
     });
 
-    const { patchData } = usePatchDataInitializer<schema>(data, { fkFields: ['prev_task'] });
+    const { patchData } = usePatchDataInitializer<schema>(data, { fkFields: ['prev_resource'] });
     const currentPrevResourceName = ref(data.value?.prev_resource?.name);
 
     async function save() {
