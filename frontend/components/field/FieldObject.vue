@@ -1,5 +1,5 @@
 <template>
-    <div v-if="shownItem.value === null" class="text-gray-600 italic">нет</div>
+    <div v-if="shownItem.value === null" class="text-gray-600 italic">не задано</div>
     <NuxtLink v-else-if="shownItem.to" :to="shownItem.to" class="link">
         {{ shownItem.value }}
     </NuxtLink>

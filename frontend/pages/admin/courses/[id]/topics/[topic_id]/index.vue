@@ -16,6 +16,12 @@
                 >
                     Задания
                 </NuxtLink>
+                <NuxtLink
+                    :to="{ name: 'admin-courses-id-topics-topic_id-resources', params: { id: route.params.id, topic_id: route.params.topic_id as string} }"
+                    class="link"
+                >
+                    Ресурсы
+                </NuxtLink>
             </template>
         </ControlPanel>
         <CommonContent>

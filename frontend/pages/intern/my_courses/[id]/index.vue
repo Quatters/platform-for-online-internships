@@ -11,6 +11,17 @@
                     :success-title="successTitle"
                 />
             </template>
+            <template #links>
+                <NuxtLink
+                    :to="{
+                        name: 'intern-my_courses-id-topics',
+                        params: { id: route.params.id as string },
+                    }"
+                    class="link"
+                >
+                    Темы
+                </NuxtLink>
+            </template>
         </ControlPanel>
         <CommonContent>
             <InternNameDescriptionCard :name="course!.course_name" :description="course?.course_description">

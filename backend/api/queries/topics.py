@@ -1,9 +1,16 @@
+from functools import partial
 from fastapi_pagination import paginate as pypaginate
 from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams
 from backend.models.topics import Topic
 from backend.api.schemas import topics as schemas
-from backend.api.queries.helpers import sort_by_self_fk, with_search
+from backend.api.queries.helpers import (
+    create_with_respect_to_prev_instance,
+    delete_with_respect_to_prev_instance,
+    update_with_respect_to_prev_instance,
+    with_search,
+    sort_by_self_fk,
+)
 
 
 def get_topics(db: Session, params: ListPageParams, course_id: int):
@@ -22,26 +29,41 @@ def get_topic(db: Session, topic_id: int) -> Topic | None:
     return db.query(Topic).get(topic_id)
 
 
-def get_next_topic(db: Session, topic_id: int) -> Topic | None:
-    return db.query(Topic).filter(Topic.prev_topic_id == topic_id).one_or_none()
+def get_first_topic(db: Session, course_id: int):
+    return db.query(Topic).filter(
+        (Topic.prev_topic_id == None) & (Topic.course_id == course_id)  # noqa: E711
+    ).one_or_none()
 
 
 def create_topic(db: Session, topic: schemas.CreateTopic, course_id: int) -> Topic:
-    topic = Topic(**topic.dict())
-    topic.course_id = course_id
-    db.add(topic)
-    db.commit()
-    db.refresh(topic)
-    return topic
+    return create_with_respect_to_prev_instance(
+        db=db,
+        create_data={**topic.dict(), 'course_id': course_id},
+        prev_id_attr_name='prev_topic_id',
+        next_instance_attr_name='next_topic',
+        model=Topic,
+        get_first_func=partial(get_first_topic, db, course_id),
+        get_prev_func=partial(get_topic, db, topic.prev_topic_id),
+    )
 
 
 def delete_topic(db: Session, topic: Topic):
-    db.delete(topic)
-    db.commit()
+    delete_with_respect_to_prev_instance(
+        db=db,
+        instance=topic,
+        prev_id_attr_name='prev_topic_id',
+        next_instance_attr_name='next_topic',
+    )
 
 
 def patch_topic(db: Session, topic: Topic, data: schemas.PatchTopic) -> Topic:
-    db.query(Topic).filter(Topic.id == topic.id).update(data.dict(exclude_unset=True))
-    db.commit()
-    db.refresh(topic)
-    return topic
+    return update_with_respect_to_prev_instance(
+        db=db,
+        instance=topic,
+        prev_id_attr_name='prev_topic_id',
+        next_instance_attr_name='next_topic',
+        update_data=data.dict(exclude_unset=True),
+        additional_filters_to_search_for_instance_to_update=[
+            Topic.course_id == topic.course_id,
+        ]
+    )

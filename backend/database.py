@@ -1,13 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy_utils import create_database, database_exists
-from backend.settings import DATABASE_URL, DEBUG
+from backend.settings import DATABASE_URL, ECHO_SQL
 
 
 connect_args = {'check_same_thread': False} if DATABASE_URL.startswith('sqlite') else {}
 
 engine_kwargs = {}
-if DEBUG:
+if ECHO_SQL:  # nocv
     engine_kwargs['echo'] = True
 
 engine = create_engine(DATABASE_URL, connect_args=connect_args, **engine_kwargs)

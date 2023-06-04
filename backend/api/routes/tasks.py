@@ -15,11 +15,6 @@ from backend.api.auth import admin_only
 router = APIRouter(prefix='/courses/{course_id}/topics/{topic_id}/tasks')
 
 
-def populate_next_task(task: Task, db: Session):
-    task.next_task = queries.get_next_task(db, task.id)
-    return schemas.OneTask.from_orm(task)
-
-
 @router.get('/', response_model=LimitOffsetPage[schemas.Task])
 def get_tasks(topic: Topic = Depends(current_topic),
               params: ListPageParams = Depends(),
@@ -28,9 +23,8 @@ def get_tasks(topic: Topic = Depends(current_topic),
 
 
 @router.get('/{task_id}', response_model=schemas.OneTask)
-def get_task(task: Task = Depends(current_task),
-             db: Session = Depends(get_db)):
-    return populate_next_task(task, db)
+def get_task(task: Task = Depends(current_task)):
+    return task
 
 
 @router.post('/', response_model=schemas.OneTask, dependencies=[Depends(admin_only)])
@@ -41,8 +35,7 @@ def create_task(task: schemas.CreateTask,
         if queries.get_task(db, task.prev_task_id) is None:
             raise not_found()
 
-    created_task = queries.create_task(db, task, topic.id)
-    return populate_next_task(created_task, db)
+    return queries.create_task(db, task, topic.id)
 
 
 @router.delete('/{task_id}', status_code=204, dependencies=[Depends(admin_only)])
@@ -60,5 +53,4 @@ def delete_task(task: Task = Depends(current_task),
 def patch_task(task: schemas.PatchTask,
                task_to_patch: Task = Depends(current_task),
                db: Session = Depends(get_db)):
-    queries.patch_task(db, task_to_patch, task)
-    return populate_next_task(task_to_patch, db)
+    return queries.patch_task(db, task_to_patch, task)

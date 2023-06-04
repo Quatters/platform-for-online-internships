@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from backend.api.dependencies import ListPageParams
 from backend.api.schemas import answers as schemas
 from backend.models.answers import Answer
-from backend.models.task_types import TaskType
+from backend.constants import TaskType
 
 
 def get_answers(db: Session, task_id: int, params: ListPageParams) -> List[Answer]:

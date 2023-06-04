@@ -7,6 +7,7 @@ from backend.database import get_db
 import backend.api.queries.courses as queries_courses
 import backend.api.queries.topics as queries_topics
 import backend.api.queries.tasks as queries_tasks
+import backend.api.queries.topic_resources as queries_topic_resources
 
 
 def current_course(course_id: int, db: Session = Depends(get_db)):
@@ -34,3 +35,14 @@ def current_task(
     if task is None or task.topic_id != topic.id:
         raise not_found()
     return task
+
+
+def current_topic_resource(
+    resource_id: int,
+    topic: Topic = Depends(current_topic),
+    db: Session = Depends(get_db),
+):
+    resource = queries_topic_resources.get_topic_resource(db, resource_id)
+    if resource is None or resource.topic_id != topic.id:
+        raise not_found()
+    return resource
