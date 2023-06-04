@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.models import (
     Course,
+    Competence,
     Topic,
     TopicResource,
 )
@@ -22,12 +23,31 @@ def create_course(
     course = Course(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
+        competencies=[],
     )
     if commit:
         db.add(course)
         db.commit()
         db.refresh(course)
     return course
+
+
+def create_competence(
+    *,
+    name: Optional[str] = None,
+    db: Optional[Session] = None,
+    commit: bool = True,
+):
+    db = db or next(get_db())
+    competence = Competence(
+        name=name or str(uuid1()),
+        courses=[],
+    )
+    if commit:
+        db.add(competence)
+        db.commit()
+        db.refresh(competence)
+    return competence
 
 
 def create_topic(

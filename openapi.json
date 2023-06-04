@@ -2209,39 +2209,12 @@
         ]
       }
     },
-<<<<<<< HEAD
     "/api/competencies/": {
       "get": {
         "summary": "Get Competencies",
         "operationId": "get_competencies_api_competencies__get",
         "parameters": [
           {
-=======
-    "/api/courses/{course_id}/topics/{topic_id}/resources/": {
-      "get": {
-        "summary": "Get Resources",
-        "operationId": "get_resources_api_courses__course_id__topics__topic_id__resources__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Topic Id",
-              "type": "integer"
-            },
-            "name": "topic_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Course Id",
-              "type": "integer"
-            },
-            "name": "course_id",
-            "in": "path"
-          },
-          {
->>>>>>> main
             "required": false,
             "schema": {
               "title": "Limit",
@@ -2279,11 +2252,7 @@
             "content": {
               "application/json": {
                 "schema": {
-<<<<<<< HEAD
                   "$ref": "#/components/schemas/LimitOffsetPage_Competence_"
-=======
-                  "$ref": "#/components/schemas/LimitOffsetPage_ListTopicResource_"
->>>>>>> main
                 }
               }
             }
@@ -2301,42 +2270,13 @@
         }
       },
       "post": {
-<<<<<<< HEAD
         "summary": "Create Competence",
         "operationId": "create_competence_api_competencies__post",
-=======
-        "summary": "Create Resource",
-        "operationId": "create_resource_api_courses__course_id__topics__topic_id__resources__post",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Topic Id",
-              "type": "integer"
-            },
-            "name": "topic_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Course Id",
-              "type": "integer"
-            },
-            "name": "course_id",
-            "in": "path"
-          }
-        ],
->>>>>>> main
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-<<<<<<< HEAD
                 "$ref": "#/components/schemas/CreateCompetence"
-=======
-                "$ref": "#/components/schemas/CreateTopicResource"
->>>>>>> main
               }
             }
           },
@@ -2348,11 +2288,7 @@
             "content": {
               "application/json": {
                 "schema": {
-<<<<<<< HEAD
-                  "$ref": "#/components/schemas/Competence"
-=======
-                  "$ref": "#/components/schemas/OneTopicResource"
->>>>>>> main
+                  "$ref": "#/components/schemas/OneCompetence"
                 }
               }
             }
@@ -2375,50 +2311,18 @@
         ]
       }
     },
-<<<<<<< HEAD
     "/api/competencies/{competence_id}": {
       "get": {
         "summary": "Get Competence",
         "operationId": "get_competence_api_competencies__competence_id__get",
-=======
-    "/api/courses/{course_id}/topics/{topic_id}/resources/{resource_id}": {
-      "get": {
-        "summary": "Get One Resource",
-        "operationId": "get_one_resource_api_courses__course_id__topics__topic_id__resources__resource_id__get",
->>>>>>> main
         "parameters": [
           {
             "required": true,
             "schema": {
-<<<<<<< HEAD
               "title": "Competence Id",
               "type": "integer"
             },
             "name": "competence_id",
-=======
-              "title": "Resource Id",
-              "type": "integer"
-            },
-            "name": "resource_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Topic Id",
-              "type": "integer"
-            },
-            "name": "topic_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Course Id",
-              "type": "integer"
-            },
-            "name": "course_id",
->>>>>>> main
             "in": "path"
           }
         ],
@@ -2428,11 +2332,7 @@
             "content": {
               "application/json": {
                 "schema": {
-<<<<<<< HEAD
-                  "$ref": "#/components/schemas/Competence"
-=======
-                  "$ref": "#/components/schemas/OneTopicResource"
->>>>>>> main
+                  "$ref": "#/components/schemas/OneCompetence"
                 }
               }
             }
@@ -2450,46 +2350,16 @@
         }
       },
       "delete": {
-<<<<<<< HEAD
         "summary": "Delete Compentence",
         "operationId": "delete_compentence_api_competencies__competence_id__delete",
-=======
-        "summary": "Delete Resource",
-        "operationId": "delete_resource_api_courses__course_id__topics__topic_id__resources__resource_id__delete",
->>>>>>> main
         "parameters": [
           {
             "required": true,
             "schema": {
-<<<<<<< HEAD
               "title": "Competence Id",
               "type": "integer"
             },
             "name": "competence_id",
-=======
-              "title": "Resource Id",
-              "type": "integer"
-            },
-            "name": "resource_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Topic Id",
-              "type": "integer"
-            },
-            "name": "topic_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Course Id",
-              "type": "integer"
-            },
-            "name": "course_id",
->>>>>>> main
             "in": "path"
           }
         ],
@@ -2515,18 +2385,12 @@
         ]
       },
       "patch": {
-<<<<<<< HEAD
         "summary": "Patch Competence",
         "operationId": "patch_competence_api_competencies__competence_id__patch",
-=======
-        "summary": "Patch Resource",
-        "operationId": "patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch",
->>>>>>> main
         "parameters": [
           {
             "required": true,
             "schema": {
-<<<<<<< HEAD
               "title": "Competence Id",
               "type": "integer"
             },
@@ -2550,7 +2414,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Competence"
+                  "$ref": "#/components/schemas/OneCompetence"
                 }
               }
             }
@@ -2568,11 +2432,20 @@
         }
       }
     },
-    "/api/courses/{course_id}/competencies/": {
+    "/api/courses/{course_id}/topics/{topic_id}/resources/": {
       "get": {
-        "summary": "Get Course Competencies",
-        "operationId": "get_course_competencies_api_courses__course_id__competencies__get",
+        "summary": "Get Resources",
+        "operationId": "get_resources_api_courses__course_id__topics__topic_id__resources__get",
         "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
           {
             "required": true,
             "schema": {
@@ -2620,7 +2493,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LimitOffsetPage_CourseCompetence_"
+                  "$ref": "#/components/schemas/LimitOffsetPage_ListTopicResource_"
                 }
               }
             }
@@ -2638,11 +2511,75 @@
         }
       },
       "post": {
-        "summary": "Create Competence",
-        "operationId": "create_competence_api_courses__course_id__competencies__post",
+        "summary": "Create Resource",
+        "operationId": "create_resource_api_courses__course_id__topics__topic_id__resources__post",
         "parameters": [
           {
-=======
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTopicResource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneTopicResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/courses/{course_id}/topics/{topic_id}/resources/{resource_id}": {
+      "get": {
+        "summary": "Get One Resource",
+        "operationId": "get_one_resource_api_courses__course_id__topics__topic_id__resources__resource_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
               "title": "Resource Id",
               "type": "integer"
             },
@@ -2659,7 +2596,6 @@
             "in": "path"
           },
           {
->>>>>>> main
             "required": true,
             "schema": {
               "title": "Course Id",
@@ -2669,222 +2605,13 @@
             "in": "path"
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-<<<<<<< HEAD
-                "$ref": "#/components/schemas/CreateCourseCompetence"
-=======
-                "$ref": "#/components/schemas/PatchTopicResource"
->>>>>>> main
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-<<<<<<< HEAD
-                  "$ref": "#/components/schemas/CourseCompetence"
-=======
                   "$ref": "#/components/schemas/OneTopicResource"
->>>>>>> main
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-<<<<<<< HEAD
-    },
-    "/api/competencies/{competence_id}/courses/": {
-      "get": {
-        "summary": "Get Related Courses",
-        "operationId": "get_related_courses_api_competencies__competence_id__courses__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Competence Id",
-              "type": "integer"
-            },
-            "name": "competence_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Limit",
-              "minimum": 1.0,
-              "type": "integer",
-              "default": 20
-            },
-            "name": "limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Search",
-              "type": "string"
-            },
-            "name": "search",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LimitOffsetPage_Course_"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/courses/{course_id}/competencies/{course_competence_id}": {
-      "delete": {
-        "summary": "Delete Compentence",
-        "operationId": "delete_compentence_api_courses__course_id__competencies__course_competence_id__delete",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Course Competence Id",
-              "type": "integer"
-            },
-            "name": "course_competence_id",
-            "in": "path"
-          },
-          {
-            "required": true,
-            "schema": {
-              "title": "Course Id",
-              "type": "integer"
-            },
-            "name": "course_id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/api/subdivisions/{subdivision_id}/posts/{post_id}/competencies/": {
-      "get": {
-        "summary": "Get Post Competencies",
-        "operationId": "get_post_competencies_api_subdivisions__subdivision_id__posts__post_id__competencies__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Post Id"
-            },
-            "name": "post_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Limit",
-              "minimum": 1.0,
-              "type": "integer",
-              "default": 20
-            },
-            "name": "limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Search",
-              "type": "string"
-            },
-            "name": "search",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LimitOffsetPage_PostCompetence_"
                 }
               }
             }
@@ -2901,148 +2628,35 @@
           }
         }
       },
-      "post": {
-        "summary": "Create Competence",
-        "operationId": "create_competence_api_subdivisions__subdivision_id__posts__post_id__competencies__post",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Post Id"
-            },
-            "name": "post_id",
-            "in": "path"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePostCompetence"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostCompetence"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/api/competencies/{competence_id}/posts/": {
-      "get": {
-        "summary": "Get Related Posts",
-        "operationId": "get_related_posts_api_competencies__competence_id__posts__get",
-        "parameters": [
-          {
-            "required": true,
-            "schema": {
-              "title": "Competence Id",
-              "type": "integer"
-            },
-            "name": "competence_id",
-            "in": "path"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Limit",
-              "minimum": 1.0,
-              "type": "integer",
-              "default": 20
-            },
-            "name": "limit",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Offset",
-              "minimum": 0.0,
-              "type": "integer",
-              "default": 0
-            },
-            "name": "offset",
-            "in": "query"
-          },
-          {
-            "required": false,
-            "schema": {
-              "title": "Search",
-              "type": "string"
-            },
-            "name": "search",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LimitOffsetPage_Post_"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/subdivisions/{subdivision_id}/posts/{post_id}/competencies/{post_competence_id}": {
       "delete": {
-        "summary": "Delete Compentence",
-        "operationId": "delete_compentence_api_subdivisions__subdivision_id__posts__post_id__competencies__post_competence_id__delete",
+        "summary": "Delete Resource",
+        "operationId": "delete_resource_api_courses__course_id__topics__topic_id__resources__resource_id__delete",
         "parameters": [
           {
             "required": true,
             "schema": {
-              "title": "Post Competence Id",
+              "title": "Resource Id",
               "type": "integer"
             },
-            "name": "post_competence_id",
+            "name": "resource_id",
             "in": "path"
           },
           {
             "required": true,
             "schema": {
-              "title": "Post Id"
+              "title": "Topic Id",
+              "type": "integer"
             },
-            "name": "post_id",
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
             "in": "path"
           }
         ],
@@ -3066,9 +2680,77 @@
             "OAuth2PasswordBearer": []
           }
         ]
+      },
+      "patch": {
+        "summary": "Patch Resource",
+        "operationId": "patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Resource Id",
+              "type": "integer"
+            },
+            "name": "resource_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchTopicResource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneTopicResource"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
-=======
->>>>>>> main
     }
   },
   "components": {
@@ -3191,39 +2873,6 @@
           }
         }
       },
-      "CourseCompetence": {
-        "title": "CourseCompetence",
-        "required": [
-          "id",
-          "course_id",
-          "course_name",
-          "competence_id",
-          "competence_name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "course_id": {
-            "title": "Course Id",
-            "type": "integer"
-          },
-          "course_name": {
-            "title": "Course Name",
-            "type": "string"
-          },
-          "competence_id": {
-            "title": "Competence Id",
-            "type": "integer"
-          },
-          "competence_name": {
-            "title": "Competence Name",
-            "type": "string"
-          }
-        }
-      },
       "CreateAnswer": {
         "title": "CreateAnswer",
         "required": [
@@ -3245,39 +2894,21 @@
       "CreateCompetence": {
         "title": "CreateCompetence",
         "required": [
-          "name"
+          "name",
+          "courses"
         ],
         "type": "object",
         "properties": {
           "name": {
             "title": "Name",
             "type": "string"
-          }
-        }
-      },
-      "CreateCourseCompetence": {
-        "title": "CreateCourseCompetence",
-        "required": [
-          "competence_id"
-        ],
-        "type": "object",
-        "properties": {
-          "competence_id": {
-            "title": "Competence Id",
-            "type": "integer"
-          }
-        }
-      },
-      "CreatePostCompetence": {
-        "title": "CreatePostCompetence",
-        "required": [
-          "competence_id"
-        ],
-        "type": "object",
-        "properties": {
-          "competence_id": {
-            "title": "Competence Id",
-            "type": "integer"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           }
         }
       },
@@ -3304,7 +2935,8 @@
         "required": [
           "name",
           "description",
-          "courses"
+          "courses",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -3318,6 +2950,13 @@
           },
           "courses": {
             "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
             "type": "array",
             "items": {
               "type": "integer"
@@ -3521,38 +3160,6 @@
           }
         }
       },
-      "LimitOffsetPage_CourseCompetence_": {
-        "title": "LimitOffsetPage[CourseCompetence]",
-        "required": [
-          "items",
-          "total"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "title": "Items",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CourseCompetence"
-            }
-          },
-          "total": {
-            "title": "Total",
-            "minimum": 0.0,
-            "type": "integer"
-          },
-          "limit": {
-            "title": "Limit",
-            "minimum": 1.0,
-            "type": "integer"
-          },
-          "offset": {
-            "title": "Offset",
-            "minimum": 0.0,
-            "type": "integer"
-          }
-        }
-      },
       "LimitOffsetPage_Course_": {
         "title": "LimitOffsetPage[Course]",
         "required": [
@@ -3662,38 +3269,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/NamedUserCourse"
-            }
-          },
-          "total": {
-            "title": "Total",
-            "minimum": 0.0,
-            "type": "integer"
-          },
-          "limit": {
-            "title": "Limit",
-            "minimum": 1.0,
-            "type": "integer"
-          },
-          "offset": {
-            "title": "Offset",
-            "minimum": 0.0,
-            "type": "integer"
-          }
-        }
-      },
-      "LimitOffsetPage_PostCompetence_": {
-        "title": "LimitOffsetPage[PostCompetence]",
-        "required": [
-          "items",
-          "total"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "title": "Items",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PostCompetence"
             }
           },
           "total": {
@@ -4021,13 +3596,40 @@
           }
         }
       },
+      "OneCompetence": {
+        "title": "OneCompetence",
+        "required": [
+          "id",
+          "name",
+          "courses"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Course"
+            }
+          }
+        }
+      },
       "OneCourse": {
         "title": "OneCourse",
         "required": [
           "id",
           "name",
           "description",
-          "posts"
+          "posts",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -4048,6 +3650,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FkPost"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__courses__FkCompetence"
             }
           }
         }
@@ -4081,7 +3690,8 @@
           "id",
           "name",
           "description",
-          "courses"
+          "courses",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -4102,6 +3712,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Course"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__posts__FkCompetence"
             }
           }
         }
@@ -4274,6 +3891,13 @@
           "name": {
             "title": "Name",
             "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           }
         }
       },
@@ -4288,6 +3912,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           }
         }
       },
@@ -4319,6 +3950,13 @@
           },
           "courses": {
             "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
             "type": "array",
             "items": {
               "type": "integer"
@@ -4433,39 +4071,6 @@
           "subdivision_id": {
             "title": "Subdivision Id",
             "type": "integer"
-          }
-        }
-      },
-      "PostCompetence": {
-        "title": "PostCompetence",
-        "required": [
-          "id",
-          "post_id",
-          "post_name",
-          "competence_id",
-          "competence_name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "post_id": {
-            "title": "Post Id",
-            "type": "integer"
-          },
-          "post_name": {
-            "title": "Post Name",
-            "type": "string"
-          },
-          "competence_id": {
-            "title": "Competence Id",
-            "type": "integer"
-          },
-          "competence_name": {
-            "title": "Competence Name",
-            "type": "string"
           }
         }
       },
@@ -4705,7 +4310,8 @@
         "title": "CreateCourse",
         "required": [
           "name",
-          "description"
+          "description",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -4715,6 +4321,49 @@
           },
           "description": {
             "title": "Description",
+            "type": "string"
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "backend__api__schemas__courses__FkCompetence": {
+        "title": "FkCompetence",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "backend__api__schemas__posts__FkCompetence": {
+        "title": "FkCompetence",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
             "type": "string"
           }
         }

@@ -131,6 +131,7 @@ def test_update_user_posts():
         'name': 'post_1',
         'description': '123',
         'courses': [],
+        'competencies': [],
     })
     assert response.status_code == 200
     data = response.json()
