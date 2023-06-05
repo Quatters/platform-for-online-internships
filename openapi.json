@@ -2350,8 +2350,8 @@
         }
       },
       "delete": {
-        "summary": "Delete Compentence",
-        "operationId": "delete_compentence_api_competencies__competence_id__delete",
+        "summary": "Delete Competence",
+        "operationId": "delete_competence_api_competencies__competence_id__delete",
         "parameters": [
           {
             "required": true,
@@ -3844,7 +3844,8 @@
           "admission_date",
           "course_name",
           "course_description",
-          "posts"
+          "posts",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -3882,6 +3883,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FkPost"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__courses__FkCompetence"
             }
           }
         }
@@ -3935,6 +3943,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           },
           "competencies": {
             "title": "Competencies",
@@ -4334,6 +4349,7 @@
         "required": [
           "name",
           "description",
+          "posts",
           "competencies"
         ],
         "type": "object",
@@ -4345,6 +4361,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           },
           "competencies": {
             "title": "Competencies",

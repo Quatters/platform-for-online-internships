@@ -12,12 +12,16 @@
                         <span class="inline-block mb-1">Должности, осваиваемые этим курсом</span>
                         <FieldArray :value="course!.posts" field-name="posts" />
                     </label>
+                    <label class="block mb-6 w-full">
+                        <span class="inline-block mb-1">Компетенции, осваиваемые этим курсом</span>
+                        <FieldArray :value="course!.competencies" field-name="competencies" />
+                    </label>
                     <div v-if="course && 'name' in course">
                         <ControlButton @click="enroll">Записаться</ControlButton>
                     </div>
                     <div v-else-if="course" class="text-gray-600">
                         <div>Дата поступления: {{ new Date(course.admission_date).toLocaleDateString() }}</div>
-                        <div class="mb-3">Прогресс обучения: {{ course.progress }}%</div>
+                        <div class="mb-4">Прогресс обучения: {{ course.progress }}%</div>
                         <CommonLink
                             :to="{ name: `intern-my_courses-id`, params: { id: route.params.id } }"
                             text="Перейти в мой курс"

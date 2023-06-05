@@ -26,10 +26,12 @@ class OneCourse(Course):
 class CreateCourse(BaseSchema):
     name: str
     description: str
+    posts: list[int]
     competencies: list[int]
 
 
 class PatchCourse(BaseSchema):
     name: str | None
     description: str | None
+    posts: list[int] | None
     competencies: list[int] | None

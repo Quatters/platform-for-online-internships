@@ -10,6 +10,7 @@ def test_courses_crud():
         'name': 'course_1',
         'description': 'course_1',
         'competencies': [],
+        'posts': [],
     })
     data = response.json()
     assert response.status_code == 200, data

@@ -9,7 +9,13 @@
             <ControlForm @submit="save">
                 <ControlFormInput v-model="data.name" class="mb-4" label="Название" required />
                 <ControlFormTextArea v-model="data.description" class="mb-4" label="Описание" required />
-                <ControlFormM2MField v-model="data.courses" path="/api/courses/" label="Курсы" class="mb-3" />
+                <ControlFormM2MField v-model="data.courses" path="/api/courses/" label="Курсы" class="mb-4" />
+                <ControlFormM2MField
+                    v-model="data.competencies"
+                    path="/api/competencies/"
+                    label="Компетенции"
+                    class="mb-4"
+                />
             </ControlForm>
         </CommonContent>
     </div>
@@ -28,6 +34,7 @@
         name: '',
         description: '',
         courses: [],
+        competencies: [],
     });
 
     async function save() {
