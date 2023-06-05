@@ -1,4 +1,6 @@
 import enum
+from functools import cached_property, cache
+from backend.settings import TASKS_TIME
 
 
 class BaseEnum(enum.Enum):
@@ -12,8 +14,13 @@ class TaskType(BaseEnum):
     text = 'text'
     excel = 'excel'
 
+    @cache
     def may_have_answers(self):
         return self in [TaskType.single, TaskType.multiple]
+
+    @cached_property
+    def time_to_pass(self):
+        return TASKS_TIME[self.value]
 
 
 class TopicResourceType(BaseEnum):

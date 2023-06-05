@@ -9,6 +9,7 @@ from . import (
     posts,
     competencies,
     topic_resources,
+    test_attempts,
 )
 
 routers = (
@@ -22,4 +23,5 @@ routers = (
     posts.router,
     competencies.router,
     topic_resources.router,
+    test_attempts.router,
 )

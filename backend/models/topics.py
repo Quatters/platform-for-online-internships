@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from sqlalchemy import (
     Column,
     ForeignKey,
@@ -8,9 +9,13 @@ from sqlalchemy import (
     Enum,
     Text,
 )
-from sqlalchemy.orm import Relationship
+from sqlalchemy.orm import Relationship, relationship, Mapped
 from backend.models import BaseModel, Course
 from backend.constants import TopicResourceType
+
+
+if TYPE_CHECKING:  # nocv
+    from backend.models import Task
 
 
 class Topic(BaseModel):
@@ -21,6 +26,7 @@ class Topic(BaseModel):
 
     next_topic = Relationship('Topic', back_populates='prev_topic', uselist=False)
     course = Relationship(Course, primaryjoin=course_id == Course.id)
+    tasks: Mapped[list['Task']] = relationship('Task', back_populates='topic')
 
     __table_args__ = (
         UniqueConstraint(course_id, prev_topic_id, name="u_prev_topic_for_course"),
