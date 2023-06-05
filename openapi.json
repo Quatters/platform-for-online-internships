@@ -2895,7 +2895,8 @@
         "title": "CreateCompetence",
         "required": [
           "name",
-          "courses"
+          "courses",
+          "posts"
         ],
         "type": "object",
         "properties": {
@@ -2905,6 +2906,13 @@
           },
           "courses": {
             "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "posts": {
+            "title": "Posts",
             "type": "array",
             "items": {
               "type": "integer"
@@ -3601,7 +3609,8 @@
         "required": [
           "id",
           "name",
-          "courses"
+          "courses",
+          "posts"
         ],
         "type": "object",
         "properties": {
@@ -3618,6 +3627,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Course"
+            }
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
             }
           }
         }
@@ -3894,6 +3910,13 @@
           },
           "courses": {
             "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "posts": {
+            "title": "Posts",
             "type": "array",
             "items": {
               "type": "integer"

@@ -1,5 +1,5 @@
 from tests.base import login_as, test_admin
-from tests.helpers import create_competence, create_course
+from tests.helpers import create_competence, create_course, get_records_count
 
 
 def test_courses_crud():
@@ -33,17 +33,19 @@ def test_courses_crud():
     assert len(data['competencies']) == 1
 
     #create another course and get all courses
+    courses_count = get_records_count(route='/api/courses/', client=client)
     create_course()
     response = client.get('/api/courses/')
     data = response.json()
     assert response.status_code == 200, data
-    assert len(data['items']) == 2
+    assert len(data['items']) == courses_count + 1
 
 
     #delete course
+    courses_count = get_records_count(route='/api/courses/', client=client)
     response = client.delete(f'/api/courses/{course_1_id}')
     assert response.status_code == 204
     response = client.get('/api/courses/')
     data = response.json()
     assert response.status_code == 200, data
-    assert len(data['items']) == 1
+    assert len(data['items']) == courses_count - 1
