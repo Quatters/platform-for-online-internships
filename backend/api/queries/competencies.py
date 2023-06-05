@@ -10,7 +10,7 @@ from backend.models.posts import Post
 
 def get_competencies(db: Session, params: ListPageParams):
     query = db.query(Competence)
-    query = with_search(Competence.name, query=db.query(Competence), search=params.search)
+    query = with_search(Competence.name, query=query, search=params.search)
     return paginate(query, params)
 
 

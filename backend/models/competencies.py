@@ -5,7 +5,7 @@ from backend.models import BaseModel
 from backend.models.association_tables import CourseCompetenceAssociation, PostCompetenceAssociation
 
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # nocv
     from backend.models import Course, Post
 
 
