@@ -35,6 +35,7 @@ export default defineI18nConfig(() => ({
             Tasks: 'Задания',
             Answers: 'Ответы',
             Resources: 'Ресурсы',
+            Competencies: 'Компетенции',
 
             Create: 'Создать',
             Edit: 'Редактировать',

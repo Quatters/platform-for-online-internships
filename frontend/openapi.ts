@@ -123,6 +123,20 @@ export interface paths {
     /** Update Subdivision Post */
     patch: operations["update_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__patch"];
   };
+  "/api/competencies/": {
+    /** Get Competencies */
+    get: operations["get_competencies_api_competencies__get"];
+    /** Create Competence */
+    post: operations["create_competence_api_competencies__post"];
+  };
+  "/api/competencies/{competence_id}": {
+    /** Get Competence */
+    get: operations["get_competence_api_competencies__competence_id__get"];
+    /** Delete Competence */
+    delete: operations["delete_competence_api_competencies__competence_id__delete"];
+    /** Patch Competence */
+    patch: operations["patch_competence_api_competencies__competence_id__patch"];
+  };
   "/api/courses/{course_id}/topics/{topic_id}/resources/": {
     /** Get Resources */
     get: operations["get_resources_api_courses__course_id__topics__topic_id__resources__get"];
@@ -179,6 +193,13 @@ export interface components {
       /** Client Secret */
       client_secret?: string;
     };
+    /** Competence */
+    Competence: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+    };
     /** Course */
     Course: {
       /** Id */
@@ -192,6 +213,15 @@ export interface components {
       value: string;
       /** Is Correct */
       is_correct: boolean;
+    };
+    /** CreateCompetence */
+    CreateCompetence: {
+      /** Name */
+      name: string;
+      /** Courses */
+      courses: (number)[];
+      /** Posts */
+      posts: (number)[];
     };
     /** CreateSubdivision */
     CreateSubdivision: {
@@ -208,6 +238,8 @@ export interface components {
       description: string;
       /** Courses */
       courses: (number)[];
+      /** Competencies */
+      competencies: (number)[];
     };
     /** CreateTask */
     CreateTask: {
@@ -272,6 +304,17 @@ export interface components {
     HTTPValidationError: {
       /** Detail */
       detail?: (components["schemas"]["ValidationError"])[];
+    };
+    /** LimitOffsetPage[Competence] */
+    LimitOffsetPage_Competence_: {
+      /** Items */
+      items: (components["schemas"]["Competence"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
     };
     /** LimitOffsetPage[Course] */
     LimitOffsetPage_Course_: {
@@ -428,6 +471,17 @@ export interface components {
       /** Course Name */
       course_name: string;
     };
+    /** OneCompetence */
+    OneCompetence: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Courses */
+      courses: (components["schemas"]["Course"])[];
+      /** Posts */
+      posts: (components["schemas"]["Post"])[];
+    };
     /** OneCourse */
     OneCourse: {
       /** Id */
@@ -438,6 +492,8 @@ export interface components {
       description: string;
       /** Posts */
       posts: (components["schemas"]["FkPost"])[];
+      /** Competencies */
+      competencies: (components["schemas"]["backend__api__schemas__courses__FkCompetence"])[];
     };
     /** OneSubdivision */
     OneSubdivision: {
@@ -458,6 +514,8 @@ export interface components {
       description: string;
       /** Courses */
       courses: (components["schemas"]["Course"])[];
+      /** Competencies */
+      competencies: (components["schemas"]["backend__api__schemas__posts__FkCompetence"])[];
     };
     /** OneTask */
     OneTask: {
@@ -515,6 +573,8 @@ export interface components {
       course_description: string;
       /** Posts */
       posts: (components["schemas"]["FkPost"])[];
+      /** Competencies */
+      competencies: (components["schemas"]["backend__api__schemas__courses__FkCompetence"])[];
     };
     /** PatchAnswer */
     PatchAnswer: {
@@ -523,12 +583,25 @@ export interface components {
       /** Is Correct */
       is_correct?: boolean;
     };
+    /** PatchCompetence */
+    PatchCompetence: {
+      /** Name */
+      name?: string;
+      /** Courses */
+      courses?: (number)[];
+      /** Posts */
+      posts?: (number)[];
+    };
     /** PatchCourse */
     PatchCourse: {
       /** Name */
       name?: string;
       /** Description */
       description?: string;
+      /** Posts */
+      posts?: (number)[];
+      /** Competencies */
+      competencies?: (number)[];
     };
     /** PatchSubdivision */
     PatchSubdivision: {
@@ -545,6 +618,8 @@ export interface components {
       description?: string;
       /** Courses */
       courses?: (number)[];
+      /** Competencies */
+      competencies?: (number)[];
     };
     /** PatchTask */
     PatchTask: {
@@ -695,6 +770,24 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Posts */
+      posts: (number)[];
+      /** Competencies */
+      competencies: (number)[];
+    };
+    /** FkCompetence */
+    backend__api__schemas__courses__FkCompetence: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+    };
+    /** FkCompetence */
+    backend__api__schemas__posts__FkCompetence: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
     };
     /** CreateCourse */
     backend__api__schemas__user_courses__CreateCourse: {
@@ -1465,7 +1558,7 @@ export interface operations {
   get_one_subdivision_api_subdivisions__subdivision_id__get: {
     parameters: {
       path: {
-        subdivision_id: unknown;
+        subdivision_id: number;
       };
     };
     responses: {
@@ -1487,7 +1580,7 @@ export interface operations {
   delete_subdivision_api_subdivisions__subdivision_id__delete: {
     parameters: {
       path: {
-        subdivision_id: unknown;
+        subdivision_id: number;
       };
     };
     responses: {
@@ -1505,7 +1598,7 @@ export interface operations {
   patch_subdivision_api_subdivisions__subdivision_id__patch: {
     parameters: {
       path: {
-        subdivision_id: unknown;
+        subdivision_id: number;
       };
     };
     requestBody: {
@@ -1666,6 +1759,119 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["OneSubdivisionPost"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Competencies */
+  get_competencies_api_competencies__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_Competence_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Competence */
+  create_competence_api_competencies__post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateCompetence"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneCompetence"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Competence */
+  get_competence_api_competencies__competence_id__get: {
+    parameters: {
+      path: {
+        competence_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneCompetence"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Delete Competence */
+  delete_competence_api_competencies__competence_id__delete: {
+    parameters: {
+      path: {
+        competence_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Patch Competence */
+  patch_competence_api_competencies__competence_id__patch: {
+    parameters: {
+      path: {
+        competence_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PatchCompetence"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneCompetence"];
         };
       };
       /** @description Validation Error */

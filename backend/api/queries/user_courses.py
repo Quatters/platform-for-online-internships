@@ -55,6 +55,7 @@ def get_user_course_by_course_id(db: Session,
         user_course.course_name = user_course.course.name
         user_course.course_description = user_course.course.description
         user_course.posts = user_course.course.posts
+        user_course.competencies = user_course.course.competencies
     return user_course
 
 

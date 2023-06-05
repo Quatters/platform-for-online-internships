@@ -5,6 +5,7 @@ from backend.api.schemas import courses as schemas
 from backend.api.dependencies import ListPageParams
 from backend.api.queries.helpers import get_instances_or_400, with_search
 from backend.models.competencies import Competence
+from backend.models.posts import Post
 
 
 def get_courses(db: Session, params: ListPageParams):
@@ -22,8 +23,9 @@ def get_course_by_name(db: Session, name: str) -> Course | None:
 
 
 def create_course(db: Session, course: schemas.CreateCourse) -> Course:
-    created_course = Course(**course.dict())
+    created_course = Course(**course.dict(exclude={'competencies', 'posts'}))
     created_course.competencies = get_instances_or_400(db, Competence, course.competencies)
+    created_course.posts = get_instances_or_400(db, Post, course.posts)
     db.add(created_course)
     db.commit()
     db.refresh(created_course)
@@ -39,6 +41,8 @@ def patch_course(db: Session, course: Course, data: schemas.PatchCourse) -> Cour
     dict_ = data.dict(exclude_unset=True)
     if 'competencies' in dict_:
         course.competencies = get_instances_or_400(db, Competence, dict_.pop('competencies'))
+    if 'posts' in dict_:
+        course.posts = get_instances_or_400(db, Post, dict_.pop('posts'))
     for key, value in dict_.items():
         setattr(course, key, value)
     db.commit()

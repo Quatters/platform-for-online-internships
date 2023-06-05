@@ -8,14 +8,8 @@
         <CommonContent>
             <ControlForm @submit="save">
                 <ControlFormInput v-model="data.name" class="mb-4" label="Название" required />
-                <ControlFormTextArea v-model="data.description" class="mb-4" label="Описание" required />
-                <ControlFormM2MField
-                    v-model="data.competencies"
-                    path="/api/competencies/"
-                    class="mb-4"
-                    label="Компетенции"
-                />
                 <ControlFormM2MField v-model="data.posts" path="/api/posts" class="mb-4" label="Должности" />
+                <ControlFormM2MField v-model="data.courses" path="/api/courses/" class="mb-4" label="Курсы" />
             </ControlForm>
         </CommonContent>
     </div>
@@ -27,18 +21,17 @@
     const { $api } = useNuxtApp();
     const { navigateBackwards } = useRouteUtils();
 
-    type schema = components['schemas']['backend__api__schemas__courses__CreateCourse'];
+    type schema = components['schemas']['CreateCompetence'];
 
     const data = ref<schema>({
         name: '',
-        description: '',
-        competencies: [],
         posts: [],
+        courses: [],
     });
 
     async function save() {
         await $api({
-            path: '/api/courses/',
+            path: '/api/competencies/',
             method: 'post',
             body: data.value,
         });

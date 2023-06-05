@@ -8,8 +8,8 @@
         <CommonContent>
             <ControlForm @submit="save">
                 <ControlFormInput v-model="patchData.name" class="mb-4" label="Название" />
-                <ControlFormTextArea v-model="patchData.description" class="mb-4" label="Описание" />
-                <ControlFormM2MField v-model="patchData.courses" path="/api/courses/" label="Курсы" class="mb-4" />
+                <ControlFormM2MField v-model="patchData.posts" path="/api/posts" class="mb-4" label="Должности" />
+                <ControlFormM2MField v-model="patchData.courses" path="/api/courses/" class="mb-4" label="Курсы" />
             </ControlForm>
         </CommonContent>
     </div>
@@ -22,28 +22,28 @@
     const route = useRoute();
     const { navigateBackwards } = useRouteUtils();
 
-    type schema = components['schemas']['PatchSubdivisionPost'];
+    type schema = components['schemas']['PatchCompetence'];
 
     const { data } = await useAsyncData(() => {
         return $api({
-            path: '/api/subdivisions/{subdivision_id}/posts/{post_id}',
+            path: '/api/competencies/{competence_id}',
             method: 'get',
             params: {
-                subdivision_id: route.params.id as string,
-                post_id: route.params.post_id as string,
+                competence_id: route.params.id as string,
             },
         });
     });
 
-    const { patchData } = usePatchDataInitializer<schema>(data, { m2mFields: ['courses'] });
+    const { patchData } = usePatchDataInitializer<schema>(data, {
+        m2mFields: ['posts', 'courses'],
+    });
 
     async function save() {
         await $api({
-            path: '/api/subdivisions/{subdivision_id}/posts/{post_id}',
+            path: '/api/competencies/{competence_id}',
             method: 'patch',
             params: {
-                subdivision_id: route.params.id as string,
-                post_id: route.params.post_id as string,
+                competence_id: route.params.id as string,
             },
             body: patchData.value,
         });

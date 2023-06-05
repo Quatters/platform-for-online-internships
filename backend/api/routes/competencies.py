@@ -31,8 +31,8 @@ def create_competence(competence: schemas.CreateCompetence,
 
 
 @router.delete('/{competence_id}', status_code=204, dependencies=[Depends(admin_only)])
-def delete_compentence(competence: Competence = Depends(get_current_competence),
-                       db: Session = Depends(get_db)):
+def delete_competence(competence: Competence = Depends(get_current_competence),
+                      db: Session = Depends(get_db)):
     queries.delete_competence(db, competence)
     return {}
 

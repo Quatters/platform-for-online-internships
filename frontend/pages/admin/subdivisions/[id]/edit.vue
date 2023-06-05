@@ -33,7 +33,7 @@
         });
     });
 
-    const patchData = ref<schema>(data as schema);
+    const { patchData } = usePatchDataInitializer<schema>(data);
 
     async function save() {
         await $api({

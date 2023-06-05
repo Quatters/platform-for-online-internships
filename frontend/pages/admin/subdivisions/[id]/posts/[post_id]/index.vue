@@ -22,6 +22,7 @@
     const pageStore = usePageStore();
     pageStore.fkInstancePathMap = {
         courses: { name: 'admin-courses-id' },
+        competencies: { name: 'admin-competencies-id' },
     };
 
     const { $api } = useNuxtApp();

@@ -5,14 +5,9 @@
                 <ControlButtonReturn />
                 <ControlButtonEdit />
                 <ControlButtonDelete
-                    path="/api/courses/{course_id}"
-                    :params="{ course_id: route.params.id as string}"
+                    path="/api/competencies/{competence_id}"
+                    :params="{ competence_id: route.params.id as string}"
                 />
-            </template>
-            <template #links>
-                <NuxtLink :to="{ name: 'admin-courses-id-topics', params: { id: route.params.id } }" class="link">
-                    Темы
-                </NuxtLink>
             </template>
         </ControlPanel>
         <CommonContent>
@@ -29,17 +24,17 @@
 
     const { data } = await useAsyncData(() => {
         return $api({
-            path: '/api/courses/{course_id}',
+            path: '/api/competencies/{competence_id}',
             method: 'get',
             params: {
-                course_id: route.params.id as string,
+                competence_id: route.params.id as string,
             },
         });
     });
 
     pageStore.fkInstancePathMap = {
-        competencies: {
-            name: 'admin-competencies-id',
+        courses: {
+            name: 'admin-courses-id',
         },
         posts: {
             name: 'admin-subdivisions-id-posts-post_id',
