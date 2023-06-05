@@ -1758,7 +1758,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Subdivision Id"
+              "title": "Subdivision Id",
+              "type": "integer"
             },
             "name": "subdivision_id",
             "in": "path"
@@ -1794,7 +1795,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Subdivision Id"
+              "title": "Subdivision Id",
+              "type": "integer"
             },
             "name": "subdivision_id",
             "in": "path"
@@ -1828,7 +1830,8 @@
           {
             "required": true,
             "schema": {
-              "title": "Subdivision Id"
+              "title": "Subdivision Id",
+              "type": "integer"
             },
             "name": "subdivision_id",
             "in": "path"
@@ -2204,6 +2207,229 @@
             "OAuth2PasswordBearer": []
           }
         ]
+      }
+    },
+    "/api/competencies/": {
+      "get": {
+        "summary": "Get Competencies",
+        "operationId": "get_competencies_api_competencies__get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_Competence_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Competence",
+        "operationId": "create_competence_api_competencies__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompetence"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneCompetence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/competencies/{competence_id}": {
+      "get": {
+        "summary": "Get Competence",
+        "operationId": "get_competence_api_competencies__competence_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Competence Id",
+              "type": "integer"
+            },
+            "name": "competence_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneCompetence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Compentence",
+        "operationId": "delete_compentence_api_competencies__competence_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Competence Id",
+              "type": "integer"
+            },
+            "name": "competence_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Patch Competence",
+        "operationId": "patch_competence_api_competencies__competence_id__patch",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Competence Id",
+              "type": "integer"
+            },
+            "name": "competence_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatchCompetence"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneCompetence"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/courses/{course_id}/topics/{topic_id}/resources/": {
@@ -2611,6 +2837,24 @@
           }
         }
       },
+      "Competence": {
+        "title": "Competence",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "Course": {
         "title": "Course",
         "required": [
@@ -2647,6 +2891,35 @@
           }
         }
       },
+      "CreateCompetence": {
+        "title": "CreateCompetence",
+        "required": [
+          "name",
+          "courses",
+          "posts"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
       "CreateSubdivision": {
         "title": "CreateSubdivision",
         "required": [
@@ -2670,7 +2943,8 @@
         "required": [
           "name",
           "description",
-          "courses"
+          "courses",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -2684,6 +2958,13 @@
           },
           "courses": {
             "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
             "type": "array",
             "items": {
               "type": "integer"
@@ -2852,6 +3133,38 @@
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             }
+          }
+        }
+      },
+      "LimitOffsetPage_Competence_": {
+        "title": "LimitOffsetPage[Competence]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Competence"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
           }
         }
       },
@@ -3291,13 +3604,48 @@
           }
         }
       },
+      "OneCompetence": {
+        "title": "OneCompetence",
+        "required": [
+          "id",
+          "name",
+          "courses",
+          "posts"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Course"
+            }
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          }
+        }
+      },
       "OneCourse": {
         "title": "OneCourse",
         "required": [
           "id",
           "name",
           "description",
-          "posts"
+          "posts",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -3318,6 +3666,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FkPost"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__courses__FkCompetence"
             }
           }
         }
@@ -3351,7 +3706,8 @@
           "id",
           "name",
           "description",
-          "courses"
+          "courses",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -3372,6 +3728,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Course"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__posts__FkCompetence"
             }
           }
         }
@@ -3537,6 +3900,30 @@
           }
         }
       },
+      "PatchCompetence": {
+        "title": "PatchCompetence",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
       "PatchCourse": {
         "title": "PatchCourse",
         "type": "object",
@@ -3548,6 +3935,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
           }
         }
       },
@@ -3579,6 +3973,13 @@
           },
           "courses": {
             "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
             "type": "array",
             "items": {
               "type": "integer"
@@ -3932,7 +4333,8 @@
         "title": "CreateCourse",
         "required": [
           "name",
-          "description"
+          "description",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -3942,6 +4344,49 @@
           },
           "description": {
             "title": "Description",
+            "type": "string"
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "backend__api__schemas__courses__FkCompetence": {
+        "title": "FkCompetence",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "backend__api__schemas__posts__FkCompetence": {
+        "title": "FkCompetence",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
             "type": "string"
           }
         }

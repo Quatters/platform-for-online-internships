@@ -1,31 +1,16 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from backend.api.current_dependencies import current_post, current_subdivision
 from backend.api.schemas import posts as schemas
 from backend.api.queries import posts as queries
-from backend.api.queries import subdivisions as subdivisions_queries
 from backend.database import get_db
 from backend.api.dependencies import ListPageParams
 from backend.settings import LimitOffsetPage
-from backend.models import Subdivision, Post
-from backend.api.errors.errors import not_found
+from backend.models import Subdivision
 from backend.api.auth import admin_only
 
 
 router = APIRouter()
-
-
-def current_subdivision(subdivision_id: int, db: Session = Depends(get_db)):
-    subdivision = subdivisions_queries.get_subdivision(db, subdivision_id)
-    if subdivision is None:
-        raise not_found()
-    return subdivision
-
-
-def current_post(post_id, db: Session = Depends(get_db)):
-    post = queries.get_post(db, post_id)
-    if post is None:
-        raise not_found()
-    return post
 
 
 @router.get('/posts', response_model=LimitOffsetPage[schemas.Post])
@@ -74,7 +59,7 @@ def create_subdivision_post(
 )
 def update_subdivision_post(
     patch_data: schemas.PatchSubdivisionPost,
-    current_post: Post = Depends(current_post),
+    current_post: schemas.OneSubdivisionPost = Depends(current_post),
     db: Session = Depends(get_db),
 ):
     return queries.update_post(db, current_post, patch_data)
@@ -86,7 +71,7 @@ def update_subdivision_post(
     status_code=204,
 )
 def delete_subdivision_post(
-    post: Post = Depends(current_post),
+    post: schemas.OneSubdivisionPost = Depends(current_post),
     db: Session = Depends(get_db),
 ):
     queries.delete_post(db, post)

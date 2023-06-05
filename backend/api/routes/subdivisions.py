@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.api.auth import admin_only
-from backend.api.errors.errors import not_found
+from backend.api.current_dependencies import current_subdivision
 from backend.api.schemas import subdivisions as schemas
 from backend.api.queries import subdivisions as queries
 from backend.api.dependencies import ListPageParams
@@ -11,13 +11,6 @@ from backend.models import Subdivision
 
 
 router = APIRouter(prefix='/subdivisions')
-
-
-def current_subdivision(subdivision_id, db: Session = Depends(get_db)):
-    subdivision = queries.get_subdivision(db, subdivision_id)
-    if subdivision is None:
-        raise not_found()
-    return subdivision
 
 
 @router.get('/', response_model=LimitOffsetPage[schemas.Subdivision])

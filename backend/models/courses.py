@@ -2,11 +2,12 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Column, String, Text
 from sqlalchemy.orm import relationship, Mapped
 from backend.models import BaseModel
-from backend.models.association_tables import CoursePostAssociation
+from backend.models.association_tables import CourseCompetenceAssociation, CoursePostAssociation
 
 
 if TYPE_CHECKING:  # nocv
     from backend.models import Post
+    from backend.models import Competence
 
 
 class Course(BaseModel):
@@ -16,5 +17,10 @@ class Course(BaseModel):
     posts: Mapped[list['Post']] = relationship(
         'Post',
         secondary=CoursePostAssociation,
+        back_populates='courses',
+    )
+    competencies: Mapped[list['Competence']] = relationship(
+        'Competence',
+        secondary=CourseCompetenceAssociation,
         back_populates='courses',
     )

@@ -12,18 +12,24 @@ class FkPost(BaseSchema):
     name: str
 
 
-class OneCourse(BaseSchema):
+class FkCompetence(BaseSchema):
     id: int
     name: str
+
+
+class OneCourse(Course):
     description: str
     posts: list[FkPost]
+    competencies: list[FkCompetence]
 
 
 class CreateCourse(BaseSchema):
     name: str
     description: str
+    competencies: list[int]
 
 
 class PatchCourse(BaseSchema):
     name: str | None
     description: str | None
+    competencies: list[int] | None
