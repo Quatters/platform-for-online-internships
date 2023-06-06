@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from sqlalchemy import (
     Column,
     Enum,
@@ -7,10 +8,14 @@ from sqlalchemy import (
     UniqueConstraint,
     CheckConstraint,
 )
-from sqlalchemy.orm import Relationship
+from sqlalchemy.orm import Mapped, Relationship, relationship
 from backend.models import BaseModel
 from backend.models.topics import Topic
 from backend.constants import TaskType
+
+
+if TYPE_CHECKING:  # nocv
+    from backend.models import Answer
 
 
 class Task(BaseModel):
@@ -21,7 +26,9 @@ class Task(BaseModel):
     topic_id = Column(Integer, ForeignKey(Topic.id), index=True, nullable=False)
 
     next_task = Relationship('Task', back_populates='prev_task', uselist=False)
-    topic = Relationship(Topic, primaryjoin=topic_id == Topic.id)
+    topic = Relationship(Topic, primaryjoin=topic_id == Topic.id, back_populates='tasks')
+
+    answers: Mapped[list['Answer']] = relationship('Answer', cascade="all, delete")
 
     __table_args__ = (
         UniqueConstraint(topic_id, prev_task_id, name="u_prev_task_for_topic"),

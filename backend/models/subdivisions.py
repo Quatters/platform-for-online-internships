@@ -12,4 +12,4 @@ class Subdivision(BaseModel):
     name = Column(String(128), index=True, unique=True, nullable=False)
     description = Column(Text, server_default='', nullable=False)
 
-    posts: Mapped[list['Post']] = relationship('Post')
+    posts: Mapped[list['Post']] = relationship('Post', cascade="all, delete")
