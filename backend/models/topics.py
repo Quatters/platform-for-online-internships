@@ -20,7 +20,7 @@ class Topic(BaseModel):
     course_id = Column(Integer, ForeignKey(Course.id), index=True, nullable=False)
 
     next_topic = Relationship('Topic', back_populates='prev_topic', uselist=False)
-    course = Relationship(Course, primaryjoin=course_id == Course.id)
+    course = Relationship(Course, primaryjoin=course_id == Course.id, back_populates='topics')
 
     __table_args__ = (
         UniqueConstraint(course_id, prev_topic_id, name="u_prev_topic_for_course"),

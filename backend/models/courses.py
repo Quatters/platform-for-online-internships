@@ -8,12 +8,14 @@ from backend.models.association_tables import CourseCompetenceAssociation, Cours
 if TYPE_CHECKING:  # nocv
     from backend.models import Post
     from backend.models import Competence
+    from backend.models import Topic
 
 
 class Course(BaseModel):
     name = Column(String(128), index=True, unique=True, nullable=False)
     description = Column(Text, server_default='', nullable=False)
 
+    topics: Mapped[list['Topic']] = relationship('Topic', cascade="all, delete")
     posts: Mapped[list['Post']] = relationship(
         'Post',
         secondary=CoursePostAssociation,
