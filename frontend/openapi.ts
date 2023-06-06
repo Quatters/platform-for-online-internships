@@ -159,6 +159,10 @@ export interface paths {
     /** Finish Test */
     post: operations["finish_test_api_tests__test_id__finish_post"];
   };
+  "/api/tests/going": {
+    /** Get Going Test */
+    get: operations["get_going_test_api_tests_going_get"];
+  };
   "/api/tests/{test_id}": {
     /** Get One User Test */
     get: operations["get_one_user_test_api_tests__test_id__get"];
@@ -310,12 +314,36 @@ export interface components {
       /** Name */
       name: string;
     };
+    /** FkTopic */
+    FkTopic: {
+      /** Id */
+      id: number;
+      /** Course Id */
+      course_id: number;
+      /** Name */
+      name: string;
+    };
     /** FkTopicResource */
     FkTopicResource: {
       /** Id */
       id: number;
       /** Name */
       name: string;
+    };
+    /** GoingTest */
+    GoingTest: {
+      /** Id */
+      id: number;
+      /**
+       * Started At 
+       * Format: date-time
+       */
+      started_at: string;
+      /** Time To Pass */
+      time_to_pass: number;
+      /** Tasks */
+      tasks: (components["schemas"]["backend__api__schemas__test_attempts__Task"])[];
+      topic: components["schemas"]["FkTopic"];
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -459,7 +487,7 @@ export interface components {
       /** Id */
       id: number;
       course: components["schemas"]["Course"];
-      topic: components["schemas"]["Topic"];
+      topic: components["schemas"]["FkTopic"];
       status: components["schemas"]["TestAttemptStatus"];
     };
     /** ListTopicResource */
@@ -506,20 +534,6 @@ export interface components {
       admission_date: string;
       /** Course Name */
       course_name: string;
-    };
-    /** NewTest */
-    NewTest: {
-      /** Id */
-      id: number;
-      /**
-       * Started At 
-       * Format: date-time
-       */
-      started_at: string;
-      /** Time To Pass */
-      time_to_pass: number;
-      /** Tasks */
-      tasks: (components["schemas"]["backend__api__schemas__test_attempts__Task"])[];
     };
     /** OneCompetence */
     OneCompetence: {
@@ -584,7 +598,7 @@ export interface components {
       /** Id */
       id: number;
       course: components["schemas"]["Course"];
-      topic: components["schemas"]["Topic"];
+      topic: components["schemas"]["FkTopic"];
       status: components["schemas"]["TestAttemptStatus"];
       /** Score */
       score: number;
@@ -599,7 +613,7 @@ export interface components {
        * Finished At 
        * Format: date-time
        */
-      finished_at: string;
+      finished_at?: string;
     };
     /** OneTopic */
     OneTopic: {
@@ -2127,7 +2141,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["NewTest"];
+          "application/json": components["schemas"]["GoingTest"];
         };
       };
       /** @description Validation Error */
@@ -2161,6 +2175,17 @@ export interface operations {
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Going Test */
+  get_going_test_api_tests_going_get: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["GoingTest"];
         };
       };
     };

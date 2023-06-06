@@ -17,6 +17,20 @@ def get_going_test(db: Session, user_id: int):
     ).one_or_none()
 
 
+def get_going_test_with_tasks(db: Session, user_id: int) -> TestAttempt | None:
+    test = get_going_test(db, user_id)
+    if not test:
+        return test
+
+    tasks = test.topic.tasks
+    for task in tasks:
+        if task.task_type.may_have_answers():
+            task.possible_answers = task.answers
+
+    test.tasks = sort_by_self_fk(tasks, attr_='prev_task_id')
+    return test
+
+
 def get_user_tests(db: Session, params: ListPageParams, user_id: int):
     query = db.query(TestAttempt).filter(TestAttempt.user_id == user_id).options(
         joinedload(TestAttempt.topic).options(
@@ -40,16 +54,16 @@ def create_test(db: Session, topic: Topic, user_id: int):
         if task.task_type.may_have_answers():
             task.possible_answers = task.answers
 
-    attempt = TestAttempt(
+    test = TestAttempt(
         user_id=user_id,
         topic_id=topic.id,
         time_to_pass=time_to_pass,
         status=TestAttemptStatus.in_progress,
     )
-    db.add(attempt)
+    db.add(test)
     db.commit()
-    db.refresh(attempt)
+    db.refresh(test)
 
-    attempt.tasks = sort_by_self_fk(tasks, attr_='prev_task_id')
+    test.tasks = sort_by_self_fk(tasks, attr_='prev_task_id')
 
-    return attempt
+    return test

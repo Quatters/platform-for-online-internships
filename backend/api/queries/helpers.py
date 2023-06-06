@@ -1,6 +1,6 @@
 from operator import attrgetter
 from typing import Callable, TypeVar
-from sqlalchemy import func, or_, and_, Column
+from sqlalchemy import func, or_, and_, Column, cast, String
 from sqlalchemy.orm import Query, Session
 from backend.api.errors.errors import bad_request
 from backend.models.base import BaseModel
@@ -10,10 +10,10 @@ T = TypeVar('T')
 TModel = TypeVar('TModel', bound=BaseModel)
 
 
-def with_search(*fields: Column[str], query: Query[T], search: str | None) -> Query[T]:
+def with_search(*fields: Column, query: Query[T], search: str | None) -> Query[T]:
     if search:
         filters = [
-            func.lower(field).like(f'%{search.lower()}%')
+            func.lower(cast(field, String)).like(f'%{search.lower()}%')
             for field in fields
         ]
         query = query.filter(or_(*filters))

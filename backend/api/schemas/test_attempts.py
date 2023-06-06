@@ -1,8 +1,14 @@
 from datetime import datetime
 from backend.api.schemas.base import BaseSchema
 from backend.api.schemas.courses import Course
-from backend.api.schemas.topics import Topic
 from backend.constants import TaskType, TestAttemptStatus
+
+
+class FkTopic(BaseSchema):
+    id: int
+    course_id: int
+    name: str
+
 
 
 class PossibleAnswer(BaseSchema):
@@ -18,11 +24,12 @@ class Task(BaseSchema):
     possible_answers: list[PossibleAnswer] | None
 
 
-class NewTest(BaseSchema):
+class GoingTest(BaseSchema):
     id: int
     started_at: datetime
     time_to_pass: int
     tasks: list[Task]
+    topic: FkTopic
 
 
 class UserAnswer(BaseSchema):
@@ -33,11 +40,10 @@ class UserAnswer(BaseSchema):
 class FinishTestResponse(BaseSchema):
     detail: str = 'Test submitted.'
 
-
 class ListTest(BaseSchema):
     id: int
     course: Course
-    topic: Topic
+    topic: FkTopic
     status: TestAttemptStatus
 
 
@@ -45,4 +51,4 @@ class OneTest(ListTest):
     score: int
     max_score: int
     started_at: datetime
-    finished_at: datetime
+    finished_at: datetime | None

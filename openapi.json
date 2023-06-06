@@ -2782,7 +2782,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NewTest"
+                  "$ref": "#/components/schemas/GoingTest"
                 }
               }
             }
@@ -2851,6 +2851,29 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/tests/going": {
+      "get": {
+        "summary": "Get Going Test",
+        "operationId": "get_going_test_api_tests_going_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoingTest"
                 }
               }
             }
@@ -3319,6 +3342,29 @@
           }
         }
       },
+      "FkTopic": {
+        "title": "FkTopic",
+        "required": [
+          "id",
+          "course_id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "course_id": {
+            "title": "Course Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "FkTopicResource": {
         "title": "FkTopicResource",
         "required": [
@@ -3334,6 +3380,42 @@
           "name": {
             "title": "Name",
             "type": "string"
+          }
+        }
+      },
+      "GoingTest": {
+        "title": "GoingTest",
+        "required": [
+          "id",
+          "started_at",
+          "time_to_pass",
+          "tasks",
+          "topic"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "started_at": {
+            "title": "Started At",
+            "type": "string",
+            "format": "date-time"
+          },
+          "time_to_pass": {
+            "title": "Time To Pass",
+            "type": "integer"
+          },
+          "tasks": {
+            "title": "Tasks",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__test_attempts__Task"
+            }
+          },
+          "topic": {
+            "$ref": "#/components/schemas/FkTopic"
           }
         }
       },
@@ -3759,7 +3841,7 @@
             "$ref": "#/components/schemas/Course"
           },
           "topic": {
-            "$ref": "#/components/schemas/Topic"
+            "$ref": "#/components/schemas/FkTopic"
           },
           "status": {
             "$ref": "#/components/schemas/TestAttemptStatus"
@@ -3872,38 +3954,6 @@
           "course_name": {
             "title": "Course Name",
             "type": "string"
-          }
-        }
-      },
-      "NewTest": {
-        "title": "NewTest",
-        "required": [
-          "id",
-          "started_at",
-          "time_to_pass",
-          "tasks"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "started_at": {
-            "title": "Started At",
-            "type": "string",
-            "format": "date-time"
-          },
-          "time_to_pass": {
-            "title": "Time To Pass",
-            "type": "integer"
-          },
-          "tasks": {
-            "title": "Tasks",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/backend__api__schemas__test_attempts__Task"
-            }
           }
         }
       },
@@ -4084,8 +4134,7 @@
           "status",
           "score",
           "max_score",
-          "started_at",
-          "finished_at"
+          "started_at"
         ],
         "type": "object",
         "properties": {
@@ -4097,7 +4146,7 @@
             "$ref": "#/components/schemas/Course"
           },
           "topic": {
-            "$ref": "#/components/schemas/Topic"
+            "$ref": "#/components/schemas/FkTopic"
           },
           "status": {
             "$ref": "#/components/schemas/TestAttemptStatus"

@@ -31,11 +31,13 @@ def test_tests():
     assert response.status_code == 200, data
     assert data['total'] == 0
 
+    # start test
     response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 200, data
     test_id = data['id']
-    assert data == {
+
+    test_with_tasks_data_to_check = {
         'id': test_id,
         'started_at': data['started_at'],
         'time_to_pass': (
@@ -43,6 +45,11 @@ def test_tests():
             + TaskType.multiple.time_to_pass
             + TaskType.text.time_to_pass
         ),
+        'topic': {
+            'id': topic.id,
+            'course_id': course.id,
+            'name': topic.name,
+        },
         'tasks': [
             {
                 'id': task_1.id,
@@ -94,11 +101,19 @@ def test_tests():
         ]
     }
 
+    assert data == test_with_tasks_data_to_check
+
     # check can't start new test
     response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 400, data
     assert data['detail'] == 'Cannot start new test until there is unfinished one.'
+
+    # get going test
+    response = client.get('/api/tests/going')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == test_with_tasks_data_to_check
 
     # finish test
     user_answers = [
@@ -126,6 +141,7 @@ def test_tests():
         },
         'topic': {
             'id': topic.id,
+            'course_id': course.id,
             'name': topic.name,
         },
     }]
@@ -143,6 +159,7 @@ def test_tests():
         },
         'topic': {
             'id': topic.id,
+            'course_id': course.id,
             'name': topic.name,
         },
         'max_score': 8,
@@ -184,6 +201,7 @@ def test_tests():
         },
         'topic': {
             'id': topic.id,
+            'course_id': course.id,
             'name': topic.name,
         },
         'max_score': 0,

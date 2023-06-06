@@ -24,14 +24,14 @@ def current_test(test_id: int, user: User = Depends(intern_only), db: Session = 
     return test
 
 
-@router.post('/courses/{course_id}/topics/{topic_id}/start_test', response_model=schemas.NewTest)
+@router.post('/courses/{course_id}/topics/{topic_id}/start_test', response_model=schemas.GoingTest)
 def start_test(
     topic: Topic = Depends(current_topic),
     user: User = Depends(intern_only),
     db: Session = Depends(get_db),
 ):
-    going_attempt = queries.get_going_test(db, user.id)
-    if going_attempt is not None:
+    going_test = queries.get_going_test(db, user.id)
+    if going_test is not None:
         raise bad_request('Cannot start new test until there is unfinished one.')
 
     return queries.create_test(db, topic, user.id)
@@ -50,6 +50,14 @@ def finish_test(
 ):
     background_tasks.add_task(tasks.finish_test, test=test, answers=user_answers, db=db)
     return schemas.FinishTestResponse()
+
+
+@router.get('/tests/going', response_model=schemas.GoingTest | None)
+def get_going_test(
+    user: User = Depends(intern_only),
+    db: Session = Depends(get_db),
+):
+    return queries.get_going_test_with_tasks(db, user.id)
 
 
 @router.get('/tests/{test_id}', response_model=schemas.OneTest, dependencies=[Depends(intern_only)])
