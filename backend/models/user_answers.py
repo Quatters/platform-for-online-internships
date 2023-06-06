@@ -1,5 +1,4 @@
 from sqlalchemy import CheckConstraint, Column, ForeignKey, Integer, Text
-from sqlalchemy.orm import relationship, Mapped
 from backend.models.base import BaseModel
 from backend.models import User, Answer
 
