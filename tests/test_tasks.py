@@ -97,8 +97,7 @@ def test_tasks_crud():
     assert response.status_code == 200
     assert data['total'] == 0
 
-
-    #delete parent topic
+    # delete parent topic
     response = client.delete(f'/api/courses/{course.id}/topics/{topic.id}')
     assert response.status_code == 204
     db = next(get_db())

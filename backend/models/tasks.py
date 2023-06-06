@@ -14,7 +14,7 @@ from backend.models.topics import Topic
 from backend.constants import TaskType
 
 
-if TYPE_CHECKING: # nocv
+if TYPE_CHECKING:  # nocv
     from backend.models import Answer
 
 
