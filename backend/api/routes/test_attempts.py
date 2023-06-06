@@ -12,14 +12,14 @@ from backend.models import Topic, User
 router = APIRouter(prefix='/courses/{course_id}/topics/{topic_id}')
 
 
-@router.post('/make_test', response_model=schemas.NewTest)
-def make_test(
+@router.post('/start_test', response_model=schemas.NewTest)
+def start_test(
     topic: Topic = Depends(current_topic),
     user: User = Depends(intern_only),
     db: Session = Depends(get_db),
 ):
-    going_attempt = queries.get_going_attempt(db, topic.id, user.id)
+    going_attempt = queries.get_going_attempt(db, user.id)
     if going_attempt is not None:
-        raise bad_request('Cannot make new test until there is unfinished one.')
+        raise bad_request('Cannot start new test until there is unfinished one.')
 
     return queries.create_attempt(db, topic, user.id)

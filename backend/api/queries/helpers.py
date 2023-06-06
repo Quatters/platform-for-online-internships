@@ -29,8 +29,11 @@ def get_instances_or_400(db: Session, model: TModel, ids: list[int]) -> list[TMo
     return instances
 
 
-def sort_by_self_fk(query: Query[TModel], attr_: str) -> list[TModel]:
-    objects = query.all()
+def sort_by_self_fk(objects: Query[TModel] | list[TModel], attr_: str) -> list[TModel]:
+    if isinstance(objects, Query):
+        objects = objects.all()
+
+    objects = list(objects)
 
     if not objects:
         return objects

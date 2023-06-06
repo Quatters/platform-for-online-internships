@@ -56,9 +56,9 @@ AUTH = {
 
 
 TASKS_TIME = {
-    'single': os.getenv('TASK_SINGLE_TIME', 60),
-    'multiple': os.getenv('TASK_SINGLE_TIME', 120),
-    'text': os.getenv('TASK_SINGLE_TIME', 300),
+    'single': int(os.getenv('TASK_SINGLE_TIME', 60)),
+    'multiple': int(os.getenv('TASK_SINGLE_TIME', 120)),
+    'text': int(os.getenv('TASK_SINGLE_TIME', 300)),
 }
 
 

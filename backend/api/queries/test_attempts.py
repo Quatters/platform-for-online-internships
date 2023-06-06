@@ -1,12 +1,11 @@
 from sqlalchemy.orm import Session
 from backend.models import TestAttempt, Topic
+from backend.api.queries.helpers import sort_by_self_fk
 
 
-def get_going_attempt(db: Session, topic_id: int, user_id: int):
+def get_going_attempt(db: Session, user_id: int):
     return db.query(TestAttempt).filter(
-        (TestAttempt.user_id == user_id)
-        & (TestAttempt.topic_id == topic_id)
-        & (TestAttempt.ended_at == None)  # noqa: E711
+        (TestAttempt.user_id == user_id) & (TestAttempt.ended_at == None)  # noqa: E711
     ).one_or_none()
 
 
@@ -27,6 +26,6 @@ def create_attempt(db: Session, topic: Topic, user_id: int):
     db.commit()
     db.refresh(attempt)
 
-    attempt.tasks = tasks
+    attempt.tasks = sort_by_self_fk(tasks, attr_='prev_task_id')
 
     return attempt
