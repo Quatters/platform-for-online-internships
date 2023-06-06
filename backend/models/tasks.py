@@ -21,7 +21,7 @@ class Task(BaseModel):
     topic_id = Column(Integer, ForeignKey(Topic.id), index=True, nullable=False)
 
     next_task = Relationship('Task', back_populates='prev_task', uselist=False)
-    topic = Relationship(Topic, primaryjoin=topic_id == Topic.id)
+    topic = Relationship(Topic, primaryjoin=topic_id == Topic.id, back_populates='tasks')
 
     __table_args__ = (
         UniqueConstraint(topic_id, prev_task_id, name="u_prev_task_for_topic"),
