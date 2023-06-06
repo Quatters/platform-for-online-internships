@@ -8,6 +8,7 @@ from backend.models.association_tables import UserPostAssociation
 
 if TYPE_CHECKING:  # nocv
     from backend.models import Post
+    from backend.models import UserCourse
 
 
 class User(BaseModel):
@@ -20,6 +21,7 @@ class User(BaseModel):
     is_teacher = Column(Boolean, server_default=expression.false(), index=True, nullable=False)
 
     posts: Mapped[list['Post']] = relationship('Post', secondary=UserPostAssociation, back_populates='users')
+    courses: Mapped[list['UserCourse']] = relationship('UserCourse', cascade='all, delete')
 
     __table_args__ = (
         CheckConstraint('NOT (is_admin AND is_teacher)', name='check_one_role'),

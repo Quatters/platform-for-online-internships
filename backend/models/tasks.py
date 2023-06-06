@@ -13,8 +13,10 @@ from backend.models import BaseModel
 from backend.models.topics import Topic
 from backend.constants import TaskType
 
+
 if TYPE_CHECKING: # nocv
     from backend.models import Answer
+
 
 class Task(BaseModel):
     name = Column(String, unique=False, index=True, nullable=False)
