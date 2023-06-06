@@ -1,9 +1,13 @@
 from backend.constants import TaskType
-from tests.base import login_as, test_admin, test_intern
+from backend.database import get_db
+from backend.models.test_attempts import TestAttempt
+from tests.base import login_as, test_intern
 from tests import helpers
 
 
 def test_tests():
+    db = next(get_db())
+
     course = helpers.create_course()
     topic = helpers.create_topic(course_id=course.id)
 
@@ -21,11 +25,18 @@ def test_tests():
 
     client = login_as(test_intern)
 
+    # check no attempts for now
+    response = client.get('/api/tests')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['total'] == 0
+
     response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 200, data
+    test_id = data['id']
     assert data == {
-        'id': data['id'],
+        'id': test_id,
         'started_at': data['started_at'],
         'time_to_pass': (
             TaskType.single.time_to_pass
@@ -88,3 +99,95 @@ def test_tests():
     data = response.json()
     assert response.status_code == 400, data
     assert data['detail'] == 'Cannot start new test until there is unfinished one.'
+
+    # finish test
+    user_answers = [
+        {'task_id': task_1.id, 'answer': answer_1_1.id},
+        {'task_id': task_2.id, 'answer': [answer_2_1.id, answer_2_2.id]},
+        {'task_id': task_3.id, 'answer': 'some text for teacher'},
+    ]
+
+    response = client.post(f'/api/tests/{test_id}/finish', json=user_answers)
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {'detail': 'Test submitted.'}
+
+    # get test list
+    response = client.get('/api/tests')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['total'] == 1
+    assert data['items'] == [{
+        'id': test_id,
+        'status': 'partially_checked',
+        'course': {
+            'id': course.id,
+            'name': course.name,
+        },
+        'topic': {
+            'id': topic.id,
+            'name': topic.name,
+        },
+    }]
+
+    # get one test
+    response = client.get(f'/api/tests/{test_id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {
+        'id': test_id,
+        'status': 'partially_checked',
+        'course': {
+            'id': course.id,
+            'name': course.name,
+        },
+        'topic': {
+            'id': topic.id,
+            'name': topic.name,
+        },
+        'max_score': 8,
+        'score': 2,
+        'started_at': data['started_at'],
+        'finished_at': data['finished_at'],
+    }
+
+    # try to get not existing test
+    response = client.get('/api/tests/-1')
+    data = response.json()
+    assert response.status_code == 404, data
+
+    # check submitting test with timeout
+    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    data = response.json()
+    assert response.status_code == 200, data
+    test_id: int = data['id']
+    test = db.query(TestAttempt).get(test_id)
+    test.time_to_pass = 0
+    db.commit()
+
+    # try to submit
+    response = client.post(f'/api/tests/{test_id}/finish', json=user_answers)
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {'detail': 'Test submitted.'}
+
+    # get test
+    response = client.get(f'/api/tests/{test_id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {
+        'id': test_id,
+        'status': 'timeout_failure',
+        'course': {
+            'id': course.id,
+            'name': course.name,
+        },
+        'topic': {
+            'id': topic.id,
+            'name': topic.name,
+        },
+        'max_score': 0,
+        'score': 0,
+        'started_at': data['started_at'],
+        'finished_at': data['finished_at'],
+    }

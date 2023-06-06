@@ -2751,6 +2751,227 @@
           }
         ]
       }
+    },
+    "/api/courses/{course_id}/topics/{topic_id}/start_test": {
+      "post": {
+        "summary": "Start Test",
+        "operationId": "start_test_api_courses__course_id__topics__topic_id__start_test_post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Topic Id",
+              "type": "integer"
+            },
+            "name": "topic_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Course Id",
+              "type": "integer"
+            },
+            "name": "course_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewTest"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/tests/{test_id}/finish": {
+      "post": {
+        "summary": "Finish Test",
+        "operationId": "finish_test_api_tests__test_id__finish_post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Test Id",
+              "type": "integer"
+            },
+            "name": "test_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "User Answers",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserAnswer"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinishTestResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/tests/{test_id}": {
+      "get": {
+        "summary": "Get One User Test",
+        "operationId": "get_one_user_test_api_tests__test_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Test Id",
+              "type": "integer"
+            },
+            "name": "test_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneTest"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/tests": {
+      "get": {
+        "summary": "Get User Tests",
+        "operationId": "get_user_tests_api_tests_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_ListTest_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -3046,6 +3267,17 @@
           }
         }
       },
+      "FinishTestResponse": {
+        "title": "FinishTestResponse",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string",
+            "default": "Test submitted."
+          }
+        }
+      },
       "FkPost": {
         "title": "FkPost",
         "required": [
@@ -3071,24 +3303,6 @@
       },
       "FkTask": {
         "title": "FkTask",
-        "required": [
-          "id",
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "name": {
-            "title": "Name",
-            "type": "string"
-          }
-        }
-      },
-      "FkTopic": {
-        "title": "FkTopic",
         "required": [
           "id",
           "name"
@@ -3181,6 +3395,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Course"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_ListTest_": {
+        "title": "LimitOffsetPage[ListTest]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListTest"
             }
           },
           "total": {
@@ -3404,7 +3650,7 @@
             "title": "Items",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Task"
+              "$ref": "#/components/schemas/backend__api__schemas__tasks__Task"
             }
           },
           "total": {
@@ -3492,6 +3738,31 @@
             "title": "Offset",
             "minimum": 0.0,
             "type": "integer"
+          }
+        }
+      },
+      "ListTest": {
+        "title": "ListTest",
+        "required": [
+          "id",
+          "course",
+          "topic",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
+          "topic": {
+            "$ref": "#/components/schemas/Topic"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TestAttemptStatus"
           }
         }
       },
@@ -3601,6 +3872,38 @@
           "course_name": {
             "title": "Course Name",
             "type": "string"
+          }
+        }
+      },
+      "NewTest": {
+        "title": "NewTest",
+        "required": [
+          "id",
+          "started_at",
+          "time_to_pass",
+          "tasks"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "started_at": {
+            "title": "Started At",
+            "type": "string",
+            "format": "date-time"
+          },
+          "time_to_pass": {
+            "title": "Time To Pass",
+            "type": "integer"
+          },
+          "tasks": {
+            "title": "Tasks",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__test_attempts__Task"
+            }
           }
         }
       },
@@ -3772,6 +4075,53 @@
           }
         }
       },
+      "OneTest": {
+        "title": "OneTest",
+        "required": [
+          "id",
+          "course",
+          "topic",
+          "status",
+          "score",
+          "max_score",
+          "started_at",
+          "finished_at"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "course": {
+            "$ref": "#/components/schemas/Course"
+          },
+          "topic": {
+            "$ref": "#/components/schemas/Topic"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TestAttemptStatus"
+          },
+          "score": {
+            "title": "Score",
+            "type": "integer"
+          },
+          "max_score": {
+            "title": "Max Score",
+            "type": "integer"
+          },
+          "started_at": {
+            "title": "Started At",
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "title": "Finished At",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "OneTopic": {
         "title": "OneTopic",
         "required": [
@@ -3794,10 +4144,10 @@
             "type": "string"
           },
           "prev_topic": {
-            "$ref": "#/components/schemas/FkTopic"
+            "$ref": "#/components/schemas/Topic"
           },
           "next_topic": {
-            "$ref": "#/components/schemas/FkTopic"
+            "$ref": "#/components/schemas/Topic"
           }
         }
       },
@@ -4089,6 +4439,24 @@
           }
         }
       },
+      "PossibleAnswer": {
+        "title": "PossibleAnswer",
+        "required": [
+          "id",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        }
+      },
       "Post": {
         "title": "Post",
         "required": [
@@ -4148,35 +4516,23 @@
           }
         }
       },
-      "Task": {
-        "title": "Task",
-        "required": [
-          "id",
-          "name",
-          "task_type"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "name": {
-            "title": "Name",
-            "type": "string"
-          },
-          "task_type": {
-            "$ref": "#/components/schemas/TaskType"
-          }
-        }
-      },
       "TaskType": {
         "title": "TaskType",
         "enum": [
           "single",
           "multiple",
-          "text",
-          "excel"
+          "text"
+        ],
+        "description": "An enumeration."
+      },
+      "TestAttemptStatus": {
+        "title": "TestAttemptStatus",
+        "enum": [
+          "in_progress",
+          "system_checking",
+          "timeout_failure",
+          "partially_checked",
+          "checked"
         ],
         "description": "An enumeration."
       },
@@ -4274,6 +4630,37 @@
             "items": {
               "$ref": "#/components/schemas/SubdivisionPost"
             }
+          }
+        }
+      },
+      "UserAnswer": {
+        "title": "UserAnswer",
+        "required": [
+          "task_id",
+          "answer"
+        ],
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "title": "Task Id",
+            "type": "integer"
+          },
+          "answer": {
+            "title": "Answer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              {
+                "type": "string"
+              }
+            ]
           }
         }
       },
@@ -4411,6 +4798,62 @@
           "name": {
             "title": "Name",
             "type": "string"
+          }
+        }
+      },
+      "backend__api__schemas__tasks__Task": {
+        "title": "Task",
+        "required": [
+          "id",
+          "name",
+          "task_type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          }
+        }
+      },
+      "backend__api__schemas__test_attempts__Task": {
+        "title": "Task",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "task_type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          },
+          "possible_answers": {
+            "title": "Possible Answers",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PossibleAnswer"
+            }
           }
         }
       },

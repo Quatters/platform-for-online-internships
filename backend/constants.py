@@ -12,7 +12,6 @@ class TaskType(BaseEnum):
     single = 'single'
     multiple = 'multiple'
     text = 'text'
-    excel = 'excel'
 
     @cache
     def may_have_answers(self):
@@ -28,3 +27,11 @@ class TopicResourceType(BaseEnum):
     image = 'image'
     video = 'video'
     embedded = 'embedded'
+
+
+class TestAttemptStatus(BaseEnum):
+    in_progress = 'in_progress'
+    system_checking = 'system_checking'
+    timeout_failure = 'timeout_failure'
+    partially_checked = 'partially_checked'
+    checked = 'checked'
