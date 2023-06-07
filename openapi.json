@@ -4580,6 +4580,7 @@
           "in_progress",
           "system_checking",
           "timeout_failure",
+          "check_failure",
           "partially_checked",
           "checked"
         ],

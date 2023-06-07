@@ -33,5 +33,6 @@ class TestAttemptStatus(BaseEnum):
     in_progress = 'in_progress'
     system_checking = 'system_checking'
     timeout_failure = 'timeout_failure'
+    check_failure = 'check_failure'
     partially_checked = 'partially_checked'
     checked = 'checked'

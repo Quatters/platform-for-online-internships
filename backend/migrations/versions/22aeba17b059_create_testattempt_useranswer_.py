@@ -1,8 +1,8 @@
 """Create TestAttempt, UserAnswer, UserCompetence
 
-Revision ID: 31227d35c4d4
+Revision ID: 22aeba17b059
 Revises: a28bb6191a7d
-Create Date: 2023-06-06 23:05:12.275344
+Create Date: 2023-06-07 16:39:21.523974
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '31227d35c4d4'
+revision = '22aeba17b059'
 down_revision = 'a28bb6191a7d'
 branch_labels = None
 depends_on = None
@@ -35,7 +35,7 @@ def upgrade() -> None:
     sa.Column('started_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('time_to_pass', sa.Integer(), nullable=False),
     sa.Column('finished_at', sa.DateTime(timezone=True), nullable=True),
-    sa.Column('status', sa.Enum('in_progress', 'system_checking', 'timeout_failure', 'partially_checked', 'checked', name='testattemptstatus'), nullable=False),
+    sa.Column('status', sa.Enum('in_progress', 'system_checking', 'timeout_failure', 'check_failure', 'partially_checked', 'checked', name='testattemptstatus'), nullable=False),
     sa.Column('score', sa.Integer(), server_default=sa.text('0'), nullable=False),
     sa.Column('max_score', sa.Integer(), server_default=sa.text('0'), nullable=False),
     sa.Column('id', sa.BigInteger(), nullable=False),

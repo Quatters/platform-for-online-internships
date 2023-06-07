@@ -1,3 +1,5 @@
+import logging
+import traceback
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from backend.models import TestAttempt, Task, Answer
@@ -5,6 +7,9 @@ from backend.api.schemas.test_attempts import UserAnswer
 from backend.api.queries.answers import get_answer
 from backend.api.queries.tasks import get_task
 from backend.constants import TestAttemptStatus
+
+
+logger = logging.getLogger(__file__)
 
 
 def _handle_single_task(db: Session, task: Task, answer: Answer) -> tuple[int, int]:
@@ -40,29 +45,34 @@ def finish_test(db: Session, test: TestAttempt, answers: list[UserAnswer]):
 
     else:
         test.status = TestAttemptStatus.checked
-        for user_answer in answers:
-            task = get_task(db, user_answer.task_id)
-            handler = None
-            answer = None
+        try:
+            for user_answer in answers:
+                task = get_task(db, user_answer.task_id)
+                handler = None
+                answer = None
 
-            if isinstance(user_answer.answer, int):
-                handler = _handle_single_task
-                answer = get_answer(db, user_answer.answer)
+                if isinstance(user_answer.answer, int):
+                    handler = _handle_single_task
+                    answer = get_answer(db, user_answer.answer)
 
-            elif isinstance(user_answer.answer, list):
-                handler = _handle_multiple_task
-                answer = db.query(Answer).filter(Answer.id.in_(user_answer.answer)).all()
+                elif isinstance(user_answer.answer, list):
+                    handler = _handle_multiple_task
+                    answer = db.query(Answer).filter(Answer.id.in_(user_answer.answer)).all()
 
-            elif isinstance(user_answer.answer, str):
-                handler = _handle_text_task
-                answer = user_answer.answer
-                test.status = TestAttemptStatus.partially_checked
+                elif isinstance(user_answer.answer, str):
+                    handler = _handle_text_task
+                    answer = user_answer.answer
+                    test.status = TestAttemptStatus.partially_checked
 
-            else:
-                raise ValueError(f'Invalid answer: {user_answer.answer}')
+                else:
+                    raise ValueError(f'Invalid answer: {user_answer.answer}')
 
-            user_score, max_score = handler(db, task, answer)
-            test.score += user_score
-            test.max_score += max_score
+                user_score, max_score = handler(db, task, answer)
+                test.score += user_score
+                test.max_score += max_score
+
+        except:
+            test.status = TestAttemptStatus.check_failure
+            logger.error(traceback.format_exc())
 
     db.commit()

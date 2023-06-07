@@ -790,7 +790,7 @@ export interface components {
      * @description An enumeration. 
      * @enum {unknown}
      */
-    TestAttemptStatus: "in_progress" | "system_checking" | "timeout_failure" | "partially_checked" | "checked";
+    TestAttemptStatus: "in_progress" | "system_checking" | "timeout_failure" | "check_failure" | "partially_checked" | "checked";
     /** Token */
     Token: {
       /** Access Token */

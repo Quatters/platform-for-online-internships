@@ -37,6 +37,7 @@ export default defineI18nConfig(() => ({
             checked: 'проверено',
             timeout_failure: 'время выполнения вышло',
             in_progress: 'в процессе выполнения',
+            check_failure: 'ошибка при проверке',
 
             Dashboard: 'Личный кабинет',
             Posts: 'Должности',
