@@ -1,10 +1,12 @@
+import { useStorage } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { components } from '~/openapi';
 
 export default defineStore('test', () => {
     const { $api } = useNuxtApp();
     const test = ref<components['schemas']['GoingTest'] | null | undefined>();
-    const answers = ref<Record<number, number | number[] | string>>({});
+    // const answers = ref<Record<number, number | number[] | string>>({});
+    const answers = useStorage<Record<number, number | number[] | string>>('current-test-answers', {});
     const isFetched = ref(false);
 
     const timerId = ref<ReturnType<typeof setTimeout> | null>(null);
