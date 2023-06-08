@@ -5,7 +5,6 @@ import { components } from '~/openapi';
 export default defineStore('test', () => {
     const { $api } = useNuxtApp();
     const test = ref<components['schemas']['GoingTest'] | null | undefined>();
-    // const answers = ref<Record<number, number | number[] | string>>({});
     const answers = useStorage<Record<number, number | number[] | string>>('current-test-answers', {});
     const isFetched = ref(false);
 
