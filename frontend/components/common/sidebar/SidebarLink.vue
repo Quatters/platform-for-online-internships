@@ -4,7 +4,7 @@
             class="w-5 h-5 rounded-full circle transition-all duration-100"
             :class="matchRoute() ? '!bg-blue-800' : 'bg-blue-200'"
         />
-        <div class="mx-5 title transition-all duration-100">{{ title }}</div>
+        <div class="mx-5 title transition-all duration-100"><slot /></div>
     </NuxtLink>
 </template>
 
@@ -13,7 +13,6 @@
 
     const props = defineProps<{
         to: RouteLocationRaw;
-        title: string;
     }>();
 
     const router = useRouter();

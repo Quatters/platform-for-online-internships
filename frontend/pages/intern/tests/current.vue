@@ -5,7 +5,9 @@
                 <ControlButton variant="blue" @click="finish()">Завершить тест</ControlButton>
             </template>
             <template v-if="goingTestStore.test" #links>
-                <span class="">Осталось времени: {{ goingTestStore.countdownString }}</span>
+                <span :class="{ 'text-red-500': goingTestStore.countdownSeconds <= 60 }">
+                    Осталось времени: {{ goingTestStore.countdownString }}
+                </span>
             </template>
         </ControlPanel>
         <CommonContent>
@@ -28,7 +30,10 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div v-for="(task, idx) in goingTestStore.test?.tasks" :key="idx">
+                <div v-if="goingTestStore.countdownSeconds <= 0">
+                    Время на прохождение теста вышло. Пожалуйста, завершите его.
+                </div>
+                <div v-for="(task, idx) in goingTestStore.test?.tasks" v-else :key="idx">
                     <h2 class="font-medium">{{ idx + 1 }}. {{ task.name }}</h2>
                     <div class="my-2">{{ task.description }}</div>
                     <InternTestAnswer

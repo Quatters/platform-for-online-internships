@@ -44,10 +44,20 @@
                             <div class="w-5 h-5 rounded-full bg-blue-200 circle transition-all duration-100" />
                             <div class="mx-5 title transition-all duration-100">{{ item.title }}</div>
                         </button>
-                        <CommonSidebarLink v-else-if="item.link" :to="item.link" :title="item.title" />
+                        <CommonSidebarLink v-else-if="item.link" :to="item.link">
+                            {{ item.title }}
+                        </CommonSidebarLink>
                     </li>
                     <li v-if="testStore.test && route.name !== 'intern-tests-current'" class="my-6">
-                        <CommonSidebarLink :to="{ name: 'intern-tests-current' }" title="Вернуться к тесту" />
+                        <CommonSidebarLink :to="{ name: 'intern-tests-current' }">
+                            <p>Вернуться к тесту</p>
+                            <p
+                                class="text-gray-600 text-sm"
+                                :class="{ '!text-red-500': testStore.countdownSeconds <= 60 }"
+                            >
+                                {{ testStore.countdownString }}
+                            </p>
+                        </CommonSidebarLink>
                     </li>
                 </ul>
             </div>

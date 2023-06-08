@@ -52,13 +52,17 @@ export default defineStore('test', () => {
     }
 
     const countdownString = computed(() => {
-        if (!seconds.value) {
+        if (!seconds.value || seconds.value < 0) {
             return '00:00:00';
         }
         const minutes = Math.floor(seconds.value / 60);
         const _seconds = seconds.value % 60;
         const hours = Math.floor(minutes / 60);
         return `${_prependZero(hours)}:${_prependZero(minutes)}:${_prependZero(_seconds)}`;
+    });
+
+    const countdownSeconds = computed(() => {
+        return seconds.value ?? 0;
     });
 
     async function fetch({ force }: { force?: boolean } = {}) {
@@ -106,5 +110,6 @@ export default defineStore('test', () => {
         test,
         answers,
         countdownString,
+        countdownSeconds,
     };
 });
