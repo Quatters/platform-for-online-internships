@@ -26,3 +26,17 @@ export function getFirstQueryValue(queryValue: LocationQueryValue | LocationQuer
 }
 
 export const error404 = () => createError({ fatal: true, statusCode: 404, message: 'Страница не найдена' });
+
+// https://stackoverflow.com/a/2450976
+export function shuffle<T>(array: Array<T>): Array<T> {
+    let currentIndex = array.length;
+    let randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}

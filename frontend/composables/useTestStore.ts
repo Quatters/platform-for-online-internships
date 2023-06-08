@@ -77,7 +77,7 @@ export default defineStore('test', () => {
     }
 
     async function startTest({ courseId, topicId }: { courseId: string; topicId: string }) {
-        test.value = await $api({
+        const fetchedTest = await $api({
             path: '/api/courses/{course_id}/topics/{topic_id}/start_test',
             method: 'post',
             params: {
@@ -85,6 +85,8 @@ export default defineStore('test', () => {
                 topic_id: topicId,
             },
         });
+        fetchedTest.tasks = shuffle(fetchedTest.tasks);
+        test.value = fetchedTest;
         answers.value = {};
         startCountdown();
     }
