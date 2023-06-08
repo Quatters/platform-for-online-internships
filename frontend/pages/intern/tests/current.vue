@@ -5,9 +5,7 @@
                 <ControlButton variant="blue" @click="finish()">Завершить тест</ControlButton>
             </template>
             <template v-if="goingTestStore.test" #links>
-                <span class="text-gray-500">
-                    Начато: {{ new Date(goingTestStore.test.started_at).toLocaleString() }}
-                </span>
+                <span class="">Осталось времени: {{ goingTestStore.countdownString }}</span>
             </template>
         </ControlPanel>
         <CommonContent>
@@ -49,7 +47,7 @@
     const { $modal, $toast } = useNuxtApp();
     const i18n = useI18n();
 
-    const goingTestStore = useGoingTestStore();
+    const goingTestStore = useTestStore();
     await goingTestStore.fetch();
 
     function finish() {
@@ -62,7 +60,7 @@
                 label: 'Завершить',
                 theme: 'blue',
                 action: async () => {
-                    const data = await goingTestStore.finish();
+                    const data = await goingTestStore.finishTest();
                     $toast.show({
                         timeout: 4,
                         type: 'success',

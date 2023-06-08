@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
     const route = useRoute();
-    const goingTestStore = useGoingTestStore();
+    const goingTestStore = useTestStore();
     await goingTestStore.fetch();
 
     const pageStore = usePageStore();
@@ -87,15 +87,10 @@
                 label: 'Начать',
                 theme: 'blue',
                 action: async () => {
-                    goingTestStore.test = await $api({
-                        path: '/api/courses/{course_id}/topics/{topic_id}/start_test',
-                        method: 'post',
-                        params: {
-                            course_id: route.params.id as string,
-                            topic_id: route.params.topic_id as string,
-                        },
+                    await goingTestStore.startTest({
+                        courseId: route.params.id as string,
+                        topicId: route.params.topic_id as string,
                     });
-                    goingTestStore.answers = {};
                     return navigateTo({ name: 'intern-tests-current' });
                 },
             },

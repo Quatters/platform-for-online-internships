@@ -1,11 +1,6 @@
 <template>
     <div>
         <ControlPanel>
-            <template #buttons>
-                <NuxtLink v-if="goingTestStore.test !== null" :to="{ name: 'intern-tests-current' }" class="link">
-                    Текущий тест
-                </NuxtLink>
-            </template>
             <template #inputs>
                 <ControlSearchInput v-model="search" />
             </template>
@@ -22,7 +17,7 @@
 
     const pageStore = usePageStore();
 
-    const goingTestStore = useGoingTestStore();
+    const goingTestStore = useTestStore();
     await goingTestStore.fetch();
 
     const search = ref<string | null | undefined>(getFirstQueryValue(route.query.search));

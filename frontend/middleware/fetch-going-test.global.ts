@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware(async () => {
     await userStore.fetchUser();
 
     if (userStore.user && !userStore.user.is_admin && !userStore.user.is_teacher) {
-        const goingTestStore = useGoingTestStore();
+        const goingTestStore = useTestStore();
         goingTestStore.fetch();
     }
 });

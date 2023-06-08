@@ -204,8 +204,45 @@ def test_tests():
             'course_id': course.id,
             'name': topic.name,
         },
-        'max_score': 0,
+        'max_score': 8,
         'score': 0,
+        'started_at': data['started_at'],
+        'finished_at': data['finished_at'],
+    }
+
+    # start test
+    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    data = response.json()
+    assert response.status_code == 200, data
+    test_id = data['id']
+
+    # finish test sending only system-checking answers
+    response = client.post(f'/api/tests/{test_id}/finish', json=[
+        {'task_id': task_1.id, 'answer': answer_1_1.id},
+        {'task_id': task_2.id, 'answer': [answer_2_1.id, answer_2_3.id]},
+    ])
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {'detail': 'Test submitted.'}
+
+    # get test
+    response = client.get(f'/api/tests/{test_id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {
+        'id': test_id,
+        'status': 'checked',
+        'course': {
+            'id': course.id,
+            'name': course.name,
+        },
+        'topic': {
+            'id': topic.id,
+            'course_id': course.id,
+            'name': topic.name,
+        },
+        'max_score': 8,
+        'score': 3,
         'started_at': data['started_at'],
         'finished_at': data['finished_at'],
     }

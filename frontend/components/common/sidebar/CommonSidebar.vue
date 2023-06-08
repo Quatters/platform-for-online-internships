@@ -44,17 +44,10 @@
                             <div class="w-5 h-5 rounded-full bg-blue-200 circle transition-all duration-100" />
                             <div class="mx-5 title transition-all duration-100">{{ item.title }}</div>
                         </button>
-                        <NuxtLink
-                            v-else-if="item.link"
-                            :to="item.link"
-                            class="flex flex-row items-center text-blue-900 mx-3 mt-2 py-1 ps-7 sidebar-link"
-                        >
-                            <div
-                                class="w-5 h-5 rounded-full circle transition-all duration-100"
-                                :class="matchRoute(item.link) ? '!bg-blue-800' : 'bg-blue-200'"
-                            />
-                            <div class="mx-5 title transition-all duration-100">{{ item.title }}</div>
-                        </NuxtLink>
+                        <CommonSidebarLink v-else-if="item.link" :to="item.link" :title="item.title" />
+                    </li>
+                    <li v-if="testStore.test && route.name !== 'intern-tests-current'" class="my-6">
+                        <CommonSidebarLink :to="{ name: 'intern-tests-current' }" title="Вернуться к тесту" />
                     </li>
                 </ul>
             </div>
@@ -63,7 +56,6 @@
 </template>
 
 <script setup lang="ts">
-    import type { RouteLocationRaw } from 'vue-router';
     import { onClickOutside } from '@vueuse/core';
     import type { SidebarItem } from '~/types';
 
@@ -71,14 +63,11 @@
         sidebarItems: SidebarItem[];
     }>();
 
+    const testStore = useTestStore();
+    const route = useRoute();
+
     const sidebar = ref<HTMLElement>();
     const wrapper = ref<HTMLElement>();
-    const route = useRoute();
-    const router = useRouter();
-
-    function matchRoute(r: RouteLocationRaw) {
-        return route.path.startsWith(router.resolve(r).path);
-    }
 
     function showSidebar() {
         sidebar.value!.classList.remove('-translate-x-full');
@@ -90,13 +79,3 @@
 
     onClickOutside(wrapper, hideModal);
 </script>
-
-<style scoped lang="scss">
-    .sidebar-link:hover > .title {
-        @apply text-blue-700;
-    }
-
-    .sidebar-link:hover > .circle {
-        @apply bg-blue-400;
-    }
-</style>
