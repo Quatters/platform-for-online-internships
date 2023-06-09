@@ -5,7 +5,8 @@ from fastapi.testclient import TestClient
 from backend import app
 from backend.models.users import User
 from backend.database import get_db
-from backend.api.auth import create_access_token, hash_password
+from backend.api.auth import create_access_token
+from backend.api.utils import hash_password
 
 
 class TestUser(BaseSchema):

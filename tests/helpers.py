@@ -10,6 +10,7 @@ from backend.models import (
     Topic,
     TopicResource,
     Subdivision,
+    Post,
 )
 from backend.constants import TaskType, TopicResourceType
 from backend.models.answers import Answer
@@ -59,6 +60,27 @@ def create_subdivision(
     subdivision = Subdivision(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
+    )
+    if commit:
+        db.add(subdivision)
+        db.commit()
+        db.refresh(subdivision)
+    return subdivision
+
+
+def create_post(
+    *,
+    subdivision_id: int | Column[int],
+    name: Optional[str] = None,
+    description: Optional[str] = None,
+    db: Optional[Session] = None,
+    commit: bool = True,
+):
+    db = db or next(get_db())
+    subdivision = Post(
+        name=name or str(uuid1()),
+        description=description or str(uuid1()),
+        subdivision_id=subdivision_id,
     )
     if commit:
         db.add(subdivision)

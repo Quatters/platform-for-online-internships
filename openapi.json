@@ -353,6 +353,47 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Create User",
+        "operationId": "create_user_api_users_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/api/users/{user_id}": {
@@ -3287,6 +3328,57 @@
           "prev_resource_id": {
             "title": "Prev Resource Id",
             "type": "integer"
+          }
+        }
+      },
+      "CreateUser": {
+        "title": "CreateUser",
+        "required": [
+          "email",
+          "password",
+          "is_admin",
+          "is_teacher"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string",
+            "default": ""
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string",
+            "default": ""
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string",
+            "default": ""
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "default": []
+          },
+          "is_admin": {
+            "title": "Is Admin",
+            "type": "boolean"
+          },
+          "is_teacher": {
+            "title": "Is Teacher",
+            "type": "boolean"
           }
         }
       },

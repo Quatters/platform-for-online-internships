@@ -3,7 +3,6 @@ from typing import Annotated
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
 from jose import JWTError, jwt
 from backend.api.schemas.users import User
 from backend.api.queries.users import get_user_by_email
@@ -11,9 +10,10 @@ from backend.api.schemas.users import TokenData
 from backend.database import get_db
 from backend.settings import AUTH
 from backend.api.errors.errors import no_permission
+from backend.api.utils import crypt_context
+
 
 oauth2 = OAuth2PasswordBearer(tokenUrl=AUTH['TOKEN_URL'])
-crypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -24,10 +24,6 @@ credentials_exception = HTTPException(
 
 def passwords_match(plain_password: str, hashed_password: str):
     return crypt_context.verify(plain_password, hashed_password)
-
-
-def hash_password(password: str):
-    return crypt_context.hash(password)
 
 
 def authenticate_user(db: Session, email: str, password: str):
