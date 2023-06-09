@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING
-from typing import TYPE_CHECKING
 from sqlalchemy import (
     Column,
     Enum,
@@ -13,10 +12,6 @@ from sqlalchemy.orm import Mapped, Relationship, relationship
 from backend.models import BaseModel
 from backend.models.topics import Topic
 from backend.constants import TaskType
-
-
-if TYPE_CHECKING:  # nocv
-    from backend.models import Answer
 
 
 if TYPE_CHECKING:  # nocv

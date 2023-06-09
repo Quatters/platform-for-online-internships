@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING
-from typing import TYPE_CHECKING
 from sqlalchemy import (
     Column,
     ForeignKey,
@@ -13,10 +12,6 @@ from sqlalchemy import (
 from sqlalchemy.orm import Relationship, relationship, Mapped
 from backend.models import BaseModel, Course
 from backend.constants import TopicResourceType
-
-
-if TYPE_CHECKING:  # nocv
-    from backend.models import Task
 
 
 if TYPE_CHECKING:  # nocv
