@@ -64,6 +64,6 @@ def create_test(db: Session, topic: Topic, user_id: int):
     db.commit()
     db.refresh(test)
 
-    test.tasks = sort_by_self_fk(tasks, attr_='prev_task_id')
+    test.tasks = tasks
 
     return test
