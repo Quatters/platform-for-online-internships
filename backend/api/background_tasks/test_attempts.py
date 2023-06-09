@@ -2,7 +2,7 @@ import logging
 import traceback
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-from backend.models import TestAttempt, Task, Answer, Topic
+from backend.models import TestAttempt, Task, Answer
 from backend.api.schemas.test_attempts import UserAnswer
 from backend.api.queries.answers import get_answer
 from backend.api.queries.tasks import get_task
@@ -85,7 +85,7 @@ def finish_test(db: Session, test: TestAttempt, answers: list[UserAnswer]):
 
                 test.score += handler(db, task, answer)
 
-        except:
+        except:  # noqa: E722
             test.status = TestAttemptStatus.check_failure
             logger.error(traceback.format_exc())
 

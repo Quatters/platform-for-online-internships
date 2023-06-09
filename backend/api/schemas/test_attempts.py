@@ -10,7 +10,6 @@ class FkTopic(BaseSchema):
     name: str
 
 
-
 class PossibleAnswer(BaseSchema):
     id: int
     value: str
@@ -39,6 +38,7 @@ class UserAnswer(BaseSchema):
 
 class FinishTestResponse(BaseSchema):
     detail: str = 'Test submitted.'
+
 
 class ListTest(BaseSchema):
     id: int
