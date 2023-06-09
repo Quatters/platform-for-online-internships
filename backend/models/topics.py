@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING
 from sqlalchemy import (
     Column,
     ForeignKey,
@@ -18,6 +19,10 @@ if TYPE_CHECKING:  # nocv
     from backend.models import Task
 
 
+if TYPE_CHECKING:  # nocv
+    from backend.models import Task
+
+
 class Topic(BaseModel):
     name = Column(String, index=True, nullable=False)
     description = Column(String, nullable=False, server_default="")
@@ -25,8 +30,8 @@ class Topic(BaseModel):
     course_id = Column(Integer, ForeignKey(Course.id), index=True, nullable=False)
 
     next_topic = Relationship('Topic', back_populates='prev_topic', uselist=False)
-    course = Relationship(Course, primaryjoin=course_id == Course.id)
-    tasks: Mapped[list['Task']] = relationship('Task', back_populates='topic')
+    course = Relationship(Course, primaryjoin=course_id == Course.id, back_populates='topics')
+    tasks: Mapped[list['Task']] = relationship('Task', cascade="all, delete")
 
     __table_args__ = (
         UniqueConstraint(course_id, prev_topic_id, name="u_prev_topic_for_course"),

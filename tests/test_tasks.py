@@ -1,3 +1,5 @@
+from backend.database import get_db
+from backend.models.tasks import Task
 from tests import helpers
 from tests.base import login_as, test_admin
 
@@ -94,3 +96,10 @@ def test_tasks_crud():
     data = response.json()
     assert response.status_code == 200
     assert data['total'] == 0
+
+    # delete parent topic
+    response = client.delete(f'/api/courses/{course.id}/topics/{topic.id}')
+    assert response.status_code == 204
+    db = next(get_db())
+    results = db.query(Task).filter(Task.topic_id == topic.id).all()
+    assert len(results) == 0
