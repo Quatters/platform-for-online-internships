@@ -17,6 +17,12 @@ def get_going_test(db: Session, user_id: int):
     ).one_or_none()
 
 
+def get_existing_attempts_count(db: Session, user_id: int, topic_id: int):
+    return db.query(TestAttempt).filter(
+        (TestAttempt.user_id == user_id) & (TestAttempt.topic_id == topic_id)
+    ).count()
+
+
 def get_going_test_with_tasks(db: Session, user_id: int) -> TestAttempt | None:
     test = get_going_test(db, user_id)
     if not test:

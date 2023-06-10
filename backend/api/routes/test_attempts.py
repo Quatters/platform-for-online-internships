@@ -34,6 +34,9 @@ def start_test(
     if going_test is not None:
         raise bad_request('Cannot start new test until there is unfinished one.')
 
+    if queries.get_existing_attempts_count(db, user.id, topic.id) >= topic.attempts_amount:
+        raise bad_request('You have run out of attempts for this topic.')
+
     return queries.create_test(db, topic, user.id)
 
 

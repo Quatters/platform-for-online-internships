@@ -279,6 +279,11 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /**
+       * Attempts Amount 
+       * @default 3
+       */
+      attempts_amount?: number;
       /** Prev Topic Id */
       prev_topic_id?: number;
     };
@@ -656,6 +661,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Attempts Amount */
+      attempts_amount: number;
       prev_topic?: components["schemas"]["Topic"];
       next_topic?: components["schemas"]["Topic"];
     };
@@ -755,6 +762,8 @@ export interface components {
       name?: string;
       /** Description */
       description?: string;
+      /** Attempts Amount */
+      attempts_amount?: number;
       /** Prev Topic Id */
       prev_topic_id?: number;
       /** Next Topic Id */

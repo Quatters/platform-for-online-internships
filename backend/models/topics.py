@@ -10,6 +10,7 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import Relationship, relationship, Mapped
+from sqlalchemy.sql import text
 from backend.models import BaseModel, Course
 from backend.constants import TopicResourceType
 
@@ -23,6 +24,7 @@ class Topic(BaseModel):
     description = Column(String, nullable=False, server_default="")
     prev_topic_id = Column(Integer, ForeignKey('app_topic.id'), index=True, unique=True)
     course_id = Column(Integer, ForeignKey(Course.id), index=True, nullable=False)
+    attempts_amount = Column(Integer, nullable=False, server_default=text('3'))
 
     next_topic = Relationship('Topic', back_populates='prev_topic', uselist=False)
     course = Relationship(Course, primaryjoin=course_id == Course.id, back_populates='topics')

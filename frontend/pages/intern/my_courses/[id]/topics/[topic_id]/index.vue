@@ -3,7 +3,14 @@
         <ControlPanel>
             <template #buttons>
                 <ControlButtonReturn />
-                <ControlButton v-if="!testStore.test" variant="blue" @click="createTest()">Начать тест</ControlButton>
+                <ControlButton
+                    v-if="!testStore.test"
+                    :disabled="!data?.attempts_amount"
+                    variant="blue"
+                    @click="createTest()"
+                >
+                    Начать тест (еще попыток: {{ data?.attempts_amount }})
+                </ControlButton>
             </template>
         </ControlPanel>
         <CommonContent>
@@ -78,7 +85,7 @@
     function createTest() {
         $modal.show({
             title: 'Начать тест',
-            body: `Вы действительно хотите начать выполнение теста по теме ${data.value?.name}?`,
+            body: `Вы действительно хотите начать выполнение теста по теме "${data.value?.name}"?`,
             secondary: DEFAULT_SECONDARY_MODAL_BUTTON_OPTIONS,
             type: 'warning',
             primary: {

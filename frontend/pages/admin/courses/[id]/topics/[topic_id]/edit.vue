@@ -7,8 +7,16 @@
         </ControlPanel>
         <CommonContent>
             <ControlForm @submit="save">
-                <ControlFormInput v-model="patchData.name" class="mb-4" label="Название" />
-                <ControlFormTextArea v-model="patchData.description" class="mb-4" label="Описание" />
+                <ControlFormInput v-model="patchData.name" class="mb-4" label="Название" required />
+                <ControlFormTextArea v-model="patchData.description" class="mb-4" label="Описание" required />
+                <ControlFormInput
+                    v-model="patchData.attempts_amount"
+                    type="number"
+                    min="1"
+                    class="mb-4"
+                    label="Количество попыток"
+                    required
+                />
                 <ControlFormFkField
                     v-model="patchData.prev_topic_id"
                     v-model:view-value="currentPrevTopicName"

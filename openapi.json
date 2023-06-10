@@ -878,7 +878,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       },
       "delete": {
         "summary": "Delete Topic",
@@ -3299,6 +3304,12 @@
             "title": "Description",
             "type": "string"
           },
+          "attempts_amount": {
+            "title": "Attempts Amount",
+            "minimum": 1.0,
+            "type": "integer",
+            "default": 3
+          },
           "prev_topic_id": {
             "title": "Prev Topic Id",
             "type": "integer"
@@ -4268,7 +4279,8 @@
         "required": [
           "id",
           "name",
-          "description"
+          "description",
+          "attempts_amount"
         ],
         "type": "object",
         "properties": {
@@ -4283,6 +4295,10 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "attempts_amount": {
+            "title": "Attempts Amount",
+            "type": "integer"
           },
           "prev_topic": {
             "$ref": "#/components/schemas/Topic"
@@ -4522,6 +4538,11 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "attempts_amount": {
+            "title": "Attempts Amount",
+            "minimum": 1.0,
+            "type": "integer"
           },
           "prev_topic_id": {
             "title": "Prev Topic Id",

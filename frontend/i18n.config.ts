@@ -31,6 +31,7 @@ export default defineI18nConfig(() => ({
             'Max score': 'Максимум баллов',
             'Started at': 'Начат',
             'Finished at': 'Закончен',
+            'Attempts amount': 'Количество попыток',
 
             system_checking: 'проверяется системой',
             partially_checked: 'частично проверено',
