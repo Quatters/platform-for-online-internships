@@ -12,7 +12,7 @@
                 <ControlFormEnumField
                     v-model:model-value="data.task_type"
                     required
-                    :enum-items="['single', 'multiple', 'text', 'excel']"
+                    :enum-items="['single', 'multiple', 'text']"
                     class="mb-4"
                     label="Тип задания"
                 />

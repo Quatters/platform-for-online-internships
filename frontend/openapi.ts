@@ -151,6 +151,26 @@ export interface paths {
     /** Patch Resource */
     patch: operations["patch_resource_api_courses__course_id__topics__topic_id__resources__resource_id__patch"];
   };
+  "/api/courses/{course_id}/topics/{topic_id}/start_test": {
+    /** Start Test */
+    post: operations["start_test_api_courses__course_id__topics__topic_id__start_test_post"];
+  };
+  "/api/tests/{test_id}/finish": {
+    /** Finish Test */
+    post: operations["finish_test_api_tests__test_id__finish_post"];
+  };
+  "/api/tests/going": {
+    /** Get Going Test */
+    get: operations["get_going_test_api_tests_going_get"];
+  };
+  "/api/tests/{test_id}": {
+    /** Get One User Test */
+    get: operations["get_one_user_test_api_tests__test_id__get"];
+  };
+  "/api/tests": {
+    /** Get User Tests */
+    get: operations["get_user_tests_api_tests_get"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -270,6 +290,14 @@ export interface components {
       /** Prev Resource Id */
       prev_resource_id?: number;
     };
+    /** FinishTestResponse */
+    FinishTestResponse: {
+      /**
+       * Detail 
+       * @default Test submitted.
+       */
+      detail?: string;
+    };
     /** FkPost */
     FkPost: {
       /** Id */
@@ -290,6 +318,8 @@ export interface components {
     FkTopic: {
       /** Id */
       id: number;
+      /** Course Id */
+      course_id: number;
       /** Name */
       name: string;
     };
@@ -299,6 +329,21 @@ export interface components {
       id: number;
       /** Name */
       name: string;
+    };
+    /** GoingTest */
+    GoingTest: {
+      /** Id */
+      id: number;
+      /**
+       * Started At 
+       * Format: date-time
+       */
+      started_at: string;
+      /** Time To Pass */
+      time_to_pass: number;
+      /** Tasks */
+      tasks: (components["schemas"]["backend__api__schemas__test_attempts__Task"])[];
+      topic: components["schemas"]["FkTopic"];
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -320,6 +365,17 @@ export interface components {
     LimitOffsetPage_Course_: {
       /** Items */
       items: (components["schemas"]["Course"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[ListTest] */
+    LimitOffsetPage_ListTest_: {
+      /** Items */
+      items: (components["schemas"]["ListTest"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -396,7 +452,7 @@ export interface components {
     /** LimitOffsetPage[Task] */
     LimitOffsetPage_Task_: {
       /** Items */
-      items: (components["schemas"]["Task"])[];
+      items: (components["schemas"]["backend__api__schemas__tasks__Task"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -425,6 +481,14 @@ export interface components {
       limit?: number;
       /** Offset */
       offset?: number;
+    };
+    /** ListTest */
+    ListTest: {
+      /** Id */
+      id: number;
+      course: components["schemas"]["Course"];
+      topic: components["schemas"]["FkTopic"];
+      status: components["schemas"]["TestAttemptStatus"];
     };
     /** ListTopicResource */
     ListTopicResource: {
@@ -529,6 +593,28 @@ export interface components {
       next_task?: components["schemas"]["FkTask"];
       task_type: components["schemas"]["TaskType"];
     };
+    /** OneTest */
+    OneTest: {
+      /** Id */
+      id: number;
+      course: components["schemas"]["Course"];
+      topic: components["schemas"]["FkTopic"];
+      status: components["schemas"]["TestAttemptStatus"];
+      /** Score */
+      score: number;
+      /** Max Score */
+      max_score: number;
+      /**
+       * Started At 
+       * Format: date-time
+       */
+      started_at: string;
+      /**
+       * Finished At 
+       * Format: date-time
+       */
+      finished_at?: string;
+    };
     /** OneTopic */
     OneTopic: {
       /** Id */
@@ -537,8 +623,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
-      prev_topic?: components["schemas"]["FkTopic"];
-      next_topic?: components["schemas"]["FkTopic"];
+      prev_topic?: components["schemas"]["Topic"];
+      next_topic?: components["schemas"]["Topic"];
     };
     /** OneTopicResource */
     OneTopicResource: {
@@ -663,6 +749,13 @@ export interface components {
       /** Posts */
       posts?: (number)[];
     };
+    /** PossibleAnswer */
+    PossibleAnswer: {
+      /** Id */
+      id: number;
+      /** Value */
+      value: string;
+    };
     /** Post */
     Post: {
       /** Id */
@@ -686,20 +779,18 @@ export interface components {
       /** Name */
       name: string;
     };
-    /** Task */
-    Task: {
-      /** Id */
-      id: number;
-      /** Name */
-      name: string;
-      task_type: components["schemas"]["TaskType"];
-    };
     /**
      * TaskType 
      * @description An enumeration. 
      * @enum {unknown}
      */
-    TaskType: "single" | "multiple" | "text" | "excel";
+    TaskType: "single" | "multiple" | "text";
+    /**
+     * TestAttemptStatus 
+     * @description An enumeration. 
+     * @enum {unknown}
+     */
+    TestAttemptStatus: "in_progress" | "system_checking" | "timeout_failure" | "check_failure" | "partially_checked" | "checked";
     /** Token */
     Token: {
       /** Access Token */
@@ -738,6 +829,13 @@ export interface components {
       is_teacher: boolean;
       /** Posts */
       posts: (components["schemas"]["SubdivisionPost"])[];
+    };
+    /** UserAnswer */
+    UserAnswer: {
+      /** Task Id */
+      task_id: number;
+      /** Answer */
+      answer: number | (number)[] | string;
     };
     /** UserCourse */
     UserCourse: {
@@ -788,6 +886,26 @@ export interface components {
       id: number;
       /** Name */
       name: string;
+    };
+    /** Task */
+    backend__api__schemas__tasks__Task: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      task_type: components["schemas"]["TaskType"];
+    };
+    /** Task */
+    backend__api__schemas__test_attempts__Task: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+      task_type: components["schemas"]["TaskType"];
+      /** Possible Answers */
+      possible_answers?: (components["schemas"]["PossibleAnswer"])[];
     };
     /** CreateCourse */
     backend__api__schemas__user_courses__CreateCourse: {
@@ -2001,6 +2119,113 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["OneTopicResource"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Start Test */
+  start_test_api_courses__course_id__topics__topic_id__start_test_post: {
+    parameters: {
+      path: {
+        topic_id: number;
+        course_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["GoingTest"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Finish Test */
+  finish_test_api_tests__test_id__finish_post: {
+    parameters: {
+      path: {
+        test_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": (components["schemas"]["UserAnswer"])[];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["FinishTestResponse"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Going Test */
+  get_going_test_api_tests_going_get: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["GoingTest"];
+        };
+      };
+    };
+  };
+  /** Get One User Test */
+  get_one_user_test_api_tests__test_id__get: {
+    parameters: {
+      path: {
+        test_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OneTest"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get User Tests */
+  get_user_tests_api_tests_get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_ListTest_"];
         };
       };
       /** @description Validation Error */

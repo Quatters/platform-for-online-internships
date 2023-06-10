@@ -55,6 +55,13 @@ AUTH = {
 }
 
 
+TASKS_TIME = {
+    'single': int(os.getenv('TASK_SINGLE_TIME', 60)),
+    'multiple': int(os.getenv('TASK_SINGLE_TIME', 120)),
+    'text': int(os.getenv('TASK_SINGLE_TIME', 300)),
+}
+
+
 PAGINATION = {
     'DEFAULT_LIMIT': 20,
 }

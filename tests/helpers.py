@@ -11,7 +11,9 @@ from backend.models import (
     TopicResource,
     Subdivision,
 )
-from backend.constants import TopicResourceType
+from backend.constants import TaskType, TopicResourceType
+from backend.models.answers import Answer
+from backend.models.tasks import Task
 from tests.base import login_as, test_admin
 
 
@@ -135,3 +137,49 @@ def create_topic_resource(
         db.commit()
         db.refresh(resource)
     return resource
+
+
+def create_task(
+    *,
+    topic_id: int | Column[int],
+    task_type: TaskType = TaskType.single,
+    name: str | Column[str] | None = None,
+    description: str | Column[str] | None = None,
+    prev_task_id: int | Column[int] | None = None,
+    db: Session | None = None,
+    commit: bool = True,
+):
+    db = db or next(get_db())
+    task = Task(
+        topic_id=topic_id,
+        task_type=task_type,
+        name=name or str(uuid1()),
+        description=description or str(uuid1()),
+        prev_task_id=prev_task_id,
+    )
+    if commit:
+        db.add(task)
+        db.commit()
+        db.refresh(task)
+    return task
+
+
+def create_answer(
+    *,
+    task_id: int | Column[int],
+    value: str | Column[str] | None = None,
+    is_correct: bool = False,
+    db: Session | None = None,
+    commit: bool = True,
+):
+    db = db or next(get_db())
+    answer = Answer(
+        task_id=task_id,
+        value=value or str(uuid1()),
+        is_correct=is_correct,
+    )
+    if commit:
+        db.add(answer)
+        db.commit()
+        db.refresh(answer)
+    return answer

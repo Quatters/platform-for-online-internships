@@ -6,17 +6,12 @@ class Topic(BaseSchema):
     name: str
 
 
-class FkTopic(BaseSchema):
-    id: int
-    name: str
-
-
 class OneTopic(BaseSchema):
     id: int
     name: str
     description: str
-    prev_topic: FkTopic | None
-    next_topic: FkTopic | None
+    prev_topic: Topic | None
+    next_topic: Topic | None
 
 
 class CreateTopic(BaseSchema):

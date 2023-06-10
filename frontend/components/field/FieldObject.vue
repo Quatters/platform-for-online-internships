@@ -28,17 +28,31 @@
     function getFkLink(item: Item): RouteLocationNamedRaw {
         const baseLink = pageStore.fkInstancePathMap[props.fieldName];
         const param = baseLink.name!.toString().split('-').slice(-1)[0];
+
+        const fromResponseParams: typeof baseLink.params = {};
+        if (pageStore.fkInstancePathMap[props.fieldName].params) {
+            for (const [key, value] of Object.entries(pageStore.fkInstancePathMap[props.fieldName].params)) {
+                if (value === '<<from-response>>') {
+                    const apiKey = (pageStore.fkInstancePathMap[props.fieldName]?.routerToResponseParamsMap?.[key] ??
+                        key) as string;
+                    fromResponseParams[key] = item[apiKey] as string;
+                }
+            }
+        }
+
         return {
             ...baseLink,
             params: {
                 ...baseLink.params,
+                ...fromResponseParams,
                 [param]: item.id as number,
             },
         };
     }
 
     function getValue(item: Item) {
-        return Object.values(Object.fromEntries(Object.entries(item).filter(([key]) => key !== 'id'))).join(', ');
+        const viewFieldName = pageStore.fkInstancePathMap?.[props.fieldName]?.viewFieldName ?? 'name';
+        return item[viewFieldName] as string;
     }
 
     const shownItem = computed<ShownItem>(() => {

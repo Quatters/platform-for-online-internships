@@ -3,6 +3,9 @@
         <ControlPanel>
             <template #buttons>
                 <ControlButtonReturn />
+                <ControlButton v-if="goingTestStore.test === null" variant="blue" @click="createTest()">
+                    Начать тест
+                </ControlButton>
             </template>
         </ControlPanel>
         <CommonContent>
@@ -46,6 +49,8 @@
 
 <script setup lang="ts">
     const route = useRoute();
+    const goingTestStore = useTestStore();
+    await goingTestStore.fetch();
 
     const pageStore = usePageStore();
     pageStore.fkInstancePathMap = {
@@ -53,7 +58,7 @@
         next_topic: { name: 'intern-my_courses-id-topics-topic_id', params: { id: route.params.id as string } },
     };
 
-    const { $api } = useNuxtApp();
+    const { $api, $modal } = useNuxtApp();
 
     const { data } = await useAsyncData(() => {
         return $api({
@@ -71,4 +76,24 @@
             topic_id: route.params.topic_id as string,
         },
     });
+
+    function createTest() {
+        $modal.show({
+            title: 'Начать тест',
+            body: `Вы действительно хотите начать выполнение теста по теме ${data.value?.name}?`,
+            secondary: DEFAULT_SECONDARY_MODAL_BUTTON_OPTIONS,
+            type: 'warning',
+            primary: {
+                label: 'Начать',
+                theme: 'blue',
+                action: async () => {
+                    await goingTestStore.startTest({
+                        courseId: route.params.id as string,
+                        topicId: route.params.topic_id as string,
+                    });
+                    return navigateTo({ name: 'intern-tests-current' });
+                },
+            },
+        });
+    }
 </script>

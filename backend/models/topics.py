@@ -9,7 +9,7 @@ from sqlalchemy import (
     Enum,
     Text,
 )
-from sqlalchemy.orm import Mapped, Relationship, relationship
+from sqlalchemy.orm import Relationship, relationship, Mapped
 from backend.models import BaseModel, Course
 from backend.constants import TopicResourceType
 

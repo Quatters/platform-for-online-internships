@@ -7,8 +7,7 @@ from backend.models.association_tables import UserPostAssociation
 
 
 if TYPE_CHECKING:  # nocv
-    from backend.models import Post
-    from backend.models import UserCourse
+    from backend.models import Post, TestAttempt, UserCompetence, UserCourse
 
 
 class User(BaseModel):
@@ -21,6 +20,8 @@ class User(BaseModel):
     is_teacher = Column(Boolean, server_default=expression.false(), index=True, nullable=False)
 
     posts: Mapped[list['Post']] = relationship('Post', secondary=UserPostAssociation, back_populates='users')
+    test_attempts: Mapped[list['TestAttempt']] = relationship('TestAttempt', back_populates='user')
+    competencies: Mapped[list['UserCompetence']] = relationship('UserCompetence', back_populates='user')
     courses: Mapped[list['UserCourse']] = relationship('UserCourse', cascade='all, delete')
 
     __table_args__ = (

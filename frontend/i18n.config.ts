@@ -24,6 +24,20 @@ export default defineI18nConfig(() => ({
             'Course name': 'Название курса',
             Progress: 'Прогресс',
             Type: 'Тип',
+            Course: 'Курс',
+            Topic: 'Тема',
+            Status: 'Статус',
+            Score: 'Баллы',
+            'Max score': 'Максимум баллов',
+            'Started at': 'Начат',
+            'Finished at': 'Закончен',
+
+            system_checking: 'проверяется системой',
+            partially_checked: 'частично проверено',
+            checked: 'проверено',
+            timeout_failure: 'время выполнения вышло',
+            in_progress: 'в процессе выполнения',
+            check_failure: 'ошибка при проверке',
 
             Dashboard: 'Личный кабинет',
             Posts: 'Должности',
@@ -36,6 +50,8 @@ export default defineI18nConfig(() => ({
             Answers: 'Ответы',
             Resources: 'Ресурсы',
             Competencies: 'Компетенции',
+            Tests: 'Тесты',
+            Current: 'Текущий',
 
             Create: 'Создать',
             Edit: 'Редактировать',
@@ -46,6 +62,8 @@ export default defineI18nConfig(() => ({
             image: 'изображение',
             video: 'видео',
             embedded: 'встраиваемое',
+
+            'Test submitted.': 'Тест отправлен.',
         },
     },
 }));

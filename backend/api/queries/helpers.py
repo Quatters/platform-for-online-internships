@@ -1,6 +1,6 @@
 from operator import attrgetter
 from typing import Callable, TypeVar
-from sqlalchemy import func, or_, and_, Column
+from sqlalchemy import func, or_, and_, Column, cast, String
 from sqlalchemy.orm import Query, Session
 from backend.api.errors.errors import bad_request
 from backend.models.base import BaseModel
@@ -10,10 +10,10 @@ T = TypeVar('T')
 TModel = TypeVar('TModel', bound=BaseModel)
 
 
-def with_search(*fields: Column[str], query: Query[T], search: str | None) -> Query[T]:
+def with_search(*fields: Column, query: Query[T], search: str | None) -> Query[T]:
     if search:
         filters = [
-            func.lower(field).like(f'%{search.lower()}%')
+            func.lower(cast(field, String)).like(f'%{search.lower()}%')
             for field in fields
         ]
         query = query.filter(or_(*filters))
@@ -29,8 +29,11 @@ def get_instances_or_400(db: Session, model: TModel, ids: list[int]) -> list[TMo
     return instances
 
 
-def sort_by_self_fk(query: Query[TModel], attr_: str) -> list[TModel]:
-    objects = query.all()
+def sort_by_self_fk(objects: Query[TModel] | list[TModel], attr_: str) -> list[TModel]:
+    if isinstance(objects, Query):
+        objects = objects.all()
+
+    objects = list(objects)
 
     if not objects:
         return objects
