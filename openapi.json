@@ -3342,7 +3342,6 @@
           }
         }
       },
-<<<<<<< HEAD
       "CreateUser": {
         "title": "CreateUser",
         "required": [
@@ -3394,8 +3393,6 @@
           }
         }
       },
-=======
->>>>>>> origin/main
       "FinishTestResponse": {
         "title": "FinishTestResponse",
         "type": "object",

@@ -297,7 +297,6 @@ export interface components {
       /** Prev Resource Id */
       prev_resource_id?: number;
     };
-<<<<<<< HEAD
     /** CreateUser */
     CreateUser: {
       /** Email */
@@ -329,8 +328,6 @@ export interface components {
       /** Is Teacher */
       is_teacher: boolean;
     };
-=======
->>>>>>> origin/main
     /** FinishTestResponse */
     FinishTestResponse: {
       /**
@@ -664,11 +661,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
-<<<<<<< HEAD
       /** Attempts Amount */
       attempts_amount: number;
-=======
->>>>>>> origin/main
       prev_topic?: components["schemas"]["Topic"];
       next_topic?: components["schemas"]["Topic"];
     };
