@@ -3,9 +3,7 @@
         <ControlPanel>
             <template #buttons>
                 <ControlButtonReturn />
-                <ControlButton v-if="goingTestStore.test === null" variant="blue" @click="createTest()">
-                    Начать тест
-                </ControlButton>
+                <ControlButton v-if="!testStore.test" variant="blue" @click="createTest()">Начать тест</ControlButton>
             </template>
         </ControlPanel>
         <CommonContent>
@@ -49,8 +47,8 @@
 
 <script setup lang="ts">
     const route = useRoute();
-    const goingTestStore = useTestStore();
-    await goingTestStore.fetch();
+    const testStore = useTestStore();
+    await testStore.fetch();
 
     const pageStore = usePageStore();
     pageStore.fkInstancePathMap = {
@@ -87,7 +85,7 @@
                 label: 'Начать',
                 theme: 'blue',
                 action: async () => {
-                    await goingTestStore.startTest({
+                    await testStore.startTest({
                         courseId: route.params.id as string,
                         topicId: route.params.topic_id as string,
                     });
