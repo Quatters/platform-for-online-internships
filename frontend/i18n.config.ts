@@ -32,6 +32,8 @@ export default defineI18nConfig(() => ({
             'Started at': 'Начат',
             'Finished at': 'Закончен',
             'Attempts amount': 'Количество попыток',
+            Teacher: 'Наставник',
+            Interns: 'Стажёры',
 
             system_checking: 'проверяется системой',
             partially_checked: 'частично проверено',
@@ -53,6 +55,8 @@ export default defineI18nConfig(() => ({
             Competencies: 'Компетенции',
             Tests: 'Тесты',
             Current: 'Текущий',
+            'Assigned interns': 'Прикрепленные стажеры',
+            Assign: 'Прикрепить',
 
             Create: 'Создать',
             Edit: 'Редактировать',
@@ -63,6 +67,10 @@ export default defineI18nConfig(() => ({
             image: 'изображение',
             video: 'видео',
             embedded: 'встраиваемое',
+
+            admin: 'администратор',
+            teacher: 'наставник',
+            intern: 'стажёр',
 
             'Test submitted.': 'Тест отправлен.',
         },

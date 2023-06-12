@@ -46,7 +46,6 @@ def test_get_token():
         **test_admin.dict(),
         'posts': [],
         'teacher': None,
-        'interns': [],
     }
     assert type(data['id']) == int
     del data['id']
@@ -57,14 +56,14 @@ def test_get_token():
 def test_get_list_users():
     client = login_as(test_admin)
     response = client.get('/api/users')
-    assert response.status_code == 200
     data = response.json()
+    assert response.status_code == 200, data
     assert data['total'] == 3, data
 
     # check search
     response = client.get('/api/users?search=ter')
-    assert response.status_code == 200
     data = response.json()
+    assert response.status_code == 200, data
     assert data['total'] == 1
     assert data['items'][0]['email'] == 'intern@test.com'
 
@@ -157,8 +156,8 @@ def test_create_user():
     assert response.status_code == 200, data
     assert data['email'] == 'some_intern@test.com'
     assert data['posts'] == [
-        {'id': post_1.id, 'name': post_1.name},
-        {'id': post_2.id, 'name': post_2.name},
+        {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+        {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
     ]
 
 
@@ -201,7 +200,7 @@ def test_update_user_posts():
     response = client.get(f'/api/users/{teacher.id}')
     assert response.status_code == 200
     assert response.json()['posts'] == [
-        {'id': post_id, 'name': 'post_1'},
+        {'id': post_id, 'name': 'post_1', 'subdivision_id': sub_id},
     ]
 
 
@@ -290,9 +289,8 @@ def test_assign_interns_to_teacher():
         'is_admin': False,
         'is_teacher': False,
         'teacher': {'id': teacher_1.id, 'email': teacher_1.email},
-        'interns': [],
         'posts': [
-            {'id': post_1.id, 'name': post_1.name},
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
         ],
     }
     # get teacher_1
@@ -308,17 +306,13 @@ def test_assign_interns_to_teacher():
         'is_admin': False,
         'is_teacher': True,
         'teacher': None,
-        'interns': [
-            {'id': intern_1.id, 'email': intern_1.email},
-            {'id': intern_2.id, 'email': intern_2.email},
-        ],
         'posts': [
-            {'id': post_1.id, 'name': post_1.name},
-            {'id': post_2.id, 'name': post_2.name},
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
         ],
     }
 
-    # get unassigned interns to teacher_1
+    # get unassigned interns for teacher_1
     response = admin_client.get(f'/api/users/{teacher_1.id}/suitable_for_assign_interns')
     data = response.json()
     assert response.status_code == 200, data
@@ -328,8 +322,39 @@ def test_assign_interns_to_teacher():
         'email': intern_4.email,
     }
 
-    # get unassigned interns to teacher_2
+    # get unassigned interns for teacher_2
     response = admin_client.get(f'/api/users/{teacher_2.id}/suitable_for_assign_interns')
     data = response.json()
     assert response.status_code == 200, data
     assert data['total'] == 0
+
+    # unassign intern_1 from teacher_1
+    response = admin_client.delete(f'/api/users/{teacher_1.id}/assigned_interns/{intern_1.id}')
+    assert response.status_code == 204
+    db.refresh(intern_1)
+    assert intern_1.teacher is None
+
+
+def test_user_filters():
+    client = login_as(test_admin)
+
+    response = client.get('/api/users', params={'role': 'intern'})
+    data = response.json()
+    assert response.status_code == 200, data
+    for item in data['items']:
+        assert item['is_admin'] is False
+        assert item['is_teacher'] is False
+
+    response = client.get('/api/users', params={'role': 'teacher'})
+    data = response.json()
+    assert response.status_code == 200, data
+    for item in data['items']:
+        assert item['is_admin'] is False
+        assert item['is_teacher']
+
+    response = client.get('/api/users', params={'role': 'admin'})
+    data = response.json()
+    assert response.status_code == 200, data
+    for item in data['items']:
+        assert item['is_admin']
+        assert item['is_teacher'] is False

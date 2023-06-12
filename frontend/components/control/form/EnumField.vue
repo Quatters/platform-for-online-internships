@@ -1,7 +1,7 @@
 <template>
     <div>
-        <ControlFormLabel :value="label" :required="required" />
-        <div ref="wrapper" class="relative">
+        <ControlFormLabel v-if="label" :value="label" :required="required" />
+        <div ref="wrapper" class="relative w-full bg-white">
             <button
                 type="button"
                 class="flex shadow appearance-none border border-gray-300 rounded w-full h-[2.385rem] overflow-x-hidden text-ellipsis py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -27,10 +27,17 @@
                     <li
                         v-for="item in items"
                         :key="item.value"
-                        class="hover:bg-gray-100 cursor-pointer py-1 px-3 border-t"
+                        class="hover:bg-gray-100 cursor-pointer py-1 px-3 border-t text-start"
                         @click="() => setValue({ modelValue: item.value, viewValue: item.viewValue })"
                     >
                         {{ item.viewValue ?? $t(item.value) }}
+                    </li>
+                    <li
+                        v-if="nullable"
+                        class="hover:bg-gray-100 cursor-pointer py-1 px-3 border-t text-start"
+                        @click="() => setValue({ modelValue: null, viewValue: 'пусто' })"
+                    >
+                        пусто
                     </li>
                 </ul>
             </div>
@@ -49,13 +56,16 @@
             modelValue?: string | undefined | null;
             viewValue?: string | number;
             required?: boolean;
-            label: string;
+            label?: string;
             enumItems: EnumItem[] | string[];
+            nullable?: boolean;
         }>(),
         {
             modelValue: undefined,
             viewValue: undefined,
             required: false,
+            nullable: false,
+            label: undefined,
         },
     );
 

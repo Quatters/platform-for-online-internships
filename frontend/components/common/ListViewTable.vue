@@ -5,7 +5,7 @@
                 <th v-for="(key, idx) in headerKeys" :key="idx" class="text-left px-4 py-2">{{ $t(key) }}</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-if="!disableDetailLinks">
             <NuxtLink
                 v-for="(item, idx) in items"
                 :key="idx"
@@ -20,6 +20,13 @@
                 </tr>
             </NuxtLink>
         </tbody>
+        <tbody v-else>
+            <tr v-for="(item, idx) in items" :key="idx" class="border-b">
+                <td v-for="([key, value], valueIdx) in getEntries(item)" :key="valueIdx" class="px-4 py-2">
+                    <FieldAbstract :field-name="key" :value="value" />
+                </td>
+            </tr>
+        </tbody>
     </table>
 </template>
 
@@ -28,6 +35,8 @@
         id: number;
         [key: string]: unknown;
     }
+
+    const route = useRoute();
 
     const props = withDefaults(
         defineProps<{
@@ -38,6 +47,8 @@
             additionalParams?: Record<string, string>;
             hideFields?: Array<string>;
             hideHead?: boolean;
+            disableDetailLinks?: boolean;
+            routeName?: string;
         }>(),
         {
             linkParamName: 'id',
@@ -46,14 +57,15 @@
             withId: false,
             hideFields: () => [],
             hideHead: false,
+            disableDetailLinks: false,
+            routeName: undefined,
         },
     );
 
-    const route = useRoute();
-
     function getDetailLink(item: Item) {
+        const routeName = props.routeName ?? route.name;
         return {
-            name: `${String(route.name)}-${props.linkParamName}`,
+            name: `${String(routeName)}-${props.linkParamName}`,
             params: { [props.linkParamName]: String(item[props.apiValueFieldName]) },
         };
     }

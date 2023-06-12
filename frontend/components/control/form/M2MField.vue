@@ -27,6 +27,7 @@
     const props = withDefaults(
         defineProps<{
             path: APIPath;
+            params?: Record<string, string>;
             viewFieldName?: string;
             modelValue?: Array<number>;
             required?: boolean;
@@ -36,6 +37,7 @@
             viewFieldName: 'name',
             required: false,
             modelValue: () => [],
+            params: () => ({}),
         },
     );
 
@@ -61,6 +63,7 @@
 
     const { data, loadMore } = await useListLoader({
         path: props.path,
+        params: props.params,
         // @ts-expect-error must be list path
         method: 'get',
         watchQuery: {

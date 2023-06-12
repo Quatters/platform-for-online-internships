@@ -7,9 +7,6 @@ from backend.database import engine, get_db
 from tests.base import create_user, test_admin, test_teacher, test_intern
 
 
-db_connection = None
-
-
 @pytest.fixture(scope='session', autouse=True)
 def initialize_session():
     config = alembic.config.Config(str(PROJECT_ROOT / 'alembic.ini'))
@@ -27,16 +24,10 @@ def initialize_session():
     for user in (test_admin, test_teacher, test_intern):
         create_user(user, db=session)
     session.commit()
+    session.close()
 
     try:
         yield
     finally:
         drop_database(engine.url)
         db_connection.close()
-
-
-@pytest.fixture(scope='function', autouse=True)
-def rollback_db():
-    yield
-    if db_connection:
-        db_connection.rollback()

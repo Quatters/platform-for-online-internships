@@ -8,7 +8,7 @@ from backend.api.queries import users as queries
 from backend.api.auth import admin_only, authenticate_user, create_access_token, get_current_user
 from backend.database import get_db
 from backend.models.users import User
-from backend.api.dependencies import ListPageParams
+from backend.api.dependencies import ListPageParams, UserListPageParams
 from backend.settings import LimitOffsetPage
 
 
@@ -57,7 +57,7 @@ async def get_users_me(user: Annotated[schemas.User, Depends(get_current_user)])
     response_model=LimitOffsetPage[schemas.ListUser],
 )
 async def get_users(
-    params: ListPageParams = Depends(),
+    params: UserListPageParams = Depends(),
     db: Session = Depends(get_db),
 ):
     return queries.get_users(db, params)
@@ -120,6 +120,19 @@ async def get_one_assigned_intern(
     teacher: User = Depends(path_teacher),
 ):
     return queries.get_assigned_intern(db, teacher.id, intern_id)
+
+
+@router.delete(
+    '/users/{teacher_id}/assigned_interns/{intern_id}',
+    status_code=204,
+    dependencies=[Depends(path_teacher)],
+)
+async def get_one_assigned_intern(
+    intern_id: int,
+    db: Session = Depends(get_db),
+):
+    queries.unassign_intern(db, intern_id)
+    return {}
 
 
 @router.put(

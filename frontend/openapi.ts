@@ -48,6 +48,8 @@ export interface paths {
   "/api/users/{teacher_id}/assigned_interns/{intern_id}": {
     /** Get One Assigned Intern */
     get: operations["get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__get"];
+    /** Get One Assigned Intern */
+    delete: operations["get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__delete"];
   };
   "/api/users/{teacher_id}/suitable_for_assign_interns": {
     /** Get Suitable For Assign Interns */
@@ -907,10 +909,8 @@ export interface components {
       /** Is Teacher */
       is_teacher: boolean;
       /** Posts */
-      posts: (components["schemas"]["SubdivisionPost"])[];
+      posts: (components["schemas"]["Post"])[];
       teacher?: components["schemas"]["FkUser"];
-      /** Interns */
-      interns?: (components["schemas"]["FkUser"])[];
     };
     /** UserAnswer */
     UserAnswer: {
@@ -1159,6 +1159,7 @@ export interface operations {
         limit?: number;
         offset?: number;
         search?: string;
+        role?: "admin" | "teacher" | "intern";
       };
     };
     responses: {
@@ -1316,6 +1317,25 @@ export interface operations {
           "application/json": components["schemas"]["User"];
         };
       };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get One Assigned Intern */
+  get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__delete: {
+    parameters: {
+      path: {
+        intern_id: number;
+        teacher_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      204: never;
       /** @description Validation Error */
       422: {
         content: {

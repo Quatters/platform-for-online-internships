@@ -4,7 +4,7 @@ from backend.api.errors.errors import bad_request
 from backend.models.posts import Post
 from backend.models.users import User
 from backend.models.association_tables import UserPostAssociation
-from backend.api.dependencies import ListPageParams
+from backend.api.dependencies import ListPageParams, UserListPageParams
 from backend.api.queries.helpers import get_instances_or_400, with_search
 from backend.api.schemas import users as schemas
 from backend.api.utils import hash_password
@@ -18,13 +18,22 @@ def get_user_by_email(db: Session, email: str):
     return db.query(User).filter_by(email=email).first()
 
 
-def get_users(db: Session, params: ListPageParams):
+def get_users(db: Session, params: UserListPageParams):
+    query = db.query(User)
+
+    if params.role == 'admin':
+        query = query.filter(User.is_admin)
+    elif params.role == 'teacher':
+        query = query.filter(User.is_teacher)
+    elif params.role == 'intern':
+        query = query.filter(~(User.is_admin | User.is_teacher))
+
     query = with_search(
         User.email,
         User.first_name,
         User.last_name,
         User.patronymic,
-        query=db.query(User),
+        query=query,
         search=params.search,
     )
     return paginate(query, params)
@@ -93,6 +102,12 @@ def assign_interns(db: Session, teacher: User, intern_ids: list[int]):
     db.commit()
 
     return intern_ids
+
+
+def unassign_intern(db: Session, intern_id: int):
+    intern = get_user(db, intern_id)
+    intern.teacher_id = None
+    db.commit()
 
 
 def get_suitable_for_assign_interns(db: Session, teacher: User, params: ListPageParams):

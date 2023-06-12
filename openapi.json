@@ -329,6 +329,20 @@
             },
             "name": "search",
             "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Role",
+              "enum": [
+                "admin",
+                "teacher",
+                "intern"
+              ],
+              "type": "string"
+            },
+            "name": "role",
+            "in": "query"
           }
         ],
         "responses": {
@@ -638,6 +652,45 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Get One Assigned Intern",
+        "operationId": "get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Intern Id",
+              "type": "integer"
+            },
+            "name": "intern_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "integer"
+            },
+            "name": "teacher_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -5092,18 +5145,11 @@
             "title": "Posts",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SubdivisionPost"
+              "$ref": "#/components/schemas/Post"
             }
           },
           "teacher": {
             "$ref": "#/components/schemas/FkUser"
-          },
-          "interns": {
-            "title": "Interns",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FkUser"
-            }
           }
         }
       },
