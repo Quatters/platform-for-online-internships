@@ -28,7 +28,6 @@
 
     type schema = components['schemas']['AssignInterns'];
 
-    const route = useRoute();
     const userStore = useUserStore();
 
     const data = ref<schema>({

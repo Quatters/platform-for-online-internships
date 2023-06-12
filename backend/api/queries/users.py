@@ -83,7 +83,9 @@ def get_assigned_intern(db: Session, teacher_id: int, intern_id: int):
 
 
 def assign_interns(db: Session, teacher: User, intern_ids: list[int]):
-    if db.query(db.query(User.id).filter((User.teacher_id != None) & (User.id.in_(intern_ids))).exists()).scalar():
+    if db.query(db.query(User.id).filter(
+        (User.teacher_id != None) & (User.id.in_(intern_ids))).exists()  # noqa: E711
+    ).scalar():
         raise bad_request('One or more of the interns are already assigned to teacher.')
 
     interns = db.query(User).filter(User.id.in_(intern_ids)).options(
@@ -119,7 +121,7 @@ def get_suitable_for_assign_interns(db: Session, teacher: User, params: ListPage
     )
     suitable_interns_query = db.query(User.id, User.email).filter(
         ~(User.is_admin | User.is_teacher)
-        & (User.teacher_id == None)
+        & (User.teacher_id == None)  # noqa: E711
         & (User.id.in_(suitable_user_ids_query))
     )
     query = with_search(User.email, query=suitable_interns_query, search=params.search)

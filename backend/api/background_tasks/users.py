@@ -4,7 +4,7 @@ from backend.models import User
 
 def handle_user_teachers_after_post_change(db: Session):
     interns = db.query(User).filter(
-        (User.teacher_id != None) & ~(User.is_teacher | User.is_admin)
+        (User.teacher_id != None) & ~(User.is_teacher | User.is_admin)  # noqa: E711
     ).options(
         joinedload(User.posts),
         joinedload(User.teacher).options(

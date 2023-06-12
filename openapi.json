@@ -683,8 +683,8 @@
     },
     "/api/users/{intern_id}": {
       "delete": {
-        "summary": "Get One Assigned Intern",
-        "operationId": "get_one_assigned_intern_api_users__intern_id__delete",
+        "summary": "Unassign Intern",
+        "operationId": "unassign_intern_api_users__intern_id__delete",
         "parameters": [
           {
             "required": true,

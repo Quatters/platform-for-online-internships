@@ -225,7 +225,7 @@ def test_assign_interns_to_teacher():
     intern_1.posts = [post_1]
     intern_2.posts = [post_1, post_2]
     intern_4.posts = [post_2]
-    db.commit();
+    db.commit()
 
     # check 404 for intern
     response = admin_client.get(f'/api/users/{intern_1.id}/assigned_interns')
@@ -357,7 +357,7 @@ def test_assign_interns_to_teacher():
     data = response.json()
     assert response.status_code == 200, data
     assert len(data['posts']) == 0
-    assert data['teacher'] == None
+    assert data['teacher'] is None
 
     # check same behavior when deleting post
     intern_2.posts = [post_1]
@@ -374,7 +374,7 @@ def test_assign_interns_to_teacher():
     data = response.json()
     assert response.status_code == 200, data
     assert len(data['posts']) == 0
-    assert data['teacher'] == None
+    assert data['teacher'] is None
 
 
 def test_user_filters():

@@ -50,8 +50,8 @@ export interface paths {
     get: operations["get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__get"];
   };
   "/api/users/{intern_id}": {
-    /** Get One Assigned Intern */
-    delete: operations["get_one_assigned_intern_api_users__intern_id__delete"];
+    /** Unassign Intern */
+    delete: operations["unassign_intern_api_users__intern_id__delete"];
   };
   "/api/users/{teacher_id}/suitable_for_assign_interns": {
     /** Get Suitable For Assign Interns */
@@ -1327,8 +1327,8 @@ export interface operations {
       };
     };
   };
-  /** Get One Assigned Intern */
-  get_one_assigned_intern_api_users__intern_id__delete: {
+  /** Unassign Intern */
+  unassign_intern_api_users__intern_id__delete: {
     parameters: {
       path: {
         intern_id: number;

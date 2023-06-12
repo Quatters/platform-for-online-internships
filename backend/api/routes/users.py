@@ -133,7 +133,7 @@ async def get_one_assigned_intern(
     status_code=204,
     dependencies=[Depends(admin_or_teacher_only)],
 )
-async def get_one_assigned_intern(
+async def unassign_intern(
     intern_id: int,
     db: Session = Depends(get_db),
 ):
