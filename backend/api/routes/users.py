@@ -22,6 +22,13 @@ def path_user(user_id: int, db: Session = Depends(get_db)):
     return user
 
 
+def path_teacher(teacher_id: int, db: Session = Depends(get_db)):
+    user = path_user(teacher_id, db)
+    if not user.is_teacher:
+        raise not_found()
+    return user
+
+
 @router.post('/auth/token', response_model=schemas.Token)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
@@ -89,3 +96,52 @@ async def create_user(
     db: Session = Depends(get_db),
 ):
     return queries.create_user(db, data)
+
+
+@router.get(
+    '/users/{teacher_id}/assigned_interns',
+    response_model=LimitOffsetPage[schemas.ListUser],
+)
+async def get_assigned_interns(
+    db: Session = Depends(get_db),
+    teacher: User = Depends(path_teacher),
+    params: ListPageParams = Depends(),
+):
+    return queries.get_assigned_interns(db, teacher.id, params)
+
+
+@router.get(
+    '/users/{teacher_id}/assigned_interns/{intern_id}',
+    response_model=schemas.User,
+)
+async def get_one_assigned_intern(
+    intern_id: int,
+    db: Session = Depends(get_db),
+    teacher: User = Depends(path_teacher),
+):
+    return queries.get_assigned_intern(db, teacher.id, intern_id)
+
+
+@router.put(
+    '/users/{teacher_id}/assigned_interns',
+    response_model=schemas.AssignInterns,
+)
+async def assign_interns(
+    data: schemas.AssignInterns,
+    teacher: User = Depends(path_teacher),
+    db: Session = Depends(get_db),
+):
+    queries.assign_interns(db, teacher, data.interns)
+    return data
+
+
+@router.get(
+    '/users/{teacher_id}/suitable_for_assign_interns',
+    response_model=LimitOffsetPage[schemas.FkUser],
+)
+async def get_suitable_for_assign_interns(
+    db: Session = Depends(get_db),
+    teacher: User = Depends(path_teacher),
+    params: ListPageParams = Depends(),
+):
+    return queries.get_suitable_for_assign_interns(db, teacher, params)

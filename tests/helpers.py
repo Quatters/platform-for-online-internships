@@ -11,11 +11,42 @@ from backend.models import (
     TopicResource,
     Subdivision,
     Post,
+    Task,
+    User,
+    Answer,
 )
 from backend.constants import TaskType, TopicResourceType
-from backend.models.answers import Answer
-from backend.models.tasks import Task
+from backend.api.utils import hash_password
 from tests.base import login_as, test_admin
+
+
+def create_user(
+    *,
+    first_name: str | None = None,
+    last_name: str | None = None,
+    patronymic: str | None = None,
+    email: str | None = None,
+    password: str = 'test',
+    is_admin: bool = False,
+    is_teacher: bool = False,
+    db: Session | None = None,
+    commit: bool = True,
+):
+    db = db or next(get_db())
+    user = User(
+        first_name=first_name or str(uuid1()),
+        last_name=last_name or str(uuid1()),
+        patronymic=patronymic or str(uuid1()),
+        email=email or f'{uuid1()}@test.test',
+        password=hash_password(password),
+        is_admin=is_admin,
+        is_teacher=is_teacher,
+    )
+    if commit:
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    return user
 
 
 def create_course(

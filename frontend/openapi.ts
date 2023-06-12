@@ -39,6 +39,20 @@ export interface paths {
     /** Patch User */
     patch: operations["patch_user_api_users__user_id__patch"];
   };
+  "/api/users/{teacher_id}/assigned_interns": {
+    /** Get Assigned Interns */
+    get: operations["get_assigned_interns_api_users__teacher_id__assigned_interns_get"];
+    /** Assign Interns */
+    put: operations["assign_interns_api_users__teacher_id__assigned_interns_put"];
+  };
+  "/api/users/{teacher_id}/assigned_interns/{intern_id}": {
+    /** Get One Assigned Intern */
+    get: operations["get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__get"];
+  };
+  "/api/users/{teacher_id}/suitable_for_assign_interns": {
+    /** Get Suitable For Assign Interns */
+    get: operations["get_suitable_for_assign_interns_api_users__teacher_id__suitable_for_assign_interns_get"];
+  };
   "/api/user/{user_id}/courses/": {
     /** Get User Courses */
     get: operations["get_user_courses_api_user__user_id__courses__get"];
@@ -196,6 +210,11 @@ export interface components {
       value: string;
       /** Is Correct */
       is_correct: boolean;
+    };
+    /** AssignInterns */
+    AssignInterns: {
+      /** Interns */
+      interns: (number)[];
     };
     /** Body_login_for_access_token_api_auth_token_post */
     Body_login_for_access_token_api_auth_token_post: {
@@ -368,6 +387,13 @@ export interface components {
       /** Name */
       name: string;
     };
+    /** FkUser */
+    FkUser: {
+      /** Id */
+      id: number;
+      /** Email */
+      email: string;
+    };
     /** GoingTest */
     GoingTest: {
       /** Id */
@@ -403,6 +429,17 @@ export interface components {
     LimitOffsetPage_Course_: {
       /** Items */
       items: (components["schemas"]["Course"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[FkUser] */
+    LimitOffsetPage_FkUser_: {
+      /** Items */
+      items: (components["schemas"]["FkUser"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -871,6 +908,9 @@ export interface components {
       is_teacher: boolean;
       /** Posts */
       posts: (components["schemas"]["SubdivisionPost"])[];
+      teacher?: components["schemas"]["FkUser"];
+      /** Interns */
+      interns?: (components["schemas"]["FkUser"])[];
     };
     /** UserAnswer */
     UserAnswer: {
@@ -1197,6 +1237,110 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Assigned Interns */
+  get_assigned_interns_api_users__teacher_id__assigned_interns_get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+      path: {
+        teacher_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_ListUser_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Assign Interns */
+  assign_interns_api_users__teacher_id__assigned_interns_put: {
+    parameters: {
+      path: {
+        teacher_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AssignInterns"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AssignInterns"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get One Assigned Intern */
+  get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__get: {
+    parameters: {
+      path: {
+        intern_id: number;
+        teacher_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Suitable For Assign Interns */
+  get_suitable_for_assign_interns_api_users__teacher_id__suitable_for_assign_interns_get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+      path: {
+        teacher_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_FkUser_"];
         };
       };
       /** @description Validation Error */

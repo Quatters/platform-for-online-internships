@@ -1,7 +1,9 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi_pagination.ext.sqlalchemy import paginate
+from backend.api.errors.errors import bad_request
 from backend.models.posts import Post
 from backend.models.users import User
+from backend.models.association_tables import UserPostAssociation
 from backend.api.dependencies import ListPageParams
 from backend.api.queries.helpers import get_instances_or_400, with_search
 from backend.api.schemas import users as schemas
@@ -50,3 +52,60 @@ def create_user(db: Session, user: schemas.CreateUser):
     db.commit()
     db.refresh(created_user)
     return created_user
+
+
+def get_assigned_interns(db: Session, teacher_id: int, params: ListPageParams):
+    query = db.query(User).filter(User.teacher_id == teacher_id)
+    query = with_search(
+        User.email,
+        User.first_name,
+        User.last_name,
+        User.patronymic,
+        query=query,
+        search=params.search,
+    )
+    return paginate(query, params)
+
+
+def get_assigned_intern(db: Session, teacher_id: int, intern_id: int):
+    return db.query(User).filter(
+        (User.teacher_id == teacher_id) & (User.id == intern_id)
+    ).one_or_none()
+
+
+def assign_interns(db: Session, teacher: User, intern_ids: list[int]):
+    if db.query(db.query(User.id).filter((User.teacher_id != None) & (User.id.in_(intern_ids))).exists()).scalar():
+        raise bad_request('One or more of the interns are already assigned to teacher.')
+
+    interns = db.query(User).filter(User.id.in_(intern_ids)).options(
+        joinedload(User.posts),
+    ).all()
+    teacher_posts = set(teacher.posts)
+
+    for intern in interns:
+        if not set(intern.posts).intersection(teacher_posts):
+            raise bad_request(
+                f'Intern {intern.email} (id: {intern.id}) cannot be assigned to this teacher because they '
+                'have no matching posts.',
+            )
+        intern.teacher_id = teacher.id
+
+    db.commit()
+
+    return intern_ids
+
+
+def get_suitable_for_assign_interns(db: Session, teacher: User, params: ListPageParams):
+    teacher_post_ids_query = db.query(UserPostAssociation.c.post_id).filter(
+        UserPostAssociation.c.user_id == teacher.id
+    )
+    suitable_user_ids_query = db.query(UserPostAssociation.c.user_id).filter(
+        UserPostAssociation.c.post_id.in_(teacher_post_ids_query)
+    )
+    suitable_interns_query = db.query(User.id, User.email).filter(
+        ~(User.is_admin | User.is_teacher)
+        & (User.teacher_id == None)
+        & (User.id.in_(suitable_user_ids_query))
+    )
+    query = with_search(User.email, query=suitable_interns_query, search=params.search)
+    return paginate(query, params)

@@ -2,6 +2,11 @@ from backend.api.schemas.base import BaseSchema
 from backend.api.schemas.posts import SubdivisionPost
 
 
+class FkUser(BaseSchema):
+    id: int
+    email: str
+
+
 class User(BaseSchema):
     id: int
     email: str
@@ -11,6 +16,8 @@ class User(BaseSchema):
     is_admin: bool
     is_teacher: bool
     posts: list[SubdivisionPost]
+    teacher: FkUser | None
+    interns: list[FkUser] | None
 
 
 class ListUser(BaseSchema):
@@ -53,3 +60,7 @@ class CreateUser(BaseSchema):
     posts: list[int] = []
     is_admin: bool
     is_teacher: bool
+
+
+class AssignInterns(BaseSchema):
+    interns: list[int]
