@@ -31,7 +31,7 @@ def test_tests():
     assert response.status_code == 200, data
     assert data['total'] == 0
 
-    # start test
+    # start test (1)
     response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 200, data
@@ -173,7 +173,7 @@ def test_tests():
     data = response.json()
     assert response.status_code == 404, data
 
-    # check submitting test with timeout
+    # check submitting test (2) with timeout
     response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 200, data
@@ -210,7 +210,7 @@ def test_tests():
         'finished_at': data['finished_at'],
     }
 
-    # start test
+    # start test (3)
     response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 200, data
@@ -246,3 +246,15 @@ def test_tests():
         'started_at': data['started_at'],
         'finished_at': data['finished_at'],
     }
+
+    # start test (4, must not be allowed)
+    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    data = response.json()
+    assert response.status_code == 400, data
+    assert data['detail'] == 'You have run out of attempts for this topic.'
+
+    # check that for intern 'attempts_amount' is available attempts
+    response = client.get(f'/api/courses/{course.id}/topics/{topic.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['attempts_amount'] == 0

@@ -77,3 +77,15 @@ async def patch_user(
     db: Session = Depends(get_db),
 ):
     return queries.update_user(db, user, patch_data)
+
+
+@router.post(
+    '/users',
+    response_model=schemas.User,
+    dependencies=[Depends(admin_only)],
+)
+async def create_user(
+    data: schemas.CreateUser,
+    db: Session = Depends(get_db),
+):
+    return queries.create_user(db, data)

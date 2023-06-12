@@ -1,10 +1,12 @@
-import { useStorage } from '@vueuse/core';
+import { useStorage, StorageSerializers } from '@vueuse/core';
 import { defineStore } from 'pinia';
 import { components } from '~/openapi';
 
 export default defineStore('test', () => {
     const { $api } = useNuxtApp();
-    const test = ref<components['schemas']['GoingTest'] | null | undefined>();
+    const test = useStorage<components['schemas']['GoingTest'] | null>('current-test', null, localStorage, {
+        serializer: StorageSerializers.object,
+    });
     const answers = useStorage<Record<number, number | number[] | string>>('current-test-answers', {});
     const isFetched = ref(false);
 
@@ -65,13 +67,23 @@ export default defineStore('test', () => {
         return seconds.value ?? 0;
     });
 
+    async function _fetchTest() {
+        const data = await $api({
+            path: '/api/tests/going',
+            method: 'get',
+        });
+        if (data) {
+            data.tasks = shuffle(data.tasks);
+        }
+        test.value = data;
+    }
+
     async function fetch({ force }: { force?: boolean } = {}) {
         if (!isFetched.value || force) {
             isFetched.value = true;
-            test.value = await $api({
-                path: '/api/tests/going',
-                method: 'get',
-            });
+            if (!test.value) {
+                await _fetchTest();
+            }
             startCountdown();
         }
     }
@@ -91,11 +103,11 @@ export default defineStore('test', () => {
         startCountdown();
     }
 
-    function finishTest() {
+    async function finishTest() {
         if (!test.value) {
             return;
         }
-        return $api({
+        const data = await $api({
             path: '/api/tests/{test_id}/finish',
             method: 'post',
             params: {
@@ -103,6 +115,8 @@ export default defineStore('test', () => {
             },
             body: Object.entries(answers.value).map(([key, value]) => ({ task_id: key, answer: value })),
         });
+        test.value = null;
+        return data;
     }
 
     return {

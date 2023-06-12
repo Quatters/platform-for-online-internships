@@ -8,7 +8,10 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <CommonDetailViewCard :item="data!" />
+            <CommonDetailViewCard
+                :item="data!"
+                :hide-fields="data!.is_admin ? ['posts', 'is_teacher'] : data!.is_teacher ? ['is_admin'] : ['is_admin', 'is_teacher']"
+            />
         </CommonContent>
     </div>
 </template>

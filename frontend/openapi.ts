@@ -30,6 +30,8 @@ export interface paths {
   "/api/users": {
     /** Get Users */
     get: operations["get_users_api_users_get"];
+    /** Create User */
+    post: operations["create_user_api_users_post"];
   };
   "/api/users/{user_id}": {
     /** Get User */
@@ -277,6 +279,11 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /**
+       * Attempts Amount 
+       * @default 3
+       */
+      attempts_amount?: number;
       /** Prev Topic Id */
       prev_topic_id?: number;
     };
@@ -289,6 +296,37 @@ export interface components {
       value: string;
       /** Prev Resource Id */
       prev_resource_id?: number;
+    };
+    /** CreateUser */
+    CreateUser: {
+      /** Email */
+      email: string;
+      /** Password */
+      password: string;
+      /**
+       * First Name 
+       * @default
+       */
+      first_name?: string;
+      /**
+       * Last Name 
+       * @default
+       */
+      last_name?: string;
+      /**
+       * Patronymic 
+       * @default
+       */
+      patronymic?: string;
+      /**
+       * Posts 
+       * @default []
+       */
+      posts?: (number)[];
+      /** Is Admin */
+      is_admin: boolean;
+      /** Is Teacher */
+      is_teacher: boolean;
     };
     /** FinishTestResponse */
     FinishTestResponse: {
@@ -623,6 +661,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Attempts Amount */
+      attempts_amount: number;
       prev_topic?: components["schemas"]["Topic"];
       next_topic?: components["schemas"]["Topic"];
     };
@@ -722,6 +762,8 @@ export interface components {
       name?: string;
       /** Description */
       description?: string;
+      /** Attempts Amount */
+      attempts_amount?: number;
       /** Prev Topic Id */
       prev_topic_id?: number;
       /** Next Topic Id */
@@ -1084,6 +1126,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["LimitOffsetPage_ListUser_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create User */
+  create_user_api_users_post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateUser"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["User"];
         };
       };
       /** @description Validation Error */

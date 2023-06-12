@@ -9,6 +9,14 @@
             <ControlForm @submit="save">
                 <ControlFormInput v-model="data.name" class="mb-4" label="Название" required />
                 <ControlFormTextArea v-model="data.description" class="mb-4" label="Описание" required />
+                <ControlFormInput
+                    v-model="data.attempts_amount"
+                    type="number"
+                    min="1"
+                    class="mb-4"
+                    label="Количество попыток"
+                    required
+                />
                 <ControlFormFkField
                     v-model="data.prev_topic_id"
                     v-model:view-value="prevTopicName"
@@ -35,6 +43,7 @@
         name: '',
         description: '',
         prev_topic_id: undefined,
+        attempts_amount: 3,
     });
 
     const prevTopicName = ref('');

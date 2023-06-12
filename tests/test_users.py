@@ -1,6 +1,7 @@
 from backend.database import get_db
 from backend.models import User
 from tests.base import login_as, test_admin, test_intern, test_anonymous
+from tests import helpers
 
 
 def test_get_token():
@@ -104,6 +105,59 @@ def test_get_invalid_user():
     response = client.get('/api/users/-1')
     assert response.status_code == 404
     assert response.json()['detail'] == 'Not found.'
+
+
+def test_create_user():
+    client = login_as(test_admin)
+
+    subdivision = helpers.create_subdivision()
+    post_1 = helpers.create_post(subdivision_id=subdivision.id)
+    post_2 = helpers.create_post(subdivision_id=subdivision.id)
+
+    # create intern
+    response = client.post('/api/users', json={
+        'first_name': 'Intern',
+        'email': 'some_intern@test.com',
+        'password': '12345',
+        'posts': [
+            post_1.id,
+            post_2.id,
+        ],
+        'is_teacher': False,
+        'is_admin': False,
+    })
+    data = response.json()
+    assert response.status_code == 200, data
+    response = client.get('/api/users')
+    data = response.json()
+    assert response.status_code == 200
+    assert data['total'] == 4
+
+    # check that user can login
+    auth_data = {
+        'username': 'some_intern@test.com',
+        'password': '12345',
+    }
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+    }
+    intern_client = login_as(test_anonymous)
+    response = intern_client.post('/api/auth/token', data=auth_data, headers=headers)
+    assert response.status_code == 200
+    data = response.json()
+    assert data['token_type'] == 'bearer'
+    assert data['access_token']
+
+    response = intern_client.get('/api/users/me', headers={
+        'Authorization': f'Bearer {data["access_token"]}'
+    })
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['email'] == 'some_intern@test.com'
+    assert data['posts'] == [
+        {'id': post_1.id, 'name': post_1.name},
+        {'id': post_2.id, 'name': post_2.name},
+    ]
 
 
 def test_update_user_posts():

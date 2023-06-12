@@ -11,7 +11,13 @@
                 <ControlFormInput v-model="patchData.first_name" label="Имя" class="mb-4" />
                 <ControlFormInput v-model="patchData.last_name" label="Фамилия" class="mb-4" />
                 <ControlFormInput v-model="patchData.patronymic" label="Отчество" class="mb-4" />
-                <ControlFormM2MField v-model="patchData.posts" path="/api/posts" label="Должности" class="mb-4" />
+                <ControlFormM2MField
+                    v-show="!data?.is_admin"
+                    v-model="patchData.posts"
+                    path="/api/posts"
+                    label="Должности"
+                    class="mb-4"
+                />
             </ControlForm>
         </CommonContent>
     </div>

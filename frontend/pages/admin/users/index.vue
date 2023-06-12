@@ -1,7 +1,9 @@
 <template>
     <div>
         <ControlPanel>
-            <template #buttons></template>
+            <template #buttons>
+                <ControlButtonCreate />
+            </template>
             <template #inputs>
                 <ControlSearchInput v-model="search" />
             </template>

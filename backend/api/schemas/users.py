@@ -42,3 +42,14 @@ class PatchUser(BaseSchema):
     last_name: str | None
     patronymic: str | None
     posts: list[int] | None
+
+
+class CreateUser(BaseSchema):
+    email: str
+    password: str
+    first_name: str = ''
+    last_name: str = ''
+    patronymic: str = ''
+    posts: list[int] = []
+    is_admin: bool
+    is_teacher: bool
