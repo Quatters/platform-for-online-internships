@@ -2287,6 +2287,47 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Create Post",
+        "operationId": "create_post_api_posts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/api/subdivisions/{subdivision_id}/posts": {
@@ -3529,6 +3570,45 @@
             "items": {
               "type": "integer"
             }
+          }
+        }
+      },
+      "CreatePost": {
+        "title": "CreatePost",
+        "required": [
+          "name",
+          "description",
+          "courses",
+          "competencies",
+          "subdivision_id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "subdivision_id": {
+            "title": "Subdivision Id",
+            "type": "integer"
           }
         }
       },

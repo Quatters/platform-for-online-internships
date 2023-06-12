@@ -44,29 +44,36 @@
             withId?: boolean;
             linkParamName?: string;
             apiValueFieldName?: string;
-            additionalParams?: Record<string, string>;
             hideFields?: Array<string>;
             hideHead?: boolean;
             disableDetailLinks?: boolean;
             routeName?: string;
+            routeParamsMap?: Record<string, string | number>;
         }>(),
         {
             linkParamName: 'id',
             apiValueFieldName: 'id',
-            additionalParams: () => ({}),
             withId: false,
             hideFields: () => [],
             hideHead: false,
             disableDetailLinks: false,
             routeName: undefined,
+            routeParamsMap: () => ({}),
         },
     );
 
     function getDetailLink(item: Item) {
         const routeName = props.routeName ?? route.name;
+        const additionalParams: Record<string, string | number> = {};
+        for (const [key, value] of Object.entries(props.routeParamsMap)) {
+            additionalParams[key] = String(item[value]);
+        }
         return {
             name: `${String(routeName)}-${props.linkParamName}`,
-            params: { [props.linkParamName]: String(item[props.apiValueFieldName]) },
+            params: {
+                [props.linkParamName]: String(item[props.apiValueFieldName]),
+                ...additionalParams,
+            },
         };
     }
 

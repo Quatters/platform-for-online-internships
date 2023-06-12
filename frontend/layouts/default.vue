@@ -49,6 +49,7 @@
         ],
         admin: [
             { link: '/admin/subdivisions', title: 'Подразделения' },
+            { link: '/admin/posts', title: 'Должности' },
             { link: '/admin/courses', title: 'Курсы' },
             { link: '/admin/competencies', title: 'Компетенции' },
             { separator: true },

@@ -25,7 +25,7 @@ def get_post(db: Session, post_id) -> Post | None:
     return db.query(Post).get(post_id)
 
 
-def create_post(db: Session, post: schemas.CreateSubdivisionPost, subdivision_id: int):
+def create_post(db: Session, post: schemas.CreateSubdivisionPost, subdivision_id):
     created_post = Post(subdivision_id=subdivision_id, **post.dict(exclude={'courses', 'competencies'}))
     created_post.courses = get_instances_or_400(db, Course, post.courses)
     created_post.competencies = get_instances_or_400(db, Competence, post.competencies)

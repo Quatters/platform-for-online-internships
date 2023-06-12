@@ -53,6 +53,19 @@ def create_subdivision_post(
     return queries.create_post(db, post, subdivision_id=subdivision.id)
 
 
+@router.post(
+    '/posts',
+    response_model=schemas.Post,
+    dependencies=[Depends(admin_only)],
+)
+def create_post(
+    post: schemas.CreatePost,
+    db: Session = Depends(get_db),
+):
+    subdivision_post = schemas.CreateSubdivisionPost(**post.dict())
+    return queries.create_post(db, subdivision_post, subdivision_id=post.subdivision_id)
+
+
 @router.patch(
     '/subdivisions/{subdivision_id}/posts/{post_id}',
     response_model=schemas.OneSubdivisionPost,

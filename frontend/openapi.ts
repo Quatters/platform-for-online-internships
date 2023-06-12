@@ -128,6 +128,8 @@ export interface paths {
   "/api/posts": {
     /** Get Posts */
     get: operations["get_posts_api_posts_get"];
+    /** Create Post */
+    post: operations["create_post_api_posts_post"];
   };
   "/api/subdivisions/{subdivision_id}/posts": {
     /** Get Subdivision Posts */
@@ -267,6 +269,19 @@ export interface components {
       courses: (number)[];
       /** Posts */
       posts: (number)[];
+    };
+    /** CreatePost */
+    CreatePost: {
+      /** Name */
+      name: string;
+      /** Description */
+      description: string;
+      /** Courses */
+      courses: (number)[];
+      /** Competencies */
+      competencies: (number)[];
+      /** Subdivision Id */
+      subdivision_id: number;
     };
     /** CreateSubdivision */
     CreateSubdivision: {
@@ -1982,6 +1997,28 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["LimitOffsetPage_Post_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Create Post */
+  create_post_api_posts_post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreatePost"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Post"];
         };
       };
       /** @description Validation Error */
