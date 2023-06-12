@@ -57,6 +57,7 @@ export default defineI18nConfig(() => ({
             Current: 'Текущий',
             'Assigned interns': 'Прикрепленные стажеры',
             Assign: 'Прикрепить',
+            'My interns': 'Мои стажеры',
 
             Create: 'Создать',
             Edit: 'Редактировать',

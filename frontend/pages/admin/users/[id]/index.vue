@@ -5,6 +5,18 @@
                 <ControlButtonReturn />
                 <ControlButtonEdit />
                 <ControlButtonDelete path="/api/users/{user_id}" :params="{ user_id: route.params.id as string}" />
+                <ControlButtonDelete
+                    v-if="data?.teacher"
+                    path="/api/users/{intern_id}"
+                    :params="{
+                        intern_id: route.params.id as string,
+                    }"
+                    confirm-body="Вы действительно хотите открепить этого стажера от наставника?"
+                    text="Открепить"
+                    success-title="Стажер успешно откреплен"
+                    disable-redirect
+                    @success="fetchData()"
+                />
             </template>
             <template #links>
                 <NuxtLink
@@ -26,21 +38,26 @@
 </template>
 
 <script setup lang="ts">
+    import { components } from '~/openapi';
+
     const { $api } = useNuxtApp();
 
     const route = useRoute();
 
     const pageStore = usePageStore();
+    const data = ref<components['schemas']['User']>();
 
-    const { data } = await useAsyncData(() => {
-        return $api({
+    async function fetchData() {
+        data.value = await $api({
             path: '/api/users/{user_id}',
             method: 'get',
             params: {
                 user_id: route.params.id as string,
             },
         });
-    });
+    }
+
+    await useAsyncData(fetchData);
 
     pageStore.fkInstancePathMap = {
         posts: {

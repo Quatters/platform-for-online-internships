@@ -23,7 +23,7 @@
 
     const props = defineProps<FieldProps>();
 
-    const typedValue = ref<Item>(props.value as Item);
+    const typedValue = computed<Item>(() => props.value as Item);
 
     function getFkLink(item: Item): RouteLocationNamedRaw {
         const baseLink = pageStore.fkInstancePathMap[props.fieldName];

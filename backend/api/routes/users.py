@@ -1,11 +1,12 @@
 from typing import Annotated
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from backend.api.background_tasks.users import handle_user_teachers_after_post_change
 from backend.api.errors.errors import not_found
 from backend.api.schemas import users as schemas
 from backend.api.queries import users as queries
-from backend.api.auth import admin_only, authenticate_user, create_access_token, get_current_user
+from backend.api.auth import admin_only, admin_or_teacher_only, authenticate_user, create_access_token, get_current_user
 from backend.database import get_db
 from backend.models.users import User
 from backend.api.dependencies import ListPageParams, UserListPageParams
@@ -79,11 +80,14 @@ async def get_user(
     dependencies=[Depends(admin_only)],
 )
 async def patch_user(
+    background_tasks: BackgroundTasks,
     patch_data: schemas.PatchUser,
     user: User = Depends(path_user),
     db: Session = Depends(get_db),
 ):
-    return queries.update_user(db, user, patch_data)
+    data = queries.update_user(db, user, patch_data)
+    background_tasks.add_task(handle_user_teachers_after_post_change, db)
+    return data
 
 
 @router.post(
@@ -101,6 +105,7 @@ async def create_user(
 @router.get(
     '/users/{teacher_id}/assigned_interns',
     response_model=LimitOffsetPage[schemas.ListUser],
+    dependencies=[Depends(admin_or_teacher_only)],
 )
 async def get_assigned_interns(
     db: Session = Depends(get_db),
@@ -113,6 +118,7 @@ async def get_assigned_interns(
 @router.get(
     '/users/{teacher_id}/assigned_interns/{intern_id}',
     response_model=schemas.User,
+    dependencies=[Depends(admin_or_teacher_only)],
 )
 async def get_one_assigned_intern(
     intern_id: int,
@@ -123,9 +129,9 @@ async def get_one_assigned_intern(
 
 
 @router.delete(
-    '/users/{teacher_id}/assigned_interns/{intern_id}',
+    '/users/{intern_id}',
     status_code=204,
-    dependencies=[Depends(path_teacher)],
+    dependencies=[Depends(admin_or_teacher_only)],
 )
 async def get_one_assigned_intern(
     intern_id: int,
@@ -138,6 +144,7 @@ async def get_one_assigned_intern(
 @router.put(
     '/users/{teacher_id}/assigned_interns',
     response_model=schemas.AssignInterns,
+    dependencies=[Depends(admin_or_teacher_only)],
 )
 async def assign_interns(
     data: schemas.AssignInterns,
@@ -151,6 +158,7 @@ async def assign_interns(
 @router.get(
     '/users/{teacher_id}/suitable_for_assign_interns',
     response_model=LimitOffsetPage[schemas.FkUser],
+    dependencies=[Depends(admin_or_teacher_only)],
 )
 async def get_suitable_for_assign_interns(
     db: Session = Depends(get_db),

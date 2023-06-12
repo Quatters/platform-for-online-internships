@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
 from backend.api.current_dependencies import current_post, current_subdivision
 from backend.api.schemas import posts as schemas
@@ -6,8 +6,9 @@ from backend.api.queries import posts as queries
 from backend.database import get_db
 from backend.api.dependencies import ListPageParams
 from backend.settings import LimitOffsetPage
-from backend.models import Subdivision
+from backend.models import Subdivision, Post
 from backend.api.auth import admin_only
+from backend.api.background_tasks.users import handle_user_teachers_after_post_change
 
 
 router = APIRouter()
@@ -71,8 +72,10 @@ def update_subdivision_post(
     status_code=204,
 )
 def delete_subdivision_post(
-    post: schemas.OneSubdivisionPost = Depends(current_post),
+    background_tasks: BackgroundTasks,
+    post: Post = Depends(current_post),
     db: Session = Depends(get_db),
 ):
     queries.delete_post(db, post)
+    background_tasks.add_task(handle_user_teachers_after_post_change, db)
     return {}

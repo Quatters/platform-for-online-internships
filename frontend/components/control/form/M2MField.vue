@@ -27,7 +27,7 @@
     const props = withDefaults(
         defineProps<{
             path: APIPath;
-            params?: Record<string, string>;
+            params?: Record<string, string | number>;
             viewFieldName?: string;
             modelValue?: Array<number>;
             required?: boolean;

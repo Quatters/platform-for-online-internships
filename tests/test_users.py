@@ -329,10 +329,52 @@ def test_assign_interns_to_teacher():
     assert data['total'] == 0
 
     # unassign intern_1 from teacher_1
-    response = admin_client.delete(f'/api/users/{teacher_1.id}/assigned_interns/{intern_1.id}')
+    response = admin_client.delete(f'/api/users/{intern_1.id}')
     assert response.status_code == 204
     db.refresh(intern_1)
     assert intern_1.teacher is None
+
+    # remove post_1 from intern_2 (intern should not be unassigned from teacher_1)
+    response = admin_client.patch(f'/api/users/{intern_2.id}', json={
+        'posts': [post_2.id],
+    })
+    data = response.json()
+    assert response.status_code == 200, data
+    response = admin_client.get(f'/api/users/{intern_2.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert len(data['posts']) == 1
+    assert data['posts'][0]['id'] == post_2.id
+    assert data['teacher'] == {'id': teacher_1.id, 'email': teacher_1.email}
+
+    # remove post_2 from intern_1 (intern should be unassigned from teacher_1)
+    response = admin_client.patch(f'/api/users/{intern_2.id}', json={
+        'posts': [],
+    })
+    data = response.json()
+    assert response.status_code == 200, data
+    response = admin_client.get(f'/api/users/{intern_2.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert len(data['posts']) == 0
+    assert data['teacher'] == None
+
+    # check same behavior when deleting post
+    intern_2.posts = [post_1]
+    intern_2.teacher = teacher_1
+    db.commit()
+    response = admin_client.get(f'/api/users/{intern_2.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert len(data['posts']) == 1
+    assert data['teacher'] == {'id': teacher_1.id, 'email': teacher_1.email}
+    response = admin_client.delete(f'/api/subdivisions/{subdivision.id}/posts/{post_1.id}')
+    assert response.status_code == 204
+    response = admin_client.get(f'/api/users/{intern_2.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert len(data['posts']) == 0
+    assert data['teacher'] == None
 
 
 def test_user_filters():

@@ -42,8 +42,8 @@
             { action: logoutAction, title: 'Выход' },
         ],
         teacher: [
-            { link: '/teacher', title: 'Стажёры' },
-            { link: '/teacher/tasks', title: 'Задания' },
+            { link: '/teacher/my_interns', title: 'Мои стажеры' },
+            // { link: '/teacher/tasks', title: 'Задания' },
             { separator: true },
             { action: logoutAction, title: 'Выход' },
         ],
