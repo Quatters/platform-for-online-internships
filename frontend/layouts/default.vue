@@ -42,13 +42,14 @@
             { action: logoutAction, title: 'Выход' },
         ],
         teacher: [
-            { link: '/teacher', title: 'Стажёры' },
-            { link: '/teacher/tasks', title: 'Задания' },
+            { link: '/teacher/my_interns', title: 'Мои стажеры' },
+            // { link: '/teacher/tasks', title: 'Задания' },
             { separator: true },
             { action: logoutAction, title: 'Выход' },
         ],
         admin: [
             { link: '/admin/subdivisions', title: 'Подразделения' },
+            { link: '/admin/posts', title: 'Должности' },
             { link: '/admin/courses', title: 'Курсы' },
             { link: '/admin/competencies', title: 'Компетенции' },
             { separator: true },

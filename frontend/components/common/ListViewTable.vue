@@ -5,7 +5,7 @@
                 <th v-for="(key, idx) in headerKeys" :key="idx" class="text-left px-4 py-2">{{ $t(key) }}</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody v-if="!disableDetailLinks">
             <NuxtLink
                 v-for="(item, idx) in items"
                 :key="idx"
@@ -20,6 +20,13 @@
                 </tr>
             </NuxtLink>
         </tbody>
+        <tbody v-else>
+            <tr v-for="(item, idx) in items" :key="idx" class="border-b">
+                <td v-for="([key, value], valueIdx) in getEntries(item)" :key="valueIdx" class="px-4 py-2">
+                    <FieldAbstract :field-name="key" :value="value" />
+                </td>
+            </tr>
+        </tbody>
     </table>
 </template>
 
@@ -29,32 +36,44 @@
         [key: string]: unknown;
     }
 
+    const route = useRoute();
+
     const props = withDefaults(
         defineProps<{
             items: Item[];
             withId?: boolean;
             linkParamName?: string;
             apiValueFieldName?: string;
-            additionalParams?: Record<string, string>;
             hideFields?: Array<string>;
             hideHead?: boolean;
+            disableDetailLinks?: boolean;
+            routeName?: string;
+            routeParamsMap?: Record<string, string | number>;
         }>(),
         {
             linkParamName: 'id',
             apiValueFieldName: 'id',
-            additionalParams: () => ({}),
             withId: false,
             hideFields: () => [],
             hideHead: false,
+            disableDetailLinks: false,
+            routeName: undefined,
+            routeParamsMap: () => ({}),
         },
     );
 
-    const route = useRoute();
-
     function getDetailLink(item: Item) {
+        const routeName = props.routeName ?? route.name;
+        const additionalParams: Record<string, string | number> = {};
+        for (const [key, value] of Object.entries(props.routeParamsMap)) {
+            additionalParams[key] = String(item[value]);
+        }
         return {
-            name: `${String(route.name)}-${props.linkParamName}`,
-            params: { [props.linkParamName]: String(item[props.apiValueFieldName]) },
+            name: `${String(routeName)}-${props.linkParamName}`,
+            params: {
+                [props.linkParamName]: String(item[props.apiValueFieldName]),
+                ...additionalParams,
+            },
         };
     }
 

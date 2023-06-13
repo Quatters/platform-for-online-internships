@@ -329,6 +329,20 @@
             },
             "name": "search",
             "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Role",
+              "enum": [
+                "admin",
+                "teacher",
+                "intern"
+              ],
+              "type": "string"
+            },
+            "name": "role",
+            "in": "query"
           }
         ],
         "responses": {
@@ -465,6 +479,298 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/{teacher_id}/assigned_interns": {
+      "get": {
+        "summary": "Get Assigned Interns",
+        "operationId": "get_assigned_interns_api_users__teacher_id__assigned_interns_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "integer"
+            },
+            "name": "teacher_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_ListUser_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Assign Interns",
+        "operationId": "assign_interns_api_users__teacher_id__assigned_interns_put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "integer"
+            },
+            "name": "teacher_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignInterns"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignInterns"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/{teacher_id}/assigned_interns/{intern_id}": {
+      "get": {
+        "summary": "Get One Assigned Intern",
+        "operationId": "get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Intern Id",
+              "type": "integer"
+            },
+            "name": "intern_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "integer"
+            },
+            "name": "teacher_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/{intern_id}": {
+      "delete": {
+        "summary": "Unassign Intern",
+        "operationId": "unassign_intern_api_users__intern_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Intern Id",
+              "type": "integer"
+            },
+            "name": "intern_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/{teacher_id}/suitable_for_assign_interns": {
+      "get": {
+        "summary": "Get Suitable For Assign Interns",
+        "operationId": "get_suitable_for_assign_interns_api_users__teacher_id__suitable_for_assign_interns_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "integer"
+            },
+            "name": "teacher_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_FkUser_"
                 }
               }
             }
@@ -1981,6 +2287,47 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Create Post",
+        "operationId": "create_post_api_posts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePost"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/api/subdivisions/{subdivision_id}/posts": {
@@ -3091,6 +3438,22 @@
           }
         }
       },
+      "AssignInterns": {
+        "title": "AssignInterns",
+        "required": [
+          "interns"
+        ],
+        "type": "object",
+        "properties": {
+          "interns": {
+            "title": "Interns",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
       "Body_login_for_access_token_api_auth_token_post": {
         "title": "Body_login_for_access_token_api_auth_token_post",
         "required": [
@@ -3207,6 +3570,45 @@
             "items": {
               "type": "integer"
             }
+          }
+        }
+      },
+      "CreatePost": {
+        "title": "CreatePost",
+        "required": [
+          "name",
+          "description",
+          "courses",
+          "competencies",
+          "subdivision_id"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "courses": {
+            "title": "Courses",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "subdivision_id": {
+            "title": "Subdivision Id",
+            "type": "integer"
           }
         }
       },
@@ -3486,6 +3888,24 @@
           }
         }
       },
+      "FkUser": {
+        "title": "FkUser",
+        "required": [
+          "id",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          }
+        }
+      },
       "GoingTest": {
         "title": "GoingTest",
         "required": [
@@ -3580,6 +4000,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Course"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_FkUser_": {
+        "title": "LimitOffsetPage[FkUser]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FkUser"
             }
           },
           "total": {
@@ -4791,8 +5243,11 @@
             "title": "Posts",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SubdivisionPost"
+              "$ref": "#/components/schemas/Post"
             }
+          },
+          "teacher": {
+            "$ref": "#/components/schemas/FkUser"
           }
         }
       },

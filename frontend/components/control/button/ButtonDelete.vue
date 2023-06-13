@@ -17,6 +17,7 @@
             confirmBody?: string | null;
             successTitle?: string | null;
             successMessage?: string;
+            disableRedirect?: boolean;
         }>(),
         {
             text: 'Удалить',
@@ -24,8 +25,13 @@
             confirmBody: null,
             successTitle: null,
             successMessage: undefined,
+            disableRedirect: false,
         },
     );
+
+    const emit = defineEmits<{
+        (e: 'success'): void;
+    }>();
 
     function deleteItem() {
         $modal.show({
@@ -57,7 +63,10 @@
                         type: 'info',
                         timeout: 4,
                     });
-                    return navigateBackwards();
+                    emit('success');
+                    if (!props.disableRedirect) {
+                        return navigateBackwards();
+                    }
                 },
                 theme: 'red',
             },

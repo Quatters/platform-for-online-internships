@@ -1,14 +1,15 @@
 from typing import Annotated
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from backend.api.background_tasks.users import handle_user_teachers_after_post_change
 from backend.api.errors.errors import not_found
 from backend.api.schemas import users as schemas
 from backend.api.queries import users as queries
-from backend.api.auth import admin_only, authenticate_user, create_access_token, get_current_user
+from backend.api.auth import admin_only, admin_or_teacher_only, authenticate_user, create_access_token, get_current_user
 from backend.database import get_db
 from backend.models.users import User
-from backend.api.dependencies import ListPageParams
+from backend.api.dependencies import ListPageParams, UserListPageParams
 from backend.settings import LimitOffsetPage
 
 
@@ -18,6 +19,13 @@ router = APIRouter()
 def path_user(user_id: int, db: Session = Depends(get_db)):
     user = queries.get_user(db, user_id)
     if user is None:
+        raise not_found()
+    return user
+
+
+def path_teacher(teacher_id: int, db: Session = Depends(get_db)):
+    user = path_user(teacher_id, db)
+    if not user.is_teacher:
         raise not_found()
     return user
 
@@ -50,7 +58,7 @@ async def get_users_me(user: Annotated[schemas.User, Depends(get_current_user)])
     response_model=LimitOffsetPage[schemas.ListUser],
 )
 async def get_users(
-    params: ListPageParams = Depends(),
+    params: UserListPageParams = Depends(),
     db: Session = Depends(get_db),
 ):
     return queries.get_users(db, params)
@@ -72,11 +80,14 @@ async def get_user(
     dependencies=[Depends(admin_only)],
 )
 async def patch_user(
+    background_tasks: BackgroundTasks,
     patch_data: schemas.PatchUser,
     user: User = Depends(path_user),
     db: Session = Depends(get_db),
 ):
-    return queries.update_user(db, user, patch_data)
+    data = queries.update_user(db, user, patch_data)
+    background_tasks.add_task(handle_user_teachers_after_post_change, db)
+    return data
 
 
 @router.post(
@@ -89,3 +100,69 @@ async def create_user(
     db: Session = Depends(get_db),
 ):
     return queries.create_user(db, data)
+
+
+@router.get(
+    '/users/{teacher_id}/assigned_interns',
+    response_model=LimitOffsetPage[schemas.ListUser],
+    dependencies=[Depends(admin_or_teacher_only)],
+)
+async def get_assigned_interns(
+    db: Session = Depends(get_db),
+    teacher: User = Depends(path_teacher),
+    params: ListPageParams = Depends(),
+):
+    return queries.get_assigned_interns(db, teacher.id, params)
+
+
+@router.get(
+    '/users/{teacher_id}/assigned_interns/{intern_id}',
+    response_model=schemas.User,
+    dependencies=[Depends(admin_or_teacher_only)],
+)
+async def get_one_assigned_intern(
+    intern_id: int,
+    db: Session = Depends(get_db),
+    teacher: User = Depends(path_teacher),
+):
+    return queries.get_assigned_intern(db, teacher.id, intern_id)
+
+
+@router.delete(
+    '/users/{intern_id}',
+    status_code=204,
+    dependencies=[Depends(admin_or_teacher_only)],
+)
+async def unassign_intern(
+    intern_id: int,
+    db: Session = Depends(get_db),
+):
+    queries.unassign_intern(db, intern_id)
+    return {}
+
+
+@router.put(
+    '/users/{teacher_id}/assigned_interns',
+    response_model=schemas.AssignInterns,
+    dependencies=[Depends(admin_or_teacher_only)],
+)
+async def assign_interns(
+    data: schemas.AssignInterns,
+    teacher: User = Depends(path_teacher),
+    db: Session = Depends(get_db),
+):
+    queries.assign_interns(db, teacher, data.interns)
+    return data
+
+
+@router.get(
+    '/users/{teacher_id}/suitable_for_assign_interns',
+    response_model=LimitOffsetPage[schemas.FkUser],
+    dependencies=[Depends(admin_or_teacher_only)],
+)
+async def get_suitable_for_assign_interns(
+    db: Session = Depends(get_db),
+    teacher: User = Depends(path_teacher),
+    params: ListPageParams = Depends(),
+):
+    return queries.get_suitable_for_assign_interns(db, teacher, params)

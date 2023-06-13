@@ -29,6 +29,10 @@ class CreateSubdivisionPost(BaseSchema):
     competencies: list[int]
 
 
+class CreatePost(CreateSubdivisionPost):
+    subdivision_id: int
+
+
 class PatchSubdivisionPost(BaseSchema):
     name: str | None
     description: str | None

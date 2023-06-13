@@ -15,7 +15,7 @@ export default defineNuxtRouteMiddleware(async to => {
     if (to.path.startsWith('/teacher') && !userStore.user.is_teacher) {
         throw error404();
     }
-    if ((to.path.startsWith('/intern') && userStore.user.is_admin) || userStore.user.is_teacher) {
+    if (to.path.startsWith('/intern') && (userStore.user.is_admin || userStore.user.is_teacher)) {
         throw error404();
     }
 });
