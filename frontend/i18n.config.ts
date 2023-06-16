@@ -38,6 +38,7 @@ export default defineI18nConfig(() => ({
             system_checking: 'проверяется системой',
             partially_checked: 'частично проверено',
             checked: 'проверено',
+            unchecked: 'не проверено',
             timeout_failure: 'время выполнения вышло',
             in_progress: 'в процессе выполнения',
             check_failure: 'ошибка при проверке',

@@ -36,6 +36,38 @@
                     <span class="inline-block font-medium">Тема</span>
                     <FieldObject field-name="topic" :value="data?.topic" class="block" />
                 </label>
+                <div class="mt-3">
+                    <h3 class="text-lg font-medium">Результаты</h3>
+                    <div v-for="user_answer in data!.user_answers" :key="user_answer.id" class="py-2 border-t">
+                        <div>
+                            <p class="font-medium">Задание ({{ $t(user_answer.task_type) }}):</p>
+                            <p>{{ user_answer.task_name }}</p>
+                            <p>{{ user_answer.task_description }}</p>
+                        </div>
+                        <div class="mt-3">
+                            <p class="font-medium">Ответ:</p>
+                            <p>{{ formatUserAnswer(user_answer.value) }}</p>
+                        </div>
+                        <div class="mt-3">
+                            <p>
+                                <span class="font-medium">Баллы:</span>
+                                {{ user_answer.score }}
+                            </p>
+                            <p>
+                                <span class="font-medium">Макс. баллы:</span>
+                                {{ user_answer.max_score }}
+                            </p>
+                            <p>
+                                <span class="font-medium">Статус:</span>
+                                {{ $t(user_answer.status) }}
+                            </p>
+                        </div>
+                        <div v-if="user_answer.review" class="mt-3">
+                            <span class="font-medium">Комментарий наставника:</span>
+                            {{ user_answer.review }}
+                        </div>
+                    </div>
+                </div>
             </CommonCard>
         </CommonContent>
     </div>
@@ -68,4 +100,11 @@
             },
         },
     };
+
+    function formatUserAnswer(answer: string | string[]) {
+        if (Array.isArray(answer)) {
+            return answer.join(', ');
+        }
+        return answer;
+    }
 </script>
