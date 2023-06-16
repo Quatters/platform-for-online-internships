@@ -4689,7 +4689,8 @@
           "status",
           "score",
           "max_score",
-          "started_at"
+          "started_at",
+          "user_answers"
         ],
         "type": "object",
         "properties": {
@@ -4723,6 +4724,13 @@
             "title": "Finished At",
             "type": "string",
             "format": "date-time"
+          },
+          "user_answers": {
+            "title": "User Answers",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SavedUserAnswer"
+            }
           }
         }
       },
@@ -5094,6 +5102,66 @@
           }
         }
       },
+      "SavedUserAnswer": {
+        "title": "SavedUserAnswer",
+        "required": [
+          "id",
+          "task_name",
+          "task_description",
+          "task_type",
+          "value",
+          "score",
+          "max_score",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "task_name": {
+            "title": "Task Name",
+            "type": "string"
+          },
+          "task_description": {
+            "title": "Task Description",
+            "type": "string"
+          },
+          "task_type": {
+            "$ref": "#/components/schemas/TaskType"
+          },
+          "value": {
+            "title": "Value",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "score": {
+            "title": "Score",
+            "type": "integer"
+          },
+          "max_score": {
+            "title": "Max Score",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserAnswerStatus"
+          },
+          "review": {
+            "title": "Review",
+            "type": "string"
+          }
+        }
+      },
       "Subdivision": {
         "title": "Subdivision",
         "required": [
@@ -5281,6 +5349,14 @@
             ]
           }
         }
+      },
+      "UserAnswerStatus": {
+        "title": "UserAnswerStatus",
+        "enum": [
+          "checked",
+          "unchecked"
+        ],
+        "description": "An enumeration."
       },
       "UserCourse": {
         "title": "UserCourse",

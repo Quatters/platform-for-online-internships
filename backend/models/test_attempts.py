@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
 from sqlalchemy import Column, ForeignKey, Integer, DateTime, Enum
 from sqlalchemy.orm import relationship, Mapped
 from sqlalchemy.sql import func, text
 from backend.models import BaseModel, Topic, User
 from backend.constants import TestAttemptStatus
+
+
+if TYPE_CHECKING:  # nocv
+    from backend.models import UserAnswer
 
 
 class TestAttempt(BaseModel):
@@ -24,3 +29,4 @@ class TestAttempt(BaseModel):
         Topic,
         primaryjoin=topic_id == Topic.id,
     )
+    user_answers: Mapped[list['UserAnswer']] = relationship(back_populates='attempt')

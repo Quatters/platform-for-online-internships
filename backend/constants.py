@@ -36,3 +36,8 @@ class TestAttemptStatus(BaseEnum):
     check_failure = 'check_failure'
     partially_checked = 'partially_checked'
     checked = 'checked'
+
+
+class UserAnswerStatus(BaseEnum):
+    checked = 'checked'
+    unchecked = 'unchecked'

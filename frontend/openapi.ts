@@ -708,6 +708,8 @@ export interface components {
        * Format: date-time
        */
       finished_at?: string;
+      /** User Answers */
+      user_answers: (components["schemas"]["SavedUserAnswer"])[];
     };
     /** OneTopic */
     OneTopic: {
@@ -863,6 +865,25 @@ export interface components {
       /** Subdivision Id */
       subdivision_id: number;
     };
+    /** SavedUserAnswer */
+    SavedUserAnswer: {
+      /** Id */
+      id: number;
+      /** Task Name */
+      task_name: string;
+      /** Task Description */
+      task_description: string;
+      task_type: components["schemas"]["TaskType"];
+      /** Value */
+      value: string | (string)[];
+      /** Score */
+      score: number;
+      /** Max Score */
+      max_score: number;
+      status: components["schemas"]["UserAnswerStatus"];
+      /** Review */
+      review?: string;
+    };
     /** Subdivision */
     Subdivision: {
       /** Id */
@@ -936,6 +957,12 @@ export interface components {
       /** Answer */
       answer: number | (number)[] | string;
     };
+    /**
+     * UserAnswerStatus 
+     * @description An enumeration. 
+     * @enum {unknown}
+     */
+    UserAnswerStatus: "checked" | "unchecked";
     /** UserCourse */
     UserCourse: {
       /** Id */

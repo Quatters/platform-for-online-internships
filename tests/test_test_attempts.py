@@ -166,6 +166,41 @@ def test_tests():
         'score': 2,
         'started_at': data['started_at'],
         'finished_at': data['finished_at'],
+        'user_answers': [
+            {
+                'id': data['user_answers'][0]['id'],
+                'task_name': task_1.name,
+                'task_description': task_1.description,
+                'task_type': task_1.task_type.value,
+                'value': answer_1_1.value,
+                'score': 1,
+                'max_score': 1,
+                'status': 'checked',
+                'review': None,
+            },
+            {
+                'id': data['user_answers'][1]['id'],
+                'task_name': task_2.name,
+                'task_description': task_2.description,
+                'task_type': task_2.task_type.value,
+                'value': [answer_2_1.value, answer_2_2.value],
+                'score': 1,
+                'max_score': 2,
+                'status': 'checked',
+                'review': None,
+            },
+            {
+                'id': data['user_answers'][2]['id'],
+                'task_name': task_3.name,
+                'task_description': task_3.description,
+                'task_type': task_3.task_type.value,
+                'value': 'some text for teacher',
+                'score': 0,
+                'max_score': 5,
+                'status': 'unchecked',
+                'review': None,
+            },
+        ],
     }
 
     # try to get not existing test
@@ -208,6 +243,7 @@ def test_tests():
         'score': 0,
         'started_at': data['started_at'],
         'finished_at': data['finished_at'],
+        'user_answers': [],
     }
 
     # start test (3)
@@ -245,6 +281,30 @@ def test_tests():
         'score': 3,
         'started_at': data['started_at'],
         'finished_at': data['finished_at'],
+        'user_answers': [
+            {
+                'id': data['user_answers'][0]['id'],
+                'task_name': task_1.name,
+                'task_description': task_1.description,
+                'task_type': task_1.task_type.value,
+                'value': answer_1_1.value,
+                'score': 1,
+                'max_score': 1,
+                'status': 'checked',
+                'review': None,
+            },
+            {
+                'id': data['user_answers'][1]['id'],
+                'task_name': task_2.name,
+                'task_description': task_2.description,
+                'task_type': task_2.task_type.value,
+                'value': [answer_2_1.value, answer_2_3.value],
+                'score': 2,
+                'max_score': 2,
+                'status': 'checked',
+                'review': None,
+            },
+        ]
     }
 
     # start test (4, must not be allowed)
