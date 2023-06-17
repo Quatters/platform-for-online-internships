@@ -36,8 +36,8 @@
                     <span class="inline-block font-medium">Тема</span>
                     <FieldObject field-name="topic" :value="data?.topic" class="block" />
                 </label>
-                <div class="mt-3">
-                    <h3 class="text-lg font-medium">Результаты</h3>
+                <details class="mt-3">
+                    <summary class="text-lg font-medium cursor-pointer">Результаты</summary>
                     <div v-for="user_answer in data!.user_answers" :key="user_answer.id" class="py-2 border-t">
                         <div>
                             <p class="font-medium">Задание ({{ $t(user_answer.task_type) }}):</p>
@@ -67,7 +67,7 @@
                             {{ user_answer.review }}
                         </div>
                     </div>
-                </div>
+                </details>
             </CommonCard>
         </CommonContent>
     </div>
