@@ -9,7 +9,7 @@ from backend.api.current_dependencies import current_topic
 from backend.database import get_db
 from backend.models import Topic, User
 from backend.models.test_attempts import TestAttempt
-from backend.api.dependencies import ListPageParams
+from backend.api.dependencies import TestAttemptListPageParams
 from backend.api.background_tasks import test_attempts as tasks
 from backend.settings import LimitOffsetPage
 
@@ -74,7 +74,7 @@ def get_one_user_test(test: TestAttempt = Depends(current_test)):
 
 @router.get('/tests', response_model=LimitOffsetPage[schemas.ListTest])
 def get_user_tests(
-    params: ListPageParams = Depends(),
+    params: TestAttemptListPageParams = Depends(),
     user: User = Depends(intern_only),
     db: Session = Depends(get_db),
 ):

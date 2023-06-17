@@ -3358,6 +3358,14 @@
             },
             "name": "search",
             "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/TestAttemptStatus"
+            },
+            "name": "status",
+            "in": "query"
           }
         ],
         "responses": {

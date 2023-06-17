@@ -2,6 +2,18 @@
     <div>
         <ControlPanel>
             <template #inputs>
+                <ControlFormEnumField
+                    v-model="status"
+                    :enum-items="[
+                        'in_progress',
+                        'system_checking',
+                        'timeout_failure',
+                        'check_failure',
+                        'partially_checked',
+                        'checked',
+                    ]"
+                    class="w-64"
+                />
                 <ControlSearchInput v-model="search" />
             </template>
         </ControlPanel>
@@ -13,7 +25,10 @@
 </template>
 
 <script setup lang="ts">
+    import { components } from '~/openapi';
+
     const route = useRoute();
+    const router = useRouter();
 
     const pageStore = usePageStore();
 
@@ -21,6 +36,7 @@
     await goingTestStore.fetch();
 
     const search = ref<string | null | undefined>(getFirstQueryValue(route.query.search));
+    const status = ref<components['schemas']['TestAttemptStatus']>();
 
     const { data, loadMore } = await useListLoader({
         path: '/api/tests',
@@ -38,4 +54,14 @@
             },
         },
     };
+
+    watch(status, value => {
+        router.replace({
+            ...route,
+            query: {
+                ...route.query,
+                status: value ?? undefined,
+            },
+        });
+    });
 </script>

@@ -2566,6 +2566,7 @@ export interface operations {
         limit?: number;
         offset?: number;
         search?: string;
+        status?: components["schemas"]["TestAttemptStatus"];
       };
     };
     responses: {

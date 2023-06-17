@@ -1,6 +1,6 @@
 from typing import Literal
 from backend.settings import LimitOffsetParams
-from backend.constants import UserAnswerStatus
+from backend.constants import UserAnswerStatus, TestAttemptStatus
 
 
 class ListPageParams(LimitOffsetParams):
@@ -13,3 +13,7 @@ class UserListPageParams(ListPageParams):
 
 class ReviewListPageParams(ListPageParams):
     status: UserAnswerStatus | None
+
+
+class TestAttemptListPageParams(ListPageParams):
+    status: TestAttemptStatus | None
