@@ -43,7 +43,7 @@
         ],
         teacher: [
             { link: '/teacher/my_interns', title: 'Мои стажеры' },
-            // { link: '/teacher/tasks', title: 'Задания' },
+            { link: '/teacher/task_checking', title: 'Проверка заданий' },
             { separator: true },
             { action: logoutAction, title: 'Выход' },
         ],

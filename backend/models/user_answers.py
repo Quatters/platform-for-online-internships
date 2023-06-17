@@ -20,6 +20,7 @@ class UserAnswer(BaseModel):
     review = Column(Text)
 
     attempt: Mapped[TestAttempt] = relationship(foreign_keys=attempt_id, back_populates='user_answers')
+    user: Mapped[User] = relationship(foreign_keys=user_id)
 
     @property
     def value(self) -> str | list[str]:

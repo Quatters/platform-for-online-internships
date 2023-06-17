@@ -26,7 +26,7 @@ def get_topics(db: Session, params: ListPageParams, course_id: int):
 
 
 def get_topic(db: Session, topic_id: int) -> Topic | None:
-    return db.query(Topic).get(topic_id)
+    return db.get(Topic, topic_id)
 
 
 def get_first_topic(db: Session, course_id: int):

@@ -8,7 +8,7 @@ from backend.constants import TestAttemptStatus
 
 
 def get_test_by_id(db: Session, test_id: int) -> TestAttempt | None:
-    return db.query(TestAttempt).get(test_id)
+    return db.get(TestAttempt, test_id)
 
 
 def get_going_test(db: Session, user_id: int):

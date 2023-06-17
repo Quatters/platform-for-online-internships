@@ -26,7 +26,7 @@ def get_tasks(db: Session, topic_id: int, params: ListPageParams):
 
 
 def get_task(db: Session, task_id: int) -> Task | None:
-    return db.query(Task).get(task_id)
+    return db.get(Task, task_id)
 
 
 def get_first_task(db: Session, topic_id: int):

@@ -30,3 +30,5 @@ class TestAttempt(BaseModel):
         primaryjoin=topic_id == Topic.id,
     )
     user_answers: Mapped[list['UserAnswer']] = relationship(back_populates='attempt')
+
+    __test__ = False

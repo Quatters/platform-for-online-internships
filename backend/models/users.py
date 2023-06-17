@@ -25,9 +25,11 @@ class User(BaseModel):
     competencies: Mapped[list['UserCompetence']] = relationship('UserCompetence', back_populates='user')
     courses: Mapped[list['UserCourse']] = relationship('UserCourse', cascade='all, delete')
     teacher: Mapped['User'] = relationship(
+        foreign_keys=teacher_id,
         primaryjoin='~(User.is_admin | User.is_teacher) & (User.teacher_id == remote(User.id))'
     )
     interns: Mapped[list['User']] = relationship(
+        back_populates='teacher',
         primaryjoin='(User.is_teacher) & (remote(User.teacher_id) == User.id)'
     )
 
