@@ -483,7 +483,6 @@ export interface components {
       /** Offset */
       offset?: number;
     };
-<<<<<<< HEAD
     /** LimitOffsetPage[ListReview] */
     LimitOffsetPage_ListReview_: {
       /** Items */
@@ -495,8 +494,6 @@ export interface components {
       /** Offset */
       offset?: number;
     };
-=======
->>>>>>> origin/main
     /** LimitOffsetPage[ListTest] */
     LimitOffsetPage_ListTest_: {
       /** Items */
