@@ -1,7 +1,7 @@
 from backend.constants import TaskType
 from backend.database import get_db
-from backend.models.test_attempts import TestAttempt
-from tests.base import login_as, test_intern
+from backend.models.test_attempts import TestAttempt, User
+from tests.base import login_as, test_intern, test_teacher
 from tests import helpers
 
 
@@ -23,16 +23,22 @@ def test_tests():
     answer_2_2 = helpers.create_answer(task_id=task_2.id)
     answer_2_3 = helpers.create_answer(task_id=task_2.id, is_correct=True)
 
-    client = login_as(test_intern)
+    intern = db.query(User).filter(User.email == test_intern.email).one()
+    teacher = db.query(User).filter(User.email == test_teacher.email).one()
+    intern.teacher = teacher
+    db.commit()
+
+    intern_client = login_as(test_intern)
+    teacher_client = login_as(test_teacher)
 
     # check no attempts for now
-    response = client.get('/api/tests')
+    response = intern_client.get('/api/tests')
     data = response.json()
     assert response.status_code == 200, data
     assert data['total'] == 0
 
     # start test (1)
-    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    response = intern_client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 200, data
     test_id = data['id']
@@ -104,13 +110,13 @@ def test_tests():
     assert data == test_with_tasks_data_to_check
 
     # check can't start new test
-    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    response = intern_client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 400, data
     assert data['detail'] == 'Cannot start new test until there is unfinished one.'
 
     # get going test
-    response = client.get('/api/tests/going')
+    response = intern_client.get('/api/tests/going')
     data = response.json()
     assert response.status_code == 200, data
     assert data == test_with_tasks_data_to_check
@@ -122,13 +128,44 @@ def test_tests():
         {'task_id': task_3.id, 'answer': 'some text for teacher'},
     ]
 
-    response = client.post(f'/api/tests/{test_id}/finish', json=user_answers)
+    response = intern_client.post(f'/api/tests/{test_id}/finish', json=user_answers)
     data = response.json()
     assert response.status_code == 200, data
     assert data == {'detail': 'Test submitted.'}
 
+    # try to get reviews as intern
+    response = intern_client.get('/api/reviews')
+    assert response.status_code == 403
+
+    # check teacher's reviews
+    response = teacher_client.get('/api/reviews')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['total'] == 1
+    review_id = data['items'][0]['id']
+    assert data['items'][0] == {
+        'id': review_id,
+        'task_name': task_3.name,
+        'status': 'unchecked',
+    }
+
+    # check one teacher's review
+    response = teacher_client.get(f'/api/reviews/{review_id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {
+        'id': review_id,
+        'task_name': task_3.name,
+        'task_description': task_3.description,
+        'max_score': 5,
+        'score': 0,
+        'value': 'some text for teacher',
+        'review': None,
+        'status': 'unchecked',
+    }
+
     # get test list
-    response = client.get('/api/tests')
+    response = intern_client.get('/api/tests')
     data = response.json()
     assert response.status_code == 200, data
     assert data['total'] == 1
@@ -147,7 +184,7 @@ def test_tests():
     }]
 
     # get one test
-    response = client.get(f'/api/tests/{test_id}')
+    response = intern_client.get(f'/api/tests/{test_id}')
     data = response.json()
     assert response.status_code == 200, data
     assert data == {
@@ -166,30 +203,91 @@ def test_tests():
         'score': 2,
         'started_at': data['started_at'],
         'finished_at': data['finished_at'],
+        'user_answers': [
+            {
+                'id': data['user_answers'][0]['id'],
+                'task_name': task_1.name,
+                'task_description': task_1.description,
+                'task_type': task_1.task_type.value,
+                'value': answer_1_1.value,
+                'score': 1,
+                'max_score': 1,
+                'status': 'checked',
+                'review': None,
+            },
+            {
+                'id': data['user_answers'][1]['id'],
+                'task_name': task_2.name,
+                'task_description': task_2.description,
+                'task_type': task_2.task_type.value,
+                'value': [answer_2_1.value, answer_2_2.value],
+                'score': 1,
+                'max_score': 2,
+                'status': 'checked',
+                'review': None,
+            },
+            {
+                'id': review_id,
+                'task_name': task_3.name,
+                'task_description': task_3.description,
+                'task_type': task_3.task_type.value,
+                'value': 'some text for teacher',
+                'score': 0,
+                'max_score': 5,
+                'status': 'unchecked',
+                'review': None,
+            },
+        ],
     }
 
+    # finish review as teacher
+    response = teacher_client.put(f'/api/reviews/{review_id}', json={
+        'score': 4,
+        'review': 'good job',
+    })
+    data = response.json()
+    assert response.status_code == 200, data
+
+    # get same test, check that last answer is reviewed
+    response = intern_client.get(f'/api/tests/{test_id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['user_answers'][-1] == {
+        'id': review_id,
+        'task_name': task_3.name,
+        'task_description': task_3.description,
+        'task_type': task_3.task_type.value,
+        'value': 'some text for teacher',
+        'score': 4,
+        'max_score': 5,
+        'status': 'checked',
+        'review': 'good job',
+    }
+    assert data['score'] == 6
+    assert data['status'] == 'checked'
+
     # try to get not existing test
-    response = client.get('/api/tests/-1')
+    response = intern_client.get('/api/tests/-1')
     data = response.json()
     assert response.status_code == 404, data
 
     # check submitting test (2) with timeout
-    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    response = intern_client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 200, data
     test_id: int = data['id']
-    test = db.query(TestAttempt).get(test_id)
+    test = db.get(TestAttempt, test_id)
     test.time_to_pass = 0
     db.commit()
 
     # try to submit
-    response = client.post(f'/api/tests/{test_id}/finish', json=user_answers)
+    response = intern_client.post(f'/api/tests/{test_id}/finish', json=user_answers)
     data = response.json()
     assert response.status_code == 200, data
     assert data == {'detail': 'Test submitted.'}
 
     # get test
-    response = client.get(f'/api/tests/{test_id}')
+    response = intern_client.get(f'/api/tests/{test_id}')
     data = response.json()
     assert response.status_code == 200, data
     assert data == {
@@ -208,16 +306,17 @@ def test_tests():
         'score': 0,
         'started_at': data['started_at'],
         'finished_at': data['finished_at'],
+        'user_answers': [],
     }
 
     # start test (3)
-    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    response = intern_client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 200, data
     test_id = data['id']
 
     # finish test sending only system-checking answers
-    response = client.post(f'/api/tests/{test_id}/finish', json=[
+    response = intern_client.post(f'/api/tests/{test_id}/finish', json=[
         {'task_id': task_1.id, 'answer': answer_1_1.id},
         {'task_id': task_2.id, 'answer': [answer_2_1.id, answer_2_3.id]},
     ])
@@ -226,7 +325,7 @@ def test_tests():
     assert data == {'detail': 'Test submitted.'}
 
     # get test
-    response = client.get(f'/api/tests/{test_id}')
+    response = intern_client.get(f'/api/tests/{test_id}')
     data = response.json()
     assert response.status_code == 200, data
     assert data == {
@@ -245,16 +344,40 @@ def test_tests():
         'score': 3,
         'started_at': data['started_at'],
         'finished_at': data['finished_at'],
+        'user_answers': [
+            {
+                'id': data['user_answers'][0]['id'],
+                'task_name': task_1.name,
+                'task_description': task_1.description,
+                'task_type': task_1.task_type.value,
+                'value': answer_1_1.value,
+                'score': 1,
+                'max_score': 1,
+                'status': 'checked',
+                'review': None,
+            },
+            {
+                'id': data['user_answers'][1]['id'],
+                'task_name': task_2.name,
+                'task_description': task_2.description,
+                'task_type': task_2.task_type.value,
+                'value': [answer_2_1.value, answer_2_3.value],
+                'score': 2,
+                'max_score': 2,
+                'status': 'checked',
+                'review': None,
+            },
+        ]
     }
 
     # start test (4, must not be allowed)
-    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    response = intern_client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
     data = response.json()
     assert response.status_code == 400, data
     assert data['detail'] == 'You have run out of attempts for this topic.'
 
     # check that for intern 'attempts_amount' is available attempts
-    response = client.get(f'/api/courses/{course.id}/topics/{topic.id}')
+    response = intern_client.get(f'/api/courses/{course.id}/topics/{topic.id}')
     data = response.json()
     assert response.status_code == 200, data
     assert data['attempts_amount'] == 0

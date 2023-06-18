@@ -1,8 +1,8 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
+from backend.api.auth import teacher_only
 from backend.api.errors.errors import not_found
-from backend.models.courses import Course
-from backend.models.topics import Topic
+from backend.models import Course, User, Topic
 from backend.database import get_db
 import backend.api.queries.courses as queries_courses
 import backend.api.queries.topics as queries_topics
@@ -11,6 +11,7 @@ import backend.api.queries.subdivisions as queries_subdivisions
 import backend.api.queries.posts as queries_posts
 import backend.api.queries.competencies as queries_competencies
 import backend.api.queries.topic_resources as queries_topic_resources
+import backend.api.queries.reviews as queries_reviews
 
 
 def get_current_course(course_id: int, db: Session = Depends(get_db)):
@@ -71,3 +72,14 @@ async def current_topic_resource(
     if resource is None or resource.topic_id != topic.id:
         raise not_found()
     return resource
+
+
+async def current_review(
+    review_id: int,
+    teacher: User = Depends(teacher_only),
+    db: Session = Depends(get_db),
+):
+    review = queries_reviews.get_review(db, review_id)
+    if review is None or review.user not in teacher.interns:
+        raise not_found()
+    return review

@@ -1,7 +1,7 @@
 from datetime import datetime
 from backend.api.schemas.base import BaseSchema
 from backend.api.schemas.courses import Course
-from backend.constants import TaskType, TestAttemptStatus
+from backend.constants import TaskType, TestAttemptStatus, UserAnswerStatus
 
 
 class FkTopic(BaseSchema):
@@ -47,8 +47,21 @@ class ListTest(BaseSchema):
     status: TestAttemptStatus
 
 
+class SavedUserAnswer(BaseSchema):
+    id: int
+    task_name: str
+    task_description: str
+    task_type: TaskType
+    value: str | list[str]
+    score: int
+    max_score: int
+    status: UserAnswerStatus
+    review: str | None
+
+
 class OneTest(ListTest):
     score: int
     max_score: int
     started_at: datetime
     finished_at: datetime | None
+    user_answers: list[SavedUserAnswer]

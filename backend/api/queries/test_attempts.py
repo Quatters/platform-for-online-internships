@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session, joinedload
 from fastapi_pagination import paginate as pypaginate
-from backend.api.dependencies import ListPageParams
+from backend.api.dependencies import TestAttemptListPageParams
 from backend.models import TestAttempt, Topic, Course
 from backend.api.queries.helpers import sort_by_self_fk, with_search
 from backend.api.schemas import test_attempts as schemas
@@ -8,7 +8,7 @@ from backend.constants import TestAttemptStatus
 
 
 def get_test_by_id(db: Session, test_id: int) -> TestAttempt | None:
-    return db.query(TestAttempt).get(test_id)
+    return db.get(TestAttempt, test_id)
 
 
 def get_going_test(db: Session, user_id: int):
@@ -37,12 +37,14 @@ def get_going_test_with_tasks(db: Session, user_id: int) -> TestAttempt | None:
     return test
 
 
-def get_user_tests(db: Session, params: ListPageParams, user_id: int):
+def get_user_tests(db: Session, params: TestAttemptListPageParams, user_id: int):
     query = db.query(TestAttempt).filter(TestAttempt.user_id == user_id).options(
         joinedload(TestAttempt.topic).options(
             joinedload(Topic.course).load_only(Course.id, Course.name),
         ).load_only(Topic.id, Topic.name),
     ).order_by(TestAttempt.id.desc())
+    if params.status is not None:
+        query = query.filter(TestAttempt.status == params.status)
     query = with_search(TestAttempt.id, query=query, search=params.search)
     tests = query.all()
 

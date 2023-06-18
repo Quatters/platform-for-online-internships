@@ -193,6 +193,16 @@ export interface paths {
     /** Get User Tests */
     get: operations["get_user_tests_api_tests_get"];
   };
+  "/api/reviews/": {
+    /** Get Reviews */
+    get: operations["get_reviews_api_reviews__get"];
+  };
+  "/api/reviews/{review_id}": {
+    /** Get One Review */
+    get: operations["get_one_review_api_reviews__review_id__get"];
+    /** Finish Review */
+    put: operations["finish_review_api_reviews__review_id__put"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -366,6 +376,13 @@ export interface components {
       /** Is Teacher */
       is_teacher: boolean;
     };
+    /** FinishReview */
+    FinishReview: {
+      /** Review */
+      review?: string;
+      /** Score */
+      score: number;
+    };
     /** FinishTestResponse */
     FinishTestResponse: {
       /**
@@ -459,6 +476,17 @@ export interface components {
     LimitOffsetPage_FkUser_: {
       /** Items */
       items: (components["schemas"]["FkUser"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[ListReview] */
+    LimitOffsetPage_ListReview_: {
+      /** Items */
+      items: (components["schemas"]["ListReview"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -575,6 +603,14 @@ export interface components {
       limit?: number;
       /** Offset */
       offset?: number;
+    };
+    /** ListReview */
+    ListReview: {
+      /** Id */
+      id: number;
+      /** Task Name */
+      task_name: string;
+      status: components["schemas"]["UserAnswerStatus"];
     };
     /** ListTest */
     ListTest: {
@@ -708,6 +744,8 @@ export interface components {
        * Format: date-time
        */
       finished_at?: string;
+      /** User Answers */
+      user_answers: (components["schemas"]["SavedUserAnswer"])[];
     };
     /** OneTopic */
     OneTopic: {
@@ -863,6 +901,43 @@ export interface components {
       /** Subdivision Id */
       subdivision_id: number;
     };
+    /** Review */
+    Review: {
+      /** Id */
+      id: number;
+      /** Task Name */
+      task_name: string;
+      status: components["schemas"]["UserAnswerStatus"];
+      /** Task Description */
+      task_description: string;
+      /** Review */
+      review?: string;
+      /** Value */
+      value: string | (string)[];
+      /** Score */
+      score: number;
+      /** Max Score */
+      max_score: number;
+    };
+    /** SavedUserAnswer */
+    SavedUserAnswer: {
+      /** Id */
+      id: number;
+      /** Task Name */
+      task_name: string;
+      /** Task Description */
+      task_description: string;
+      task_type: components["schemas"]["TaskType"];
+      /** Value */
+      value: string | (string)[];
+      /** Score */
+      score: number;
+      /** Max Score */
+      max_score: number;
+      status: components["schemas"]["UserAnswerStatus"];
+      /** Review */
+      review?: string;
+    };
     /** Subdivision */
     Subdivision: {
       /** Id */
@@ -936,6 +1011,12 @@ export interface components {
       /** Answer */
       answer: number | (number)[] | string;
     };
+    /**
+     * UserAnswerStatus 
+     * @description An enumeration. 
+     * @enum {unknown}
+     */
+    UserAnswerStatus: "checked" | "unchecked";
     /** UserCourse */
     UserCourse: {
       /** Id */
@@ -2485,6 +2566,7 @@ export interface operations {
         limit?: number;
         offset?: number;
         search?: string;
+        status?: components["schemas"]["TestAttemptStatus"];
       };
     };
     responses: {
@@ -2492,6 +2574,80 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["LimitOffsetPage_ListTest_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Reviews */
+  get_reviews_api_reviews__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+        status?: components["schemas"]["UserAnswerStatus"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_ListReview_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get One Review */
+  get_one_review_api_reviews__review_id__get: {
+    parameters: {
+      path: {
+        review_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Review"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Finish Review */
+  finish_review_api_reviews__review_id__put: {
+    parameters: {
+      path: {
+        review_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["FinishReview"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Review"];
         };
       };
       /** @description Validation Error */

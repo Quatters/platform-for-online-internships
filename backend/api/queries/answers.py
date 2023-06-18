@@ -13,7 +13,7 @@ def get_answers(db: Session, task_id: int, params: ListPageParams) -> List[Answe
 
 
 def get_answer(db: Session, answer_id) -> Answer | None:
-    return db.query(Answer).get(answer_id)
+    return db.get(Answer, answer_id)
 
 
 def create_answer(db: Session, answer: schemas.CreateAnswer, task_id: int) -> Answer:

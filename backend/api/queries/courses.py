@@ -15,7 +15,7 @@ def get_courses(db: Session, params: ListPageParams):
 
 
 def get_course(db: Session, id: int) -> Course | None:
-    return db.query(Course).get(id)
+    return db.get(Course, id)
 
 
 def get_course_by_name(db: Session, name: str) -> Course | None:

@@ -34,10 +34,14 @@ export default defineI18nConfig(() => ({
             'Attempts amount': 'Количество попыток',
             Teacher: 'Наставник',
             Interns: 'Стажёры',
+            'Task name': 'Название задания',
+            'Task description': 'Описание задания',
+            Review: 'Комментарий',
 
             system_checking: 'проверяется системой',
             partially_checked: 'частично проверено',
             checked: 'проверено',
+            unchecked: 'не проверено',
             timeout_failure: 'время выполнения вышло',
             in_progress: 'в процессе выполнения',
             check_failure: 'ошибка при проверке',
@@ -58,6 +62,8 @@ export default defineI18nConfig(() => ({
             'Assigned interns': 'Прикрепленные стажеры',
             Assign: 'Прикрепить',
             'My interns': 'Мои стажеры',
+            'Task checking': 'Проверка заданий',
+            Grade: 'Оценить',
 
             Create: 'Создать',
             Edit: 'Редактировать',
