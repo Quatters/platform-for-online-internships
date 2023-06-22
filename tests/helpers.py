@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 from uuid import uuid1
 from httpx import Client
@@ -13,6 +14,7 @@ from backend.models import (
     Post,
     Task,
     User,
+    UserCourse,
     Answer,
 )
 from backend.constants import TaskType, TopicResourceType
@@ -53,6 +55,7 @@ def create_course(
     *,
     name: Optional[str] = None,
     description: Optional[str] = None,
+    pass_percent: int | None = None,
     db: Optional[Session] = None,
     commit: bool = True,
 ):
@@ -60,6 +63,7 @@ def create_course(
     course = Course(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
+        pass_percent=pass_percent,
         competencies=[],
     )
     if commit:
@@ -67,6 +71,29 @@ def create_course(
         db.commit()
         db.refresh(course)
     return course
+
+
+def create_user_course(
+    *,
+    user_id: int,
+    course_id: int,
+    progress: int = 0,
+    admission_date: datetime | None = None,
+    db: Session | None = None,
+    commit: bool = True,
+):
+    db = db or next(get_db())
+    user_course = UserCourse(
+        user_id=user_id,
+        course_id=course_id,
+        progress=progress,
+        admission_date=admission_date,
+    )
+    if commit:
+        db.add(user_course)
+        db.commit()
+        db.refresh(user_course)
+    return user_course
 
 
 def get_records_count(
@@ -123,8 +150,8 @@ def create_post(
 def create_competence(
     *,
     name: Optional[str] = None,
-    courses: Optional[list[int]] = None,
-    posts: Optional[list[int]] = None,
+    courses: Optional[list[Course]] = None,
+    posts: Optional[list[Post]] = None,
     db: Optional[Session] = None,
     commit: bool = True,
 ):

@@ -37,3 +37,10 @@ class User(BaseModel):
         CheckConstraint('NOT (is_admin AND is_teacher)', name='check_one_role'),
         CheckConstraint("email LIKE '%___@___%.__%'", name='check_email_format'),
     )
+
+    @property
+    def achieved_competencies_ids(self):
+        return set(
+            user_competence.competence_id
+            for user_competence in self.competencies
+        )

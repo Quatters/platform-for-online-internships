@@ -657,6 +657,8 @@ export interface components {
       course_id: number;
       /** Progress */
       progress: number;
+      /** Pass Percent */
+      pass_percent: number;
       /**
        * Admission Date 
        * Format: date-time
@@ -684,6 +686,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Pass Percent */
+      pass_percent: number;
       /** Posts */
       posts: (components["schemas"]["FkPost"])[];
       /** Competencies */
@@ -782,6 +786,8 @@ export interface components {
       course_id: number;
       /** Progress */
       progress: number;
+      /** Pass Percent */
+      pass_percent: number;
       /**
        * Admission Date 
        * Format: date-time
@@ -818,6 +824,8 @@ export interface components {
       name?: string;
       /** Description */
       description?: string;
+      /** Pass Percent */
+      pass_percent?: number;
       /** Posts */
       posts?: (number)[];
       /** Competencies */
@@ -1027,6 +1035,8 @@ export interface components {
       course_id: number;
       /** Progress */
       progress: number;
+      /** Pass Percent */
+      pass_percent: number;
       /**
        * Admission Date 
        * Format: date-time
@@ -1048,6 +1058,11 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /**
+       * Pass Percent 
+       * @default 86
+       */
+      pass_percent?: number;
       /** Posts */
       posts: (number)[];
       /** Competencies */

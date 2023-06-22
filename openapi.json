@@ -4731,6 +4731,7 @@
           "user_id",
           "course_id",
           "progress",
+          "pass_percent",
           "admission_date",
           "course_name"
         ],
@@ -4750,6 +4751,10 @@
           },
           "progress": {
             "title": "Progress",
+            "type": "number"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
             "type": "number"
           },
           "admission_date": {
@@ -4803,6 +4808,7 @@
           "id",
           "name",
           "description",
+          "pass_percent",
           "posts",
           "competencies"
         ],
@@ -4819,6 +4825,10 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
+            "type": "number"
           },
           "posts": {
             "title": "Posts",
@@ -5059,6 +5069,7 @@
           "user_id",
           "course_id",
           "progress",
+          "pass_percent",
           "admission_date",
           "course_name",
           "course_description",
@@ -5081,6 +5092,10 @@
           },
           "progress": {
             "title": "Progress",
+            "type": "number"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
             "type": "number"
           },
           "admission_date": {
@@ -5161,6 +5176,12 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "type": "number"
           },
           "posts": {
             "title": "Posts",
@@ -5672,6 +5693,7 @@
           "user_id",
           "course_id",
           "progress",
+          "pass_percent",
           "admission_date"
         ],
         "type": "object",
@@ -5690,6 +5712,10 @@
           },
           "progress": {
             "title": "Progress",
+            "type": "number"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
             "type": "number"
           },
           "admission_date": {
@@ -5749,6 +5775,13 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "type": "number",
+            "default": 86
           },
           "posts": {
             "title": "Posts",

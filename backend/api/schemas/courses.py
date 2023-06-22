@@ -1,3 +1,4 @@
+from pydantic import Field
 from backend.api.schemas.base import BaseSchema
 
 
@@ -19,6 +20,7 @@ class FkCompetence(BaseSchema):
 
 class OneCourse(Course):
     description: str
+    pass_percent: float
     posts: list[FkPost]
     competencies: list[FkCompetence]
 
@@ -26,6 +28,7 @@ class OneCourse(Course):
 class CreateCourse(BaseSchema):
     name: str
     description: str
+    pass_percent: float = Field(ge=1, le=100, default=86)
     posts: list[int]
     competencies: list[int]
 
@@ -33,5 +36,6 @@ class CreateCourse(BaseSchema):
 class PatchCourse(BaseSchema):
     name: str | None
     description: str | None
+    pass_percent: float | None = Field(ge=1, le=100, default=None)
     posts: list[int] | None
     competencies: list[int] | None

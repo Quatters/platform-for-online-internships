@@ -8,6 +8,7 @@ class UserCourse(BaseSchema):
     user_id: int
     course_id: int
     progress: float
+    pass_percent: float
     admission_date: datetime
 
 

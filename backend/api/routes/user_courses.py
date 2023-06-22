@@ -37,7 +37,7 @@ def get_one_user_course(
     user_id: int,
     db: Session = Depends(get_db)
 ):
-    user_course = queries.get_user_course_by_course_id(db, course_id, user_id)
+    user_course = queries.get_annotated_user_course_by_course_id(db, course_id, user_id)
     if user_course is None:
         raise not_found()
     return user_course
@@ -48,7 +48,7 @@ def create_user_course(course_data: schemas.CreateCourse,
                        user_id: int,
                        user: User = Depends(get_current_user),
                        db: Session = Depends(get_db)):
-    if queries.get_user_course_by_course_id(db,
+    if queries.get_annotated_user_course_by_course_id(db,
                                             user_id,
                                             course_data.course_id) is not None:
         raise bad_request("User is already registered for this course")
@@ -62,7 +62,7 @@ def create_user_course(course_data: schemas.CreateCourse,
 def delete_user_course(course_id: int,
                        user: User = Depends(get_current_user),
                        db: Session = Depends(get_db)):
-    user_course = queries.get_user_course_by_course_id(db, course_id, user.id)
+    user_course = queries.get_annotated_user_course_by_course_id(db, course_id, user.id)
     if user_course is None:
         raise not_found()
     queries.delete_user_course(db, user_course)
