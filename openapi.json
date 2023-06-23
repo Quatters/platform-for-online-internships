@@ -4731,8 +4731,8 @@
           "user_id",
           "course_id",
           "progress",
-          "pass_percent",
           "admission_date",
+          "pass_percent",
           "course_name"
         ],
         "type": "object",
@@ -4753,14 +4753,14 @@
             "title": "Progress",
             "type": "number"
           },
-          "pass_percent": {
-            "title": "Pass Percent",
-            "type": "number"
-          },
           "admission_date": {
             "title": "Admission Date",
             "type": "string",
             "format": "date-time"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
+            "type": "number"
           },
           "course_name": {
             "title": "Course Name",
@@ -5069,7 +5069,6 @@
           "user_id",
           "course_id",
           "progress",
-          "pass_percent",
           "admission_date",
           "course_name",
           "course_description",
@@ -5092,10 +5091,6 @@
           },
           "progress": {
             "title": "Progress",
-            "type": "number"
-          },
-          "pass_percent": {
-            "title": "Pass Percent",
             "type": "number"
           },
           "admission_date": {
@@ -5603,7 +5598,8 @@
           "patronymic",
           "is_admin",
           "is_teacher",
-          "posts"
+          "posts",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -5644,6 +5640,13 @@
           },
           "teacher": {
             "$ref": "#/components/schemas/FkUser"
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__users__FkCompetence"
+            }
           }
         }
       },
@@ -5693,7 +5696,6 @@
           "user_id",
           "course_id",
           "progress",
-          "pass_percent",
           "admission_date"
         ],
         "type": "object",
@@ -5712,10 +5714,6 @@
           },
           "progress": {
             "title": "Progress",
-            "type": "number"
-          },
-          "pass_percent": {
-            "title": "Pass Percent",
             "type": "number"
           },
           "admission_date": {
@@ -5901,6 +5899,24 @@
           "course_id": {
             "title": "Course Id",
             "type": "integer"
+          }
+        }
+      },
+      "backend__api__schemas__users__FkCompetence": {
+        "title": "FkCompetence",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
           }
         }
       }

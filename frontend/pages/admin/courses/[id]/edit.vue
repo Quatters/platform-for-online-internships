@@ -9,6 +9,14 @@
             <ControlForm @submit="save">
                 <ControlFormInput v-model="patchData.name" class="mb-4" label="Название" />
                 <ControlFormTextArea v-model="patchData.description" class="mb-4" label="Описание" />
+                <ControlFormInput
+                    v-model="patchData.pass_percent"
+                    class="mb-4"
+                    label="Процент для завершения"
+                    type="number"
+                    min="1"
+                    max="100"
+                />
                 <ControlFormM2MField
                     v-model="patchData.competencies"
                     path="/api/competencies/"

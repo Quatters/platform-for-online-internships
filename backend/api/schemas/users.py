@@ -2,6 +2,11 @@ from backend.api.schemas.base import BaseSchema
 from backend.api.schemas.posts import Post
 
 
+class FkCompetence(BaseSchema):
+    id: int
+    name: str
+
+
 class FkUser(BaseSchema):
     id: int
     email: str
@@ -17,6 +22,7 @@ class User(BaseSchema):
     is_teacher: bool
     posts: list[Post]
     teacher: FkUser | None
+    competencies: list[FkCompetence]
 
 
 class ListUser(BaseSchema):

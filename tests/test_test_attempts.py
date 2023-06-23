@@ -26,7 +26,7 @@ def test_tests(db: Session):
     intern = db.query(User).filter(User.email == test_intern.email).one()
     teacher = db.query(User).filter(User.email == test_teacher.email).one()
     intern.teacher = teacher
-    intern.competencies = [UserCompetence(user_id=intern.id, competence_id=competence_which_user_has.id)]
+    intern.user_competencies = [UserCompetence(user_id=intern.id, competence_id=competence_which_user_has.id)]
     db.commit()
 
     intern_client = login_as(test_intern)
@@ -136,7 +136,7 @@ def test_tests(db: Session):
     # check that intern has only his competence
     db.refresh(intern)
     assert len(intern.competencies) == 1
-    assert intern.competencies[0].competence_id == competence_which_user_has.id
+    assert intern.user_competencies[0].competence_id == competence_which_user_has.id
 
     # finish test
     user_answers = [
@@ -262,7 +262,7 @@ def test_tests(db: Session):
     # check that intern has only his competence
     db.refresh(intern)
     assert len(intern.competencies) == 1
-    assert intern.competencies[0].competence_id == competence_which_user_has.id
+    assert intern.user_competencies[0].competence_id == competence_which_user_has.id
 
     # finish review as teacher
     response = teacher_client.put(f'/api/reviews/{review_id}', json={
@@ -295,8 +295,8 @@ def test_tests(db: Session):
     # and intern got competence
     db.refresh(intern)
     assert len(intern.competencies) == 2
-    assert intern.competencies[0].competence_id == competence_which_user_has.id
-    assert intern.competencies[1].competence_id == competence_to_achieve.id
+    assert intern.user_competencies[0].competence_id == competence_which_user_has.id
+    assert intern.user_competencies[1].competence_id == competence_to_achieve.id
 
     # try to get not existing test
     response = intern_client.get('/api/tests/-1')

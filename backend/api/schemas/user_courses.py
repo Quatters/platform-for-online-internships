@@ -8,15 +8,16 @@ class UserCourse(BaseSchema):
     user_id: int
     course_id: int
     progress: float
-    pass_percent: float
     admission_date: datetime
 
 
 class NamedUserCourse(UserCourse):
+    pass_percent: float
     course_name: str
 
 
-class OneUserCourse(NamedUserCourse):
+class OneUserCourse(UserCourse):
+    course_name: str
     course_description: str
     posts: list[FkPost]
     competencies: list[FkCompetence]

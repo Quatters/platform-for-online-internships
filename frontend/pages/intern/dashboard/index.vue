@@ -1,7 +1,8 @@
 <template>
-    <CommonContent class="grid gap-4">
-        <InternDashboardStatistics class="col-span-4" />
-        <InternDashboardAvailableCourses :courses="data?.[0].items!" />
+    <CommonContent class="grid grid-rows-4 grid-cols-2 gap-4">
+        <InternDashboardStatistics class="col-span-2 row-span-1" />
+        <InternDashboardAvailableCourses :courses="data?.[0].items!" class="row-span-2 col-auto" />
+        <InternDashboardAchievedCompetencies class="row-span-2 col-auto" />
     </CommonContent>
 </template>
 

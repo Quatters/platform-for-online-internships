@@ -46,6 +46,7 @@ def test_get_token():
         **test_admin.dict(),
         'posts': [],
         'teacher': None,
+        'competencies': [],
     }
     assert type(data['id']) == int
     del data['id']
@@ -291,6 +292,7 @@ def test_assign_interns_to_teacher(db: Session):
         'posts': [
             {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
         ],
+        'competencies': [],
     }
     # get teacher_1
     response = admin_client.get(f'/api/users/{teacher_1.id}')
@@ -309,6 +311,7 @@ def test_assign_interns_to_teacher(db: Session):
             {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
             {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
         ],
+        'competencies': [],
     }
 
     # get unassigned interns for teacher_1

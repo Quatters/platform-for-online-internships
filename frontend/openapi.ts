@@ -657,13 +657,13 @@ export interface components {
       course_id: number;
       /** Progress */
       progress: number;
-      /** Pass Percent */
-      pass_percent: number;
       /**
        * Admission Date 
        * Format: date-time
        */
       admission_date: string;
+      /** Pass Percent */
+      pass_percent: number;
       /** Course Name */
       course_name: string;
     };
@@ -786,8 +786,6 @@ export interface components {
       course_id: number;
       /** Progress */
       progress: number;
-      /** Pass Percent */
-      pass_percent: number;
       /**
        * Admission Date 
        * Format: date-time
@@ -1011,6 +1009,8 @@ export interface components {
       /** Posts */
       posts: (components["schemas"]["Post"])[];
       teacher?: components["schemas"]["FkUser"];
+      /** Competencies */
+      competencies: (components["schemas"]["backend__api__schemas__users__FkCompetence"])[];
     };
     /** UserAnswer */
     UserAnswer: {
@@ -1035,8 +1035,6 @@ export interface components {
       course_id: number;
       /** Progress */
       progress: number;
-      /** Pass Percent */
-      pass_percent: number;
       /**
        * Admission Date 
        * Format: date-time
@@ -1106,6 +1104,13 @@ export interface components {
     backend__api__schemas__user_courses__CreateCourse: {
       /** Course Id */
       course_id: number;
+    };
+    /** FkCompetence */
+    backend__api__schemas__users__FkCompetence: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
     };
   };
   responses: never;

@@ -137,11 +137,12 @@ def _calculate_user_course_progress(db: Session, user_course: UserCourse):
 
 
 def update_user_course_progress(db: Session, user_course: UserCourse):
+    prev_progress = user_course.progress
     user_course.progress = _calculate_user_course_progress(db, user_course)
-    if user_course.progress >= user_course.course.pass_percent:
+    if user_course.progress >= user_course.course.pass_percent and prev_progress < user_course.course.pass_percent:
         for competence in user_course.course.competencies:
-            if competence.id not in user_course.user.achieved_competencies_ids:
-                user_course.user.competencies.append(UserCompetence(
+            if competence.id not in user_course.user.competencies_ids:
+                user_course.user.user_competencies.append(UserCompetence(
                     user_id=user_course.user_id,
                     competence_id=competence.id,
                 ))

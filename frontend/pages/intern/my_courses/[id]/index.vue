@@ -30,6 +30,10 @@
                         <span class="inline-block mb-1">Должности, осваиваемые этим курсом</span>
                         <FieldArray :value="course!.posts" field-name="posts" />
                     </label>
+                    <label class="block mb-6 w-full">
+                        <span class="inline-block mb-1">Компетенции, осваиваемые этим курсом</span>
+                        <FieldArray :value="course!.competencies" field-name="competencies" />
+                    </label>
                     <div class="text-gray-600">
                         <div>Дата поступления: {{ new Date(course!.admission_date).toLocaleDateString() }}</div>
                         <div>Прогресс обучения: {{ course!.progress }}%</div>
