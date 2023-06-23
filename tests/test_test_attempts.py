@@ -1,29 +1,27 @@
+from sqlalchemy.orm import Session
 from backend.constants import TaskType
-from backend.database import get_db
 from backend.models import TestAttempt, User, UserCompetence
 from tests.base import login_as, test_intern, test_teacher
 from tests import helpers
 
 
-def test_tests():
-    db = next(get_db())
+def test_tests(db: Session):
+    course = helpers.create_course(db, pass_percent=75)
+    topic = helpers.create_topic(db, course_id=course.id)
+    competence_which_user_has = helpers.create_competence(db, courses=[course])
+    competence_to_achieve = helpers.create_competence(db, courses=[course])
 
-    course = helpers.create_course(pass_percent=75, db=db)
-    topic = helpers.create_topic(course_id=course.id)
-    competence_which_user_has = helpers.create_competence(courses=[course], db=db)
-    competence_to_achieve = helpers.create_competence(courses=[course], db=db)
+    task_1 = helpers.create_task(db, topic_id=topic.id, task_type=TaskType.single)
+    task_2 = helpers.create_task(db, topic_id=topic.id, task_type=TaskType.multiple, prev_task_id=task_1.id)
+    task_3 = helpers.create_task(db, topic_id=topic.id, task_type=TaskType.text, prev_task_id=task_2.id)
 
-    task_1 = helpers.create_task(topic_id=topic.id, task_type=TaskType.single)
-    task_2 = helpers.create_task(topic_id=topic.id, task_type=TaskType.multiple, prev_task_id=task_1.id)
-    task_3 = helpers.create_task(topic_id=topic.id, task_type=TaskType.text, prev_task_id=task_2.id)
+    answer_1_1_correct = helpers.create_answer(db, task_id=task_1.id, is_correct=True)
+    answer_1_2 = helpers.create_answer(db, task_id=task_1.id)
+    answer_1_3 = helpers.create_answer(db, task_id=task_1.id)
 
-    answer_1_1_correct = helpers.create_answer(task_id=task_1.id, is_correct=True)
-    answer_1_2 = helpers.create_answer(task_id=task_1.id)
-    answer_1_3 = helpers.create_answer(task_id=task_1.id)
-
-    answer_2_1_correct = helpers.create_answer(task_id=task_2.id, is_correct=True)
-    answer_2_2 = helpers.create_answer(task_id=task_2.id)
-    answer_2_3_correct = helpers.create_answer(task_id=task_2.id, is_correct=True)
+    answer_2_1_correct = helpers.create_answer(db, task_id=task_2.id, is_correct=True)
+    answer_2_2 = helpers.create_answer(db, task_id=task_2.id)
+    answer_2_3_correct = helpers.create_answer(db, task_id=task_2.id, is_correct=True)
 
     intern = db.query(User).filter(User.email == test_intern.email).one()
     teacher = db.query(User).filter(User.email == test_teacher.email).one()
@@ -46,7 +44,7 @@ def test_tests():
     assert response.status_code == 400, data
     assert data == {'detail': 'You cannot start test on a course you are not enrolled in.'}
 
-    user_course = helpers.create_user_course(user_id=intern.id, course_id=course.id, db=db)
+    user_course = helpers.create_user_course(db, user_id=intern.id, course_id=course.id)
 
     # start test (1)
     response = intern_client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')

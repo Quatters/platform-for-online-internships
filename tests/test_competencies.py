@@ -1,8 +1,9 @@
+from sqlalchemy.orm import Session
 from tests.base import login_as, test_admin
 from tests.helpers import create_competence, create_course, get_records_count
 
 
-def test_competencies_crud():
+def test_competencies_crud(db: Session):
     client = login_as(test_admin)
 
     # create competence
@@ -22,7 +23,7 @@ def test_competencies_crud():
     assert data == data_2
 
     # add courses to competence
-    course = create_course()
+    course = create_course(db)
     response = client.patch(f'/api/competencies/{competence_1_id}', json={
         'courses': [course.id]
     })
@@ -32,7 +33,7 @@ def test_competencies_crud():
 
     # create another competence and get all competencies
     competence_count = get_records_count(route='/api/competencies/', client=client)
-    create_competence()
+    create_competence(db)
     response = client.get('/api/competencies/')
     data = response.json()
     assert response.status_code == 200, data

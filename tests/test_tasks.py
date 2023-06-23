@@ -1,14 +1,14 @@
-from backend.database import get_db
+from sqlalchemy.orm import Session
 from backend.models.tasks import Task
 from tests import helpers
 from tests.base import login_as, test_admin
 
 
-def test_tasks_crud():
+def test_tasks_crud(db: Session):
     client = login_as(test_admin)
 
-    course = helpers.create_course()
-    topic = helpers.create_topic(course_id=course.id)
+    course = helpers.create_course(db)
+    topic = helpers.create_topic(db, course_id=course.id)
 
     response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/tasks', json={
         'name': 'task_1',
@@ -100,6 +100,5 @@ def test_tasks_crud():
     # delete parent topic
     response = client.delete(f'/api/courses/{course.id}/topics/{topic.id}')
     assert response.status_code == 204
-    db = next(get_db())
     results = db.query(Task).filter(Task.topic_id == topic.id).all()
     assert len(results) == 0

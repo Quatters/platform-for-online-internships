@@ -4,7 +4,6 @@ from uuid import uuid1
 from httpx import Client
 from sqlalchemy import Column
 from sqlalchemy.orm import Session
-from backend.database import get_db
 from backend.models import (
     Course,
     Competence,
@@ -23,6 +22,7 @@ from tests.base import login_as, test_admin
 
 
 def create_user(
+    db: Session,
     *,
     first_name: str | None = None,
     last_name: str | None = None,
@@ -31,10 +31,8 @@ def create_user(
     password: str = 'test',
     is_admin: bool = False,
     is_teacher: bool = False,
-    db: Session | None = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     user = User(
         first_name=first_name or str(uuid1()),
         last_name=last_name or str(uuid1()),
@@ -52,14 +50,13 @@ def create_user(
 
 
 def create_course(
+    db: Session,
     *,
     name: Optional[str] = None,
     description: Optional[str] = None,
     pass_percent: int | None = None,
-    db: Optional[Session] = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     course = Course(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
@@ -74,15 +71,14 @@ def create_course(
 
 
 def create_user_course(
+    db: Session,
     *,
     user_id: int,
     course_id: int,
     progress: int = 0,
     admission_date: datetime | None = None,
-    db: Session | None = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     user_course = UserCourse(
         user_id=user_id,
         course_id=course_id,
@@ -108,13 +104,12 @@ def get_records_count(
 
 
 def create_subdivision(
+    db: Session,
     *,
     name: Optional[str] = None,
     description: Optional[str] = None,
-    db: Optional[Session] = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     subdivision = Subdivision(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
@@ -127,14 +122,13 @@ def create_subdivision(
 
 
 def create_post(
+    db: Session,
     *,
     subdivision_id: int | Column[int],
     name: Optional[str] = None,
     description: Optional[str] = None,
-    db: Optional[Session] = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     subdivision = Post(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
@@ -148,14 +142,13 @@ def create_post(
 
 
 def create_competence(
+    db: Session,
     *,
     name: Optional[str] = None,
     courses: Optional[list[Course]] = None,
     posts: Optional[list[Post]] = None,
-    db: Optional[Session] = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     courses = courses or []
     posts = posts or []
 
@@ -172,15 +165,14 @@ def create_competence(
 
 
 def create_topic(
+    db: Session,
     *,
     course_id: int | Column[int],
     prev_topic_id: int | Column[int] | None = None,
     name: Optional[str] = None,
     description: Optional[str] = None,
-    db: Optional[Session] = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     topic = Topic(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
@@ -195,16 +187,15 @@ def create_topic(
 
 
 def create_topic_resource(
+    db: Session,
     *,
     topic_id: int | Column[int],
     prev_resource_id: int | Column[int] | None = None,
     type: TopicResourceType = TopicResourceType.text,
     name: Optional[str] = None,
     value: Optional[str] = None,
-    db: Optional[Session] = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     resource = TopicResource(
         type=type,
         name=name or str(uuid1()),
@@ -220,16 +211,15 @@ def create_topic_resource(
 
 
 def create_task(
+    db: Session,
     *,
     topic_id: int | Column[int],
     task_type: TaskType = TaskType.single,
     name: str | Column[str] | None = None,
     description: str | Column[str] | None = None,
     prev_task_id: int | Column[int] | None = None,
-    db: Session | None = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     task = Task(
         topic_id=topic_id,
         task_type=task_type,
@@ -245,14 +235,13 @@ def create_task(
 
 
 def create_answer(
+    db: Session,
     *,
     task_id: int | Column[int],
     value: str | Column[str] | None = None,
     is_correct: bool = False,
-    db: Session | None = None,
     commit: bool = True,
 ):
-    db = db or next(get_db())
     answer = Answer(
         task_id=task_id,
         value=value or str(uuid1()),
