@@ -1,9 +1,8 @@
 from datetime import datetime
 from fastapi_pagination import paginate
-from sqlalchemy import Integer, func, select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
-from backend.api.schemas.courses import Course
-from backend.models import UserCourse, TestAttempt, User, Course, Task, Topic, UserCompetence, Competence
+from backend.models import UserCourse, TestAttempt, User, Course, Task, Topic, UserCompetence
 from backend.models.courses import Course as CourseModel
 from backend.api.dependencies import ListPageParams
 from backend.constants import TaskType
@@ -86,7 +85,6 @@ def delete_user_course(db: Session, user_course: UserCourse):
     db.commit()
 
 
-
 def _calculate_max_course_score(db: Session, course: Course):
     all_task_ids_query = select(Task.id).where(Task.topic_id.in_(
         select(Topic.id).where(Topic.course_id == course.id)
@@ -130,7 +128,7 @@ def _calculate_user_course_progress(db: Session, user_course: UserCourse):
     try:
         progress = (
             _calculate_user_course_score(db, user_course)
-            / _calculate_max_course_score(db, user_course)
+            / _calculate_max_course_score(db, user_course.course)
             * 100
         )
     except ZeroDivisionError:
