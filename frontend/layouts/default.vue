@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen flex flex-row bg-blue-50">
+    <div class="min-h-screen flex flex-row bg-red-600">
         <CommonSidebar :sidebar-items="sidebarItems[role]" />
         <div class="w-full">
             <CommonHeader />
