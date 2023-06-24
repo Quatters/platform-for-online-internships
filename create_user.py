@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from pydantic import validate_email
 from backend.settings import APP_NAME
-from backend.api.auth import hash_password
+from backend.api.utils import hash_password
 from backend.models.users import User
 from backend.database import get_db
 
