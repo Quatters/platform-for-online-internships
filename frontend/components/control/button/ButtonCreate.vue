@@ -1,5 +1,5 @@
 <template>
-    <ControlButton @click="navigateToCreatePage()">{{ text }}</ControlButton>
+    <ControlButton @click="navigateToCreatePage()" variant="gray">{{ text }}</ControlButton>
 </template>
 
 <script setup lang="ts">
