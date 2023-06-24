@@ -3,7 +3,7 @@
         <div class="bg-white shadow-md rounded-md px-8 py-6">
             <div v-for="([key, value], idx) in entries" :key="idx" class="mb-3">
                 <div class="font-medium">
-                    {{ $t(capitalize(key.replaceAll('_', ' '))) }}
+                    {{ $t(formatValue(key)) }}
                 </div>
                 <FieldAbstract :field-name="key" :value="value" />
                 <slot name="additional-fields" />
@@ -31,4 +31,8 @@
     const entries = computed(() => {
         return Object.entries(props.item).filter(([key]) => !props.hideFields.includes(key));
     });
+
+    function formatValue(value: string) {
+        return capitalize(value.replaceAll('_', ' '));
+    }
 </script>

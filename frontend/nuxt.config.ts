@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     },
     ssr: false,
     css: ['~/assets/css/main.scss'],
-    modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n', '@tailvue/nuxt', '@vueuse/nuxt'],
+    modules: ['@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/i18n-edge', '@tailvue/nuxt', '@vueuse/nuxt'],
     postcss: {
         plugins: {
             tailwindcss: {},
