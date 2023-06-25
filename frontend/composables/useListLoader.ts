@@ -16,7 +16,7 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
     path: P;
     method: M;
     params?: Record<string, string | number>;
-    watchQuery?: Record<string, Ref<string | undefined>>;
+    watchQuery?: Record<string, Ref<string | number | undefined>>;
 }) {
     const { $api } = useNuxtApp();
     const config = useRuntimeConfig();
@@ -30,7 +30,15 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
         if (!watchQuery) {
             return {};
         }
-        return Object.fromEntries(Object.entries(watchQuery).map(([key, value]) => [key, value.value]));
+        return Object.fromEntries(
+            Object.entries(watchQuery).map(([key, value]) => {
+                let v = value.value;
+                if (v !== undefined) {
+                    v = String(v);
+                }
+                return [key, v];
+            }),
+        );
     }
 
     const loader = ({ limit, offset, otherQueries }: ExtendedLoaderArgs = {}) => {
@@ -46,7 +54,15 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
         });
     };
 
-    const data = ref(await loader({ limit: config.public.pageSize, otherQueries: filterRouteQuery(route.query) }));
+    const data = ref(
+        await loader({
+            limit: config.public.pageSize,
+            otherQueries: {
+                ...filterRouteQuery(route.query),
+                ...unpackWatchQueries(),
+            },
+        }),
+    );
 
     async function loadMore({ limit, offset }: LoaderArgs) {
         const newData = await loader({ limit, offset });
@@ -72,6 +88,9 @@ export default async function <P extends APIPath, M extends APIMethod<P>>({
     if (watchQuery) {
         for (const [key, value] of Object.entries(watchQuery)) {
             watch(value, async value => {
+                if (value !== undefined) {
+                    value = String(value);
+                }
                 // @ts-expect-error expecting list path
                 data.value = await loader({
                     limit: config.public.pageSize,

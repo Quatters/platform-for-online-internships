@@ -19,28 +19,27 @@
                     ⨯
                 </button>
             </button>
-            <div v-if="dropdownShown">
-                <ul
-                    class="absolute w-full shadow border rounded rounded-t-none bg-white max-h-96 overflow-y-auto z-50"
-                    @click="hideDropdown"
+            <ul
+                v-if="dropdownShown"
+                class="absolute w-full shadow border rounded rounded-t-none bg-white max-h-96 overflow-y-auto z-50"
+                @click="hideDropdown"
+            >
+                <li
+                    v-for="item in items"
+                    :key="item.value"
+                    class="hover:bg-gray-100 cursor-pointer py-1 px-3 border-t text-start"
+                    @click="() => setValue({ modelValue: item.value, viewValue: item.viewValue })"
                 >
-                    <li
-                        v-for="item in items"
-                        :key="item.value"
-                        class="hover:bg-gray-100 cursor-pointer py-1 px-3 border-t text-start"
-                        @click="() => setValue({ modelValue: item.value, viewValue: item.viewValue })"
-                    >
-                        {{ item.viewValue ?? $t(item.value) }}
-                    </li>
-                    <li
-                        v-if="nullable"
-                        class="hover:bg-gray-100 cursor-pointer py-1 px-3 border-t text-start"
-                        @click="() => setValue({ modelValue: null, viewValue: 'пусто' })"
-                    >
-                        пусто
-                    </li>
-                </ul>
-            </div>
+                    {{ item.viewValue ?? $t(item.value) }}
+                </li>
+                <li
+                    v-if="nullable"
+                    class="hover:bg-gray-100 cursor-pointer py-1 px-3 border-t text-start"
+                    @click="() => setValue({ modelValue: null, viewValue: 'пусто' })"
+                >
+                    пусто
+                </li>
+            </ul>
         </div>
     </div>
 </template>

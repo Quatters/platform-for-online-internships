@@ -1,13 +1,15 @@
 from sqlalchemy.orm import Session, load_only
 from fastapi_pagination.ext.sqlalchemy import paginate
-from backend.api.dependencies import ListPageParams
+from backend.api.dependencies import ListPageParams, PostsListPageParams
 from backend.models import Post, Course, Competence
 from backend.api.schemas import posts as schemas
 from backend.api.queries.helpers import get_instances_or_400, with_search
 
 
-def get_posts(db: Session, params: ListPageParams):
+def get_posts(db: Session, params: PostsListPageParams):
     query = db.query(Post).options(load_only(Post.id, Post.name, Post.subdivision_id))
+    if params.subdivision_id:
+        query = query.filter(Post.subdivision_id == params.subdivision_id)
     query = with_search(Post.name, query=query, search=params.search)
     return paginate(query, params)
 

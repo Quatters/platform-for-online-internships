@@ -17,7 +17,7 @@
                         name: 'intern-my_courses-id-topics',
                         params: { id: route.params.id as string },
                     }"
-                    class="link"
+                    class="btn-link"
                 >
                     Темы
                 </NuxtLink>

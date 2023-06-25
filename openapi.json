@@ -501,6 +501,44 @@
         ]
       }
     },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register",
+        "operationId": "register_api_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users/{teacher_id}/assigned_interns": {
       "get": {
         "summary": "Get Assigned Interns",
@@ -2262,6 +2300,15 @@
               "type": "string"
             },
             "name": "search",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Subdivision Id",
+              "type": "integer"
+            },
+            "name": "subdivision_id",
             "in": "query"
           }
         ],
@@ -5366,6 +5413,57 @@
           "subdivision_id": {
             "title": "Subdivision Id",
             "type": "integer"
+          }
+        }
+      },
+      "RegisterUser": {
+        "title": "RegisterUser",
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string",
+            "default": ""
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string",
+            "default": ""
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string",
+            "default": ""
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "default": []
+          },
+          "is_admin": {
+            "title": "Is Admin",
+            "type": "boolean",
+            "default": false
+          },
+          "is_teacher": {
+            "title": "Is Teacher",
+            "type": "boolean",
+            "default": false
           }
         }
       },

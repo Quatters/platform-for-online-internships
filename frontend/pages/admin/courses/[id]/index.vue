@@ -10,7 +10,7 @@
                 />
             </template>
             <template #links>
-                <NuxtLink :to="{ name: 'admin-courses-id-topics', params: { id: route.params.id } }" class="link">
+                <NuxtLink :to="{ name: 'admin-courses-id-topics', params: { id: route.params.id } }" class="btn-link">
                     Темы
                 </NuxtLink>
             </template>

@@ -102,6 +102,16 @@ async def create_user(
     return queries.create_user(db, data)
 
 
+@router.post('/auth/register', response_model=schemas.User)
+async def register(
+    data: schemas.RegisterUser,
+    db: Session = Depends(get_db),
+):
+    data.is_admin = False
+    data.is_teacher = False
+    return queries.create_user(db, data)
+
+
 @router.get(
     '/users/{teacher_id}/assigned_interns',
     response_model=LimitOffsetPage[schemas.ListUser],

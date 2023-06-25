@@ -10,7 +10,10 @@
                 />
             </template>
             <template #links>
-                <NuxtLink :to="{ name: 'admin-subdivisions-id-posts', params: { id: route.params.id } }" class="link">
+                <NuxtLink
+                    :to="{ name: 'admin-subdivisions-id-posts', params: { id: route.params.id } }"
+                    class="btn-link"
+                >
                     Должности
                 </NuxtLink>
             </template>

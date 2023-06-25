@@ -4,33 +4,28 @@
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">Вход в аккаунт</h1>
                 <form @submit.prevent="submit">
-                    <div>
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Эл. почта</label>
-                        <input
-                            id="email"
-                            v-model="email"
-                            type="email"
-                            name="email"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-800 focus:border-blue-800 block w-full p-2.5"
-                            placeholder="name@mail.com"
-                            required
-                        />
-                    </div>
-                    <div class="mt-3">
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Пароль</label>
-                        <input
-                            id="password"
-                            v-model="password"
-                            type="password"
-                            name="password"
-                            placeholder="••••••••"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-800 focus:border-blue-800 block w-full p-2.5"
-                            required
-                        />
-                    </div>
+                    <ControlFormInput
+                        id="email"
+                        v-model="email"
+                        label="Email"
+                        required
+                        placeholder="name@mail.com"
+                        type="email"
+                        name="email"
+                        class="mb-5"
+                    />
+                    <ControlFormInput
+                        id="password"
+                        v-model="password"
+                        label="Пароль"
+                        required
+                        placeholder="••••••••"
+                        type="password"
+                        name="password"
+                    />
                     <button
                         type="submit"
-                        class="w-full text-white bg-blue-800 hover:bg-blue-700 align-middle transition-colors duration-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 h-11 text-center mt-9 flex justify-center items-center"
+                        class="w-full text-white bg-blue-800 hover:bg-blue-700 align-middle transition-colors duration-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded px-5 h-10 text-center mt-8 flex justify-center items-center"
                         :disabled="$isFetching"
                     >
                         <UtilSpinner v-if="$isFetching" :size="5" />
@@ -40,6 +35,10 @@
                         Не удалось войти. Проверьте введённые данные.
                     </div>
                 </form>
+                <div>
+                    <p>Нет аккаунта?</p>
+                    <NuxtLink :to="{ name: 'intern_register' }" class="link">Регистрация для стажера</NuxtLink>
+                </div>
             </div>
         </div>
     </div>
@@ -59,9 +58,9 @@
 
     async function submit() {
         try {
-            loginError.value = false;
             await userStore.fetchToken({ email: email.value, password: password.value });
             await userStore.fetchUser({ force: true });
+            loginError.value = false;
             return navigateTo({ name: 'index' });
         } catch (e) {
             console.error(e);

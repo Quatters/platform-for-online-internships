@@ -67,5 +67,10 @@ class CreateUser(BaseSchema):
     is_teacher: bool
 
 
+class RegisterUser(CreateUser):
+    is_admin: bool = False
+    is_teacher: bool = False
+
+
 class AssignInterns(BaseSchema):
     interns: list[int]

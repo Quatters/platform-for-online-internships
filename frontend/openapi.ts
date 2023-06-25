@@ -39,6 +39,10 @@ export interface paths {
     /** Patch User */
     patch: operations["patch_user_api_users__user_id__patch"];
   };
+  "/api/auth/register": {
+    /** Register */
+    post: operations["register_api_auth_register_post"];
+  };
   "/api/users/{teacher_id}/assigned_interns": {
     /** Get Assigned Interns */
     get: operations["get_assigned_interns_api_users__teacher_id__assigned_interns_get"];
@@ -907,6 +911,43 @@ export interface components {
       /** Subdivision Id */
       subdivision_id: number;
     };
+    /** RegisterUser */
+    RegisterUser: {
+      /** Email */
+      email: string;
+      /** Password */
+      password: string;
+      /**
+       * First Name 
+       * @default
+       */
+      first_name?: string;
+      /**
+       * Last Name 
+       * @default
+       */
+      last_name?: string;
+      /**
+       * Patronymic 
+       * @default
+       */
+      patronymic?: string;
+      /**
+       * Posts 
+       * @default []
+       */
+      posts?: (number)[];
+      /**
+       * Is Admin 
+       * @default false
+       */
+      is_admin?: boolean;
+      /**
+       * Is Teacher 
+       * @default false
+       */
+      is_teacher?: boolean;
+    };
     /** Review */
     Review: {
       /** Id */
@@ -1349,6 +1390,28 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["PatchUser"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Register */
+  register_api_auth_register_post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RegisterUser"];
       };
     };
     responses: {
@@ -2091,6 +2154,7 @@ export interface operations {
         limit?: number;
         offset?: number;
         search?: string;
+        subdivision_id?: number;
       };
     };
     responses: {

@@ -17,3 +17,7 @@ class ReviewListPageParams(ListPageParams):
 
 class TestAttemptListPageParams(ListPageParams):
     status: TestAttemptStatus | None
+
+
+class PostsListPageParams(ListPageParams):
+    subdivision_id: int | None

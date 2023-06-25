@@ -22,7 +22,7 @@
                 <NuxtLink
                     v-if="data?.is_teacher"
                     :to="{ name: 'admin-users-id-assigned_interns', params: { id: route.params.id } }"
-                    class="link"
+                    class="btn-link"
                 >
                     Прикрепленные стажеры
                 </NuxtLink>
