@@ -76,3 +76,8 @@ jobs:
         working-directory: ./frontend
         run: |
           yarn lint
+
+      - name: Build app
+        working-directory: ./frontend
+        run: |
+          yarn build

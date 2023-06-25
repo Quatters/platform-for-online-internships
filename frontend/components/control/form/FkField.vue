@@ -61,7 +61,7 @@
 
     const props = withDefaults(
         defineProps<{
-            modelValue?: number | undefined | null;
+            modelValue?: string | number | undefined | null;
             viewValue?: string | number;
             required?: boolean;
             path: APIPath;

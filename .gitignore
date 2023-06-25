@@ -33,6 +33,7 @@ cache
 output
 dist
 DS_Store
+frontend/.output
 
 # additional
 .env

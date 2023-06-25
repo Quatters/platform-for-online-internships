@@ -1,9 +1,9 @@
 <template>
-    <ControlButton @click="() => navigateTo({ name: `${String($route.name)}-${pageName}` })">{{ text }}</ControlButton>
+    <ControlButton @click="navigateToCreatePage()">{{ text }}</ControlButton>
 </template>
 
 <script setup lang="ts">
-    withDefaults(
+    const props = withDefaults(
         defineProps<{
             pageName?: string;
             text?: string;
@@ -13,4 +13,10 @@
             text: 'Создать',
         },
     );
+
+    const route = useRoute();
+
+    function navigateToCreatePage() {
+        return navigateTo({ name: `${String(route.name)}-${props.pageName}` });
+    }
 </script>
