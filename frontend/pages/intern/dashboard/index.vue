@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
     const { $api } = useNuxtApp();
+    const userStore = useUserStore();
 
     const { data } = await useAsyncData(() => {
         return Promise.all([
@@ -18,6 +19,7 @@
                     limit: 5,
                 },
             }),
+            userStore.fetchUser({ force: true }),
         ]);
     });
 </script>

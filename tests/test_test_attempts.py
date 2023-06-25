@@ -316,6 +316,9 @@ def test_tests(db: Session):
     test = db.get(TestAttempt, test_id)
     test.time_to_pass = 0
     db.commit()
+    # check that user_course.progress is the same
+    db.refresh(user_course)
+    assert user_course.progress == 75.0
 
     # try to submit
     response = intern_client.post(f'/api/tests/{test_id}/finish', json=user_answers)
@@ -360,6 +363,9 @@ def test_tests(db: Session):
     data = response.json()
     assert response.status_code == 200, data
     assert data == {'detail': 'Test submitted.'}
+    # check that user_course.progress is the same
+    db.refresh(user_course)
+    assert user_course.progress == 75.0
 
     # get test
     response = intern_client.get(f'/api/tests/{test_id}')

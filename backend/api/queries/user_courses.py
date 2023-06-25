@@ -110,12 +110,13 @@ def _calculate_user_course_score(db: Session, user_course: UserCourse):
         Topic.course_id == user_course.course_id,
     )
     best_attempts_query = select(
-        TestAttempt.id, func.max(TestAttempt.score).label('best_score')
+        func.max(TestAttempt.score).label('best_score')
     ).where(
         TestAttempt.topic_id.in_(topic_ids_query),
         TestAttempt.user_id == user_course.user_id,
     ).group_by(
-        TestAttempt.id,
+        TestAttempt.user_id,
+        TestAttempt.topic_id,
     )
     sum_query = select(
         func.sum(best_attempts_query.subquery().c.best_score)

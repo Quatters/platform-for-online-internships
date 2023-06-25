@@ -154,8 +154,14 @@ Up development server:
 yarn dev
 ```
 
-Run eslint:
+Before submitting a pull request, make sure there are no eslint errors:
 
 ```sh
 yarn lint
+```
+
+and app builds successfully:
+
+```sh
+yarn build
 ```

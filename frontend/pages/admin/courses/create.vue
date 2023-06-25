@@ -43,6 +43,7 @@
         description: '',
         competencies: [],
         posts: [],
+        pass_percent: 86,
     });
 
     async function save() {
