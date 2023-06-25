@@ -16,7 +16,7 @@
             <template #links>
                 <NuxtLink
                     v-if="!data?.is_teacher"
-                    :to="{ name: 'admin-users-id', params: { id: data.id } }"
+                    :to="{ name: 'admin-users-id', params: { id: data!.id } }"
                     class="link"
                 >
                     Перейти к пользователю

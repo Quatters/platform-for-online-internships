@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: "traefik:v2.4"
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.http.address=:80"
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  db:
+    image: postgres:15
+    container_name: db
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: internships
+    volumes:
+      - internships-db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "internships"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  backend:
+    build: .
+    container_name: backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      GUNICORN_CMD_ARGS: '--bind 0.0.0.0:8000 --workers 4'
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db/internships
+      AUTH_SECRET_KEY:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.entrypoints=http
+      - traefik.http.routers.backend.rule=Host(`${PUBLIC_HOST}`) && (PathPrefix(`/api`) || PathPrefix(`/docs`) || PathPrefix(`/redoc`) || PathPrefix(`/openapi.json`))
+      - traefik.http.services.backend.loadbalancer.server.port=8000
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+      NUXT_PUBLIC_API_URL: http://${PUBLIC_HOST}
+    labels:
+      traefik.enable: true
+      traefik.http.routers.frontend.entrypoints: http
+      traefik.http.routers.frontend.rule: Host(`${PUBLIC_HOST}`)
+      traefik.http.services.frontend.loadbalancer.server.port: 3000
+
+volumes:
+  internships-db:

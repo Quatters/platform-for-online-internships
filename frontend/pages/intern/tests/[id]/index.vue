@@ -18,11 +18,11 @@
                 </label>
                 <label class="block my-2">
                     <span class="inline-block font-medium">Начат</span>
-                    <div>{{ new Date(data!.started_at).toLocaleString() }}</div>
+                    <div>{{ new Date(data!.started_at as string).toLocaleString() }}</div>
                 </label>
                 <label class="block my-2">
                     <span class="inline-block font-medium">Закончен</span>
-                    <div>{{ new Date(data!.finished_at).toLocaleString() }}</div>
+                    <div>{{ new Date(data!.finished_at as string).toLocaleString() }}</div>
                 </label>
                 <label class="block my-2">
                     <span class="inline-block font-medium">Статус</span>

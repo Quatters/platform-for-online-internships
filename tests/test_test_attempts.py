@@ -29,6 +29,11 @@ def test_tests(db: Session):
     intern.user_competencies = [UserCompetence(user_id=intern.id, competence_id=competence_which_user_has.id)]
     db.commit()
 
+    intern = db.query(User).filter(User.email == test_intern.email).one()
+    teacher = db.query(User).filter(User.email == test_teacher.email).one()
+    intern.teacher = teacher
+    db.commit()
+
     intern_client = login_as(test_intern)
     teacher_client = login_as(test_teacher)
 

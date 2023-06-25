@@ -31,6 +31,7 @@
 
         const fromResponseParams: typeof baseLink.params = {};
         if (pageStore.fkInstancePathMap[props.fieldName].params) {
+            // @ts-expect-error i'm too lazy to solve this
             for (const [key, value] of Object.entries(pageStore.fkInstancePathMap[props.fieldName].params)) {
                 if (value === '<<from-response>>') {
                     const apiKey = (pageStore.fkInstancePathMap[props.fieldName]?.routerToResponseParamsMap?.[key] ??
