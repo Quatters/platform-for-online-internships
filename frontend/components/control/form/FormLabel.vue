@@ -1,5 +1,5 @@
 <template>
-    <label :for="value" class="block text-gray-700 font-medium mb-2">
+    <label :for="value" class="block mb-2 text-sm font-medium text-gray-900">
         <span>{{ value }}</span>
         <b v-if="required" class="ms-1 text-red-500">*</b>
     </label>

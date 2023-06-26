@@ -38,6 +38,7 @@
             { link: '/intern/tests', title: 'Мои тесты' },
             { separator: true },
             { link: '/intern/courses', title: 'Курсы' },
+            { link: '/intern/subdivisions', title: 'Подразделения' },
             { separator: true },
             { action: logoutAction, title: 'Выход' },
         ],

@@ -1,13 +1,13 @@
-from backend.database import get_db
+from sqlalchemy.orm import Session
 from backend.models.topics import Topic
 from tests import helpers
 from tests.base import login_as, test_admin
 
 
-def test_topics_crud():
+def test_topics_crud(db: Session):
     client = login_as(test_admin)
 
-    course = helpers.create_course()
+    course = helpers.create_course(db)
 
     response = client.post(f'/api/courses/{course.id}/topics', json={
         'name': 'topic_1',
@@ -96,6 +96,5 @@ def test_topics_crud():
     # delete parent course
     response = client.delete(f'/api/courses/{course.id}')
     assert response.status_code == 204
-    db = next(get_db())
     results = db.query(Topic).filter(Topic.course_id == course.id).all()
     assert len(results) == 0

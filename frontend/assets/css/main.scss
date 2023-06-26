@@ -31,3 +31,8 @@ body {
 .link {
     @apply text-blue-800 hover:text-blue-600 hover:underline transition-all duration-100;
 }
+
+.btn-link {
+    @apply px-4 py-2 rounded-md text-sm transition-colors duration-100 disabled:bg-gray-400 disabled:text-gray-50 text-blue-800 hover:text-white hover:bg-blue-700 border border-blue-800;
+    box-sizing: content-box;
+}

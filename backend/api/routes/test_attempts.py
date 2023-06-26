@@ -5,6 +5,7 @@ from backend.api.auth import intern_only
 from backend.api.errors.errors import bad_request, not_found
 from backend.api.schemas import test_attempts as schemas
 from backend.api.queries import test_attempts as queries
+from backend.api.queries import user_courses as user_courses_queries
 from backend.api.current_dependencies import current_topic
 from backend.database import get_db
 from backend.models import Topic, User
@@ -36,6 +37,10 @@ def start_test(
 
     if queries.get_existing_attempts_count(db, user.id, topic.id) >= topic.attempts_amount:
         raise bad_request('You have run out of attempts for this topic.')
+
+    user_course = user_courses_queries.get_user_course_by_course_id(db, topic.course_id, user.id)
+    if user_course is None:
+        raise bad_request('You cannot start test on a course you are not enrolled in.')
 
     return queries.create_test(db, topic, user.id)
 

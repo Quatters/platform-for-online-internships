@@ -1,10 +1,8 @@
-from fastapi import Depends
 from sqlalchemy.orm import Session
 from pydantic import BaseModel as BaseSchema
 from fastapi.testclient import TestClient
 from backend import app
 from backend.models.users import User
-from backend.database import get_db
 from backend.api.auth import create_access_token
 from backend.api.utils import hash_password
 
@@ -42,12 +40,12 @@ class TestAnonymous:
 test_anonymous = TestAnonymous()
 
 
-def create_user(user: TestUser, db: Session = Depends(get_db), commit=False):
+def create_user(db: Session, *, user: TestUser, commit=True):
     dict_ = user.dict()
     dict_.update(password=hash_password(user.password))
     db_user = User(**dict_)
-    db.add(db_user)
     if commit:
+        db.add(db_user)
         db.commit()
         db.refresh(db_user)
     return db_user

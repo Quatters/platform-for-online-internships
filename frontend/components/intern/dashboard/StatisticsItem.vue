@@ -1,7 +1,7 @@
 <template>
     <div class="text-white">
-        <div class="text-2xl font-bold">{{ value }}</div>
-        <div class="">{{ text }}</div>
+        <div class="text-lg sm:text-2xl font-bold">{{ value }}</div>
+        <div class="text-sm sm:text-base">{{ text }}</div>
     </div>
 </template>
 

@@ -9,6 +9,15 @@
             <ControlForm @submit="save">
                 <ControlFormInput v-model="data.name" class="mb-4" label="Название" required />
                 <ControlFormTextArea v-model="data.description" class="mb-4" label="Описание" required />
+                <ControlFormInput
+                    v-model="data.pass_percent"
+                    class="mb-4"
+                    label="Процент для завершения"
+                    type="number"
+                    min="1"
+                    max="100"
+                    required
+                />
                 <ControlFormM2MField
                     v-model="data.competencies"
                     path="/api/competencies/"
@@ -34,6 +43,7 @@
         description: '',
         competencies: [],
         posts: [],
+        pass_percent: 86,
     });
 
     async function save() {

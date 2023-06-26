@@ -12,10 +12,12 @@ class UserCourse(BaseSchema):
 
 
 class NamedUserCourse(UserCourse):
+    pass_percent: float
     course_name: str
 
 
-class OneUserCourse(NamedUserCourse):
+class OneUserCourse(UserCourse):
+    course_name: str
     course_description: str
     posts: list[FkPost]
     competencies: list[FkCompetence]

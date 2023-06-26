@@ -6,6 +6,7 @@ from backend.models import TestAttempt, Task, Answer, UserAnswer
 from backend.api.schemas.test_attempts import UserAnswer as UserAnswerSchema
 from backend.api.queries.answers import get_answer
 from backend.api.queries.tasks import get_task
+from backend.api.queries.user_courses import get_user_course_by_test_attempt, update_user_course_progress
 from backend.constants import TaskType, TestAttemptStatus, UserAnswerStatus
 
 
@@ -127,3 +128,6 @@ def finish_test(db: Session, test: TestAttempt, answers: list[UserAnswerSchema])
             logger.error(traceback.format_exc())
 
     db.commit()
+
+    user_course = get_user_course_by_test_attempt(db, test)
+    update_user_course_progress(db, user_course)

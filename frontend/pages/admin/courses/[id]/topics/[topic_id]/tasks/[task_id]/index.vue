@@ -16,7 +16,7 @@
                         name: 'admin-courses-id-topics-topic_id-tasks-task_id-answers',
                         params: pageParams,
                     }"
-                    class="link"
+                    class="btn-link"
                 >
                     Ответы
                 </NuxtLink>

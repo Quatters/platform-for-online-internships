@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
 from backend.api.errors.errors import bad_request
 from backend.constants import UserAnswerStatus
@@ -31,10 +31,11 @@ def get_one_review(review: UserAnswer = Depends(current_review)):
 
 @router.put('/{review_id}', response_model=schemas.Review)
 def finish_review(
+    background_tasks: BackgroundTasks,
     data: schemas.FinishReview,
     review: UserAnswer = Depends(current_review),
     db: Session = Depends(get_db),
 ):
     if review.status is UserAnswerStatus.checked:
         raise bad_request('Review is already finished.')
-    return queries.finish_review(db, review, data)
+    return queries.finish_review(db, review, data, background_tasks)

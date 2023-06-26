@@ -17,7 +17,7 @@
                 <NuxtLink
                     v-if="!data?.is_teacher"
                     :to="{ name: 'admin-users-id', params: { id: data!.id } }"
-                    class="link"
+                    class="btn-link"
                 >
                     Перейти к пользователю
                 </NuxtLink>

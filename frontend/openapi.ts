@@ -39,6 +39,10 @@ export interface paths {
     /** Patch User */
     patch: operations["patch_user_api_users__user_id__patch"];
   };
+  "/api/auth/register": {
+    /** Register */
+    post: operations["register_api_auth_register_post"];
+  };
   "/api/users/{teacher_id}/assigned_interns": {
     /** Get Assigned Interns */
     get: operations["get_assigned_interns_api_users__teacher_id__assigned_interns_get"];
@@ -662,6 +666,8 @@ export interface components {
        * Format: date-time
        */
       admission_date: string;
+      /** Pass Percent */
+      pass_percent: number;
       /** Course Name */
       course_name: string;
     };
@@ -684,6 +690,8 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /** Pass Percent */
+      pass_percent: number;
       /** Posts */
       posts: (components["schemas"]["FkPost"])[];
       /** Competencies */
@@ -818,6 +826,8 @@ export interface components {
       name?: string;
       /** Description */
       description?: string;
+      /** Pass Percent */
+      pass_percent?: number;
       /** Posts */
       posts?: (number)[];
       /** Competencies */
@@ -900,6 +910,43 @@ export interface components {
       name: string;
       /** Subdivision Id */
       subdivision_id: number;
+    };
+    /** RegisterUser */
+    RegisterUser: {
+      /** Email */
+      email: string;
+      /** Password */
+      password: string;
+      /**
+       * First Name 
+       * @default
+       */
+      first_name?: string;
+      /**
+       * Last Name 
+       * @default
+       */
+      last_name?: string;
+      /**
+       * Patronymic 
+       * @default
+       */
+      patronymic?: string;
+      /**
+       * Posts 
+       * @default []
+       */
+      posts?: (number)[];
+      /**
+       * Is Admin 
+       * @default false
+       */
+      is_admin?: boolean;
+      /**
+       * Is Teacher 
+       * @default false
+       */
+      is_teacher?: boolean;
     };
     /** Review */
     Review: {
@@ -1003,6 +1050,8 @@ export interface components {
       /** Posts */
       posts: (components["schemas"]["Post"])[];
       teacher?: components["schemas"]["FkUser"];
+      /** Competencies */
+      competencies: (components["schemas"]["backend__api__schemas__users__FkCompetence"])[];
     };
     /** UserAnswer */
     UserAnswer: {
@@ -1048,6 +1097,11 @@ export interface components {
       name: string;
       /** Description */
       description: string;
+      /**
+       * Pass Percent 
+       * @default 86
+       */
+      pass_percent?: number;
       /** Posts */
       posts: (number)[];
       /** Competencies */
@@ -1091,6 +1145,13 @@ export interface components {
     backend__api__schemas__user_courses__CreateCourse: {
       /** Course Id */
       course_id: number;
+    };
+    /** FkCompetence */
+    backend__api__schemas__users__FkCompetence: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
     };
   };
   responses: never;
@@ -1329,6 +1390,28 @@ export interface operations {
     requestBody: {
       content: {
         "application/json": components["schemas"]["PatchUser"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Register */
+  register_api_auth_register_post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["RegisterUser"];
       };
     };
     responses: {
@@ -2071,6 +2154,7 @@ export interface operations {
         limit?: number;
         offset?: number;
         search?: string;
+        subdivision_id?: number;
       };
     };
     responses: {

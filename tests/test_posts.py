@@ -1,12 +1,13 @@
+from sqlalchemy.orm import Session
 from tests.base import login_as, test_admin
 from tests.helpers import create_competence, create_course, create_subdivision, get_records_count
 
 
-def test_posts_crud():
+def test_posts_crud(db: Session):
     client = login_as(test_admin)
 
     # create post
-    subdivision = create_subdivision()
+    subdivision = create_subdivision(db)
     response = client.post(f'/api/subdivisions/{subdivision.id}/posts', json={
         'name': 'post_1',
         'description': 'post_1',
@@ -25,7 +26,7 @@ def test_posts_crud():
 
     # create post for another subdivision and get all posts
     all_posts_count = get_records_count(route='/api/posts', client=client)
-    subdivision2 = create_subdivision()
+    subdivision2 = create_subdivision(db)
     response = client.post(f'/api/subdivisions/{subdivision2.id}/posts', json={
         'name': 'post_2',
         'description': 'post_2',
@@ -55,7 +56,7 @@ def test_posts_crud():
     assert len(data['items']) == posts_in_subdivision_count + 1
 
     # add competencies to post
-    competence = create_competence()
+    competence = create_competence(db)
     response = client.patch(f'/api/subdivisions/{subdivision.id}/posts/{post_1_id}', json={
         'competencies': [competence.id]
     })
@@ -64,7 +65,7 @@ def test_posts_crud():
     assert len(data['competencies']) == 1
 
     # add courses to post
-    course = create_course()
+    course = create_course(db)
     response = client.patch(f'/api/subdivisions/{subdivision.id}/posts/{post_1_id}', json={
         'courses': [course.id]
     })

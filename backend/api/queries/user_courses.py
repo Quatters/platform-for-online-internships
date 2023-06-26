@@ -1,12 +1,11 @@
 from datetime import datetime
 from fastapi_pagination import paginate
-from sqlalchemy import and_, func
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
-from backend.api.schemas.courses import Course
-from backend.models.users import User
-from backend.models.user_courses import UserCourse
+from backend.models import UserCourse, TestAttempt, User, Course, Task, Topic, UserCompetence
 from backend.models.courses import Course as CourseModel
 from backend.api.dependencies import ListPageParams
+from backend.constants import TaskType
 
 
 def get_user_courses(
@@ -32,6 +31,7 @@ def get_user_courses(
 
     for obj in objects:
         obj.course_name = obj.course.name
+        obj.pass_percent = obj.course.pass_percent
 
     return paginate(
         objects,
@@ -47,10 +47,18 @@ def get_user_course(db: Session, user_course_id: int) -> UserCourse | None:
 def get_user_course_by_course_id(db: Session,
                                  course_id: int,
                                  user_id: int) -> UserCourse | None:
-    user_course = db.query(UserCourse).filter(and_(
+    return db.query(UserCourse).filter(
         UserCourse.user_id == user_id,
-        UserCourse.course_id == course_id)
+        UserCourse.course_id == course_id,
     ).one_or_none()
+
+
+def get_annotated_user_course_by_course_id(
+    db: Session,
+    course_id: int,
+    user_id: int,
+) -> UserCourse | None:
+    user_course = get_user_course_by_course_id(db, course_id, user_id)
     if user_course:
         user_course.course_name = user_course.course.name
         user_course.course_description = user_course.course.description
@@ -75,3 +83,75 @@ def create_user_course(db: Session, user: User, course: Course) -> UserCourse:
 def delete_user_course(db: Session, user_course: UserCourse):
     db.delete(user_course)
     db.commit()
+
+
+def _calculate_max_course_score(db: Session, course: Course):
+    all_task_ids_query = select(Task.id).where(Task.topic_id.in_(
+        select(Topic.id).where(Topic.course_id == course.id)
+    ))
+    single_tasks_count = db.scalar(
+        func.count(all_task_ids_query.where(Task.task_type == TaskType.single))
+    )
+    multiple_tasks_count = db.scalar(
+        func.count(all_task_ids_query.where(Task.task_type == TaskType.multiple))
+    )
+    text_tasks_count = db.scalar(
+        func.count(all_task_ids_query.where(Task.task_type == TaskType.text))
+    )
+    return (
+        single_tasks_count
+        + multiple_tasks_count * 2
+        + text_tasks_count * 5
+    )
+
+
+def _calculate_user_course_score(db: Session, user_course: UserCourse):
+    topic_ids_query = select(Topic.id).where(
+        Topic.course_id == user_course.course_id,
+    )
+    best_attempts_query = select(
+        func.max(TestAttempt.score).label('best_score')
+    ).where(
+        TestAttempt.topic_id.in_(topic_ids_query),
+        TestAttempt.user_id == user_course.user_id,
+    ).group_by(
+        TestAttempt.user_id,
+        TestAttempt.topic_id,
+    )
+    sum_query = select(
+        func.sum(best_attempts_query.subquery().c.best_score)
+    )
+    return db.scalar(sum_query)
+
+
+def _calculate_user_course_progress(db: Session, user_course: UserCourse):
+    progress = 0
+    try:
+        progress = (
+            _calculate_user_course_score(db, user_course)
+            / _calculate_max_course_score(db, user_course.course)
+            * 100
+        )
+    except ZeroDivisionError:
+        pass
+    return progress
+
+
+def update_user_course_progress(db: Session, user_course: UserCourse):
+    prev_progress = user_course.progress
+    user_course.progress = _calculate_user_course_progress(db, user_course)
+    if user_course.progress >= user_course.course.pass_percent and prev_progress < user_course.course.pass_percent:
+        for competence in user_course.course.competencies:
+            if competence.id not in user_course.user.competencies_ids:
+                user_course.user.user_competencies.append(UserCompetence(
+                    user_id=user_course.user_id,
+                    competence_id=competence.id,
+                ))
+    db.commit()
+
+
+def get_user_course_by_test_attempt(db: Session, test_attempt: TestAttempt):
+    return db.scalar(select(UserCourse).where(
+        UserCourse.user_id == test_attempt.user_id,
+        UserCourse.course_id == test_attempt.topic.course_id,
+    ))

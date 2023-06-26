@@ -57,7 +57,7 @@ def create_answer(answer: schemas.CreateAnswer,
     if not task.task_type.may_have_answers():
         raise bad_request('Unsuitable task type')
 
-    created_task = queries.create_answer(db, answer, task.id)
+    created_task = queries.create_answer(db, answer, task)
     return created_task
 
 

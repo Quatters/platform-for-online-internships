@@ -22,7 +22,7 @@ class User(BaseModel):
 
     posts: Mapped[list['Post']] = relationship('Post', secondary=UserPostAssociation, back_populates='users')
     test_attempts: Mapped[list['TestAttempt']] = relationship('TestAttempt', back_populates='user')
-    competencies: Mapped[list['UserCompetence']] = relationship('UserCompetence', back_populates='user')
+    user_competencies: Mapped[list['UserCompetence']] = relationship('UserCompetence', back_populates='user')
     courses: Mapped[list['UserCourse']] = relationship('UserCourse', cascade='all, delete')
     teacher: Mapped['User'] = relationship(
         foreign_keys=teacher_id,
@@ -37,3 +37,17 @@ class User(BaseModel):
         CheckConstraint('NOT (is_admin AND is_teacher)', name='check_one_role'),
         CheckConstraint("email LIKE '%___@___%.__%'", name='check_email_format'),
     )
+
+    @property
+    def competencies_ids(self):
+        return set(
+            user_competence.competence_id
+            for user_competence in self.user_competencies
+        )
+
+    @property
+    def competencies(self):
+        return [
+            user_competence.competence
+            for user_competence in self.user_competencies
+        ]

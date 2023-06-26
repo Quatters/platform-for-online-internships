@@ -1,4 +1,4 @@
-from backend.database import get_db
+from sqlalchemy.orm import Session
 from backend.models import User
 from tests.base import login_as, test_admin, test_intern, test_anonymous
 from tests import helpers
@@ -46,6 +46,7 @@ def test_get_token():
         **test_admin.dict(),
         'posts': [],
         'teacher': None,
+        'competencies': [],
     }
     assert type(data['id']) == int
     del data['id']
@@ -68,9 +69,9 @@ def test_get_list_users():
     assert data['items'][0]['email'] == 'intern@test.com'
 
 
-def test_only_admin_can_update_user():
+def test_only_admin_can_update_user(db):
     client = login_as(test_admin)
-    teacher = next(get_db()).query(User).filter(User.is_teacher).one()
+    teacher = db.query(User).filter(User.is_teacher).one()
 
     response = client.get(f'/api/users/{teacher.id}')
     assert response.status_code == 200
@@ -108,12 +109,12 @@ def test_get_invalid_user():
     assert response.json()['detail'] == 'Not found.'
 
 
-def test_create_user():
+def test_create_user(db: Session):
     client = login_as(test_admin)
 
-    subdivision = helpers.create_subdivision()
-    post_1 = helpers.create_post(subdivision_id=subdivision.id)
-    post_2 = helpers.create_post(subdivision_id=subdivision.id)
+    subdivision = helpers.create_subdivision(db)
+    post_1 = helpers.create_post(db, subdivision_id=subdivision.id)
+    post_2 = helpers.create_post(db, subdivision_id=subdivision.id)
 
     # create intern
     response = client.post('/api/users', json={
@@ -161,9 +162,9 @@ def test_create_user():
     ]
 
 
-def test_update_user_posts():
+def test_update_user_posts(db):
     client = login_as(test_admin)
-    teacher = next(get_db()).query(User).filter(User.is_teacher).one()
+    teacher = db.query(User).filter(User.is_teacher).one()
 
     # try to add invalid post
     response = client.patch(f'/api/users/{teacher.id}', json={
@@ -204,21 +205,20 @@ def test_update_user_posts():
     ]
 
 
-def test_assign_interns_to_teacher():
+def test_assign_interns_to_teacher(db: Session):
     admin_client = login_as(test_admin)
-    db = next(get_db())
 
-    teacher_1 = helpers.create_user(is_teacher=True, db=db)
-    teacher_2 = helpers.create_user(is_teacher=True, db=db)
+    teacher_1 = helpers.create_user(db, is_teacher=True)
+    teacher_2 = helpers.create_user(db, is_teacher=True)
 
-    intern_1 = helpers.create_user(db=db)
-    intern_2 = helpers.create_user(db=db)
-    intern_3 = helpers.create_user(db=db)
-    intern_4 = helpers.create_user(db=db)
+    intern_1 = helpers.create_user(db)
+    intern_2 = helpers.create_user(db)
+    intern_3 = helpers.create_user(db)
+    intern_4 = helpers.create_user(db)
 
-    subdivision = helpers.create_subdivision()
-    post_1 = helpers.create_post(subdivision_id=subdivision.id, db=db)
-    post_2 = helpers.create_post(subdivision_id=subdivision.id, db=db)
+    subdivision = helpers.create_subdivision(db)
+    post_1 = helpers.create_post(db, subdivision_id=subdivision.id)
+    post_2 = helpers.create_post(db, subdivision_id=subdivision.id)
 
     teacher_1.posts = [post_1, post_2]
     teacher_2.posts = [post_1]
@@ -292,6 +292,7 @@ def test_assign_interns_to_teacher():
         'posts': [
             {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
         ],
+        'competencies': [],
     }
     # get teacher_1
     response = admin_client.get(f'/api/users/{teacher_1.id}')
@@ -310,6 +311,7 @@ def test_assign_interns_to_teacher():
             {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
             {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
         ],
+        'competencies': [],
     }
 
     # get unassigned interns for teacher_1

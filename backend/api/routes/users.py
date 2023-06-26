@@ -49,7 +49,7 @@ async def login_for_access_token(
 
 
 @router.get('/users/me', response_model=schemas.User)
-async def get_users_me(user: Annotated[schemas.User, Depends(get_current_user)]):
+async def get_users_me(user: Annotated[User, Depends(get_current_user)]):
     return user
 
 
@@ -99,6 +99,16 @@ async def create_user(
     data: schemas.CreateUser,
     db: Session = Depends(get_db),
 ):
+    return queries.create_user(db, data)
+
+
+@router.post('/auth/register', response_model=schemas.User)
+async def register(
+    data: schemas.RegisterUser,
+    db: Session = Depends(get_db),
+):
+    data.is_admin = False
+    data.is_teacher = False
     return queries.create_user(db, data)
 
 

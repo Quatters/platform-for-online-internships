@@ -10,6 +10,7 @@
             :required="required"
             :max="max"
             :min="min"
+            :placeholder="placeholder"
             @input="$event => $emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         />
         <div v-if="error" class="text-red-600 mt-2">{{ error }}</div>
@@ -26,6 +27,7 @@
             type?: string;
             max?: string;
             min?: string;
+            placeholder?: string;
         }>(),
         {
             modelValue: '',
@@ -33,6 +35,7 @@
             type: 'string',
             max: undefined,
             min: undefined,
+            placeholder: '',
         },
     );
 

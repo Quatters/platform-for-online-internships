@@ -4,7 +4,7 @@ from backend.api.current_dependencies import current_post, current_subdivision
 from backend.api.schemas import posts as schemas
 from backend.api.queries import posts as queries
 from backend.database import get_db
-from backend.api.dependencies import ListPageParams
+from backend.api.dependencies import ListPageParams, PostsListPageParams
 from backend.settings import LimitOffsetPage
 from backend.models import Subdivision, Post
 from backend.api.auth import admin_only
@@ -16,7 +16,7 @@ router = APIRouter()
 
 @router.get('/posts', response_model=LimitOffsetPage[schemas.Post])
 def get_posts(
-    params: ListPageParams = Depends(),
+    params: PostsListPageParams = Depends(),
     db: Session = Depends(get_db),
 ):
     return queries.get_posts(db, params)

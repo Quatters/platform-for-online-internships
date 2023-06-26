@@ -501,6 +501,44 @@
         ]
       }
     },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register",
+        "operationId": "register_api_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users/{teacher_id}/assigned_interns": {
       "get": {
         "summary": "Get Assigned Interns",
@@ -2262,6 +2300,15 @@
               "type": "string"
             },
             "name": "search",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Subdivision Id",
+              "type": "integer"
+            },
+            "name": "subdivision_id",
             "in": "query"
           }
         ],
@@ -4732,6 +4779,7 @@
           "course_id",
           "progress",
           "admission_date",
+          "pass_percent",
           "course_name"
         ],
         "type": "object",
@@ -4756,6 +4804,10 @@
             "title": "Admission Date",
             "type": "string",
             "format": "date-time"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
+            "type": "number"
           },
           "course_name": {
             "title": "Course Name",
@@ -4803,6 +4855,7 @@
           "id",
           "name",
           "description",
+          "pass_percent",
           "posts",
           "competencies"
         ],
@@ -4819,6 +4872,10 @@
           "description": {
             "title": "Description",
             "type": "string"
+          },
+          "pass_percent": {
+            "title": "Pass Percent",
+            "type": "number"
           },
           "posts": {
             "title": "Posts",
@@ -5162,6 +5219,12 @@
             "title": "Description",
             "type": "string"
           },
+          "pass_percent": {
+            "title": "Pass Percent",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "type": "number"
+          },
           "posts": {
             "title": "Posts",
             "type": "array",
@@ -5350,6 +5413,57 @@
           "subdivision_id": {
             "title": "Subdivision Id",
             "type": "integer"
+          }
+        }
+      },
+      "RegisterUser": {
+        "title": "RegisterUser",
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string",
+            "default": ""
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string",
+            "default": ""
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string",
+            "default": ""
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "default": []
+          },
+          "is_admin": {
+            "title": "Is Admin",
+            "type": "boolean",
+            "default": false
+          },
+          "is_teacher": {
+            "title": "Is Teacher",
+            "type": "boolean",
+            "default": false
           }
         }
       },
@@ -5582,7 +5696,8 @@
           "patronymic",
           "is_admin",
           "is_teacher",
-          "posts"
+          "posts",
+          "competencies"
         ],
         "type": "object",
         "properties": {
@@ -5623,6 +5738,13 @@
           },
           "teacher": {
             "$ref": "#/components/schemas/FkUser"
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__users__FkCompetence"
+            }
           }
         }
       },
@@ -5750,6 +5872,13 @@
             "title": "Description",
             "type": "string"
           },
+          "pass_percent": {
+            "title": "Pass Percent",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "type": "number",
+            "default": 86
+          },
           "posts": {
             "title": "Posts",
             "type": "array",
@@ -5868,6 +5997,24 @@
           "course_id": {
             "title": "Course Id",
             "type": "integer"
+          }
+        }
+      },
+      "backend__api__schemas__users__FkCompetence": {
+        "title": "FkCompetence",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
           }
         }
       }

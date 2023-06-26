@@ -1,35 +1,33 @@
 import pytest
+from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from tests.base import login_as, test_admin
 from backend.models import TopicResource
-from backend.database import get_db
 from tests import helpers
 
 
-def test_topic_resource_model():
-    db = next(get_db())
+def test_topic_resource_model(db: Session):
+    course = helpers.create_course(db)
+    topic = helpers.create_topic(db, course_id=course.id)
 
-    course = helpers.create_course()
-    topic = helpers.create_topic(course_id=course.id, db=db)
-
-    resource_1 = helpers.create_topic_resource(topic_id=topic.id, db=db)
+    resource_1 = helpers.create_topic_resource(db, topic_id=topic.id)
 
     # check cannot set self id as prev_resource_id
     with pytest.raises(IntegrityError):
-        with db.begin_nested() as transaction:
-            resource_1.prev_resource_id = resource_1.id
-            transaction.commit()
+        resource_1.prev_resource_id = resource_1.id
+        db.commit()
+    db.rollback()
 
-    resource_2 = helpers.create_topic_resource(topic_id=topic.id, prev_resource_id=resource_1.id, db=db)
+    resource_2 = helpers.create_topic_resource(db, topic_id=topic.id, prev_resource_id=resource_1.id)
 
     # check cannot have more than one resources pointing on the same previous
     # resource
-    resource_3 = helpers.create_topic_resource(topic_id=topic.id, prev_resource_id=resource_2.id, db=db)
+    resource_3 = helpers.create_topic_resource(db, topic_id=topic.id, prev_resource_id=resource_2.id)
 
     with pytest.raises(IntegrityError):
-        with db.begin_nested() as transaction:
-            resource_3.prev_resource_id = resource_1.id
-            transaction.commit()
+        resource_3.prev_resource_id = resource_1.id
+        db.commit()
+    db.rollback()
 
     resource_3.prev_resource_id = resource_2.id
     db.commit()
@@ -45,11 +43,11 @@ def test_topic_resource_model():
     assert resource_3.next_resource is None
 
 
-def test_topic_resources_crud():
+def test_topic_resources_crud(db: Session):
     client = login_as(test_admin)
 
-    course = helpers.create_course()
-    topic = helpers.create_topic(course_id=course.id)
+    course = helpers.create_course(db)
+    topic = helpers.create_topic(db, course_id=course.id)
 
     # test list page
     response = client.get(f'/api/courses/{course.id}/topics/{topic.id}/resources/')
@@ -57,14 +55,12 @@ def test_topic_resources_crud():
     data = response.json()
     assert data['items'] == []
 
-    topic_2 = helpers.create_topic(course_id=course.id)
+    topic_2 = helpers.create_topic(db, course_id=course.id)
 
-    db = next(get_db())
-
-    helpers.create_topic_resource(topic_id=topic_2.id)
-    resource_1 = helpers.create_topic_resource(topic_id=topic.id, db=db)
-    resource_2 = helpers.create_topic_resource(topic_id=topic.id, db=db)
-    resource_3 = helpers.create_topic_resource(topic_id=topic.id, prev_resource_id=resource_2.id, db=db)
+    helpers.create_topic_resource(db, topic_id=topic_2.id)
+    resource_1 = helpers.create_topic_resource(db, topic_id=topic.id)
+    resource_2 = helpers.create_topic_resource(db, topic_id=topic.id)
+    resource_3 = helpers.create_topic_resource(db, topic_id=topic.id, prev_resource_id=resource_2.id)
     resource_1.prev_resource_id = resource_3.id
     db.commit()
 
@@ -105,8 +101,9 @@ def test_topic_resources_crud():
             'prev_resource_id': -1,
         },
     )
-    assert response.status_code == 400
-    assert response.json()['detail'] == 'Instance with id -1 does not exist.'
+    data = response.json()
+    assert response.status_code == 400, data
+    assert data['detail'] == 'Instance with id -1 does not exist.'
 
     # test create first resource if first already exists
     response = client.post(
