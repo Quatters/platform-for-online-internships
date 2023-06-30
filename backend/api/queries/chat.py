@@ -32,7 +32,7 @@ def create_message(db: Session, sender: User, recipient: User, message: str):
     return message
 
 
-def users_are_suitable(db: Session, teacher: User, intern: User):
+def users_can_chat(db: Session, teacher: User, intern: User):
     return db.scalar(
         sa.select(
             sa.exists(

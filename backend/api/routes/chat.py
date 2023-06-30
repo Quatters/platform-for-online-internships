@@ -14,7 +14,7 @@ from backend.ws import ws_manager
 router = APIRouter(prefix='/chat')
 
 
-async def ws_intern_or_teacher_only(token: str, db: Session = Depends(get_db)):
+async def ws_intern_or_teacher_only(token: str, db: Session = Depends(get_db)):  # nocv
     return await intern_or_teacher_only(token, db)
 
 
@@ -33,7 +33,7 @@ def current_chatters(
     intern, teacher = sender, recipient
     if intern.is_teacher:
         intern, teacher = recipient, sender
-    if not queries.users_are_suitable(db, teacher=teacher, intern=intern):
+    if not queries.users_can_chat(db, teacher=teacher, intern=intern):
         raise not_found()
 
     return sender, recipient

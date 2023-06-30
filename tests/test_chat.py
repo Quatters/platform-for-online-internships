@@ -3,13 +3,26 @@ from backend.models import User
 from tests.base import login_as, test_admin, test_intern, test_teacher
 
 
-def test_admin_cannot_use_chat():
+def test_admin_cannot_use_chat(db):
     client = login_as(test_admin)
-    response = client.get('/chat')
-    assert response.status_code == 404
+    response = client.get('/api/chat/{intern.id}')
+    intern = db.query(User).filter(User.email == test_intern.email).one()
+    assert response.status_code == 403
 
-    response = client.post('/chat')
-    assert response.status_code == 404
+    response = client.post(f'/api/chat/{intern.id}')
+    assert response.status_code == 403
+
+
+def test_invalid_chatters(db):
+    client = login_as(test_intern)
+    response = client.post('/api/chat/-1')
+    data = response.json()
+    assert response.status_code == 404, data
+
+    teacher = db.query(User).filter(User.email == test_teacher.email).one()
+    response = client.post(f'/api/chat/{teacher.id}')
+    data = response.json()
+    assert response.status_code == 404, data
 
 
 def test_valid_chat(db: Session):
