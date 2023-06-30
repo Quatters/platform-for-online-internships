@@ -11,6 +11,7 @@ from . import (
     topic_resources,
     test_attempts,
     reviews,
+    chat,
 )
 
 routers = (
@@ -26,4 +27,5 @@ routers = (
     topic_resources.router,
     test_attempts.router,
     reviews.router,
+    chat.router,
 )

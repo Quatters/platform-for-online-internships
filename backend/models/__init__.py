@@ -11,3 +11,4 @@ from .answers import Answer  # noqa F401
 from .test_attempts import TestAttempt  # noqa F401
 from .user_answers import UserAnswer  # noqa F401
 from .user_competencies import UserCompetence  # noqa F401
+from .chat import ChatMessage  # noqa F401

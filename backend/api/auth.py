@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from typing import Annotated
+from typing import Annotated, Callable
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, WebSocket, status
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from backend.api.queries.users import get_user_by_email
@@ -90,3 +90,19 @@ async def intern_only(token: Annotated[str, Depends(oauth2)], db: Session = Depe
     if user.is_admin or user.is_teacher:
         raise no_permission()
     return user
+
+
+async def intern_or_teacher_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
+    user = await get_current_user(token, db)
+    if user.is_admin:
+        raise no_permission()
+    return user
+
+
+async def ws_user(websocket: WebSocket, callback: Callable, db: Session = Depends(get_db)):
+    token = websocket.headers.get('authorization', '').rsplit(' ', maxsplit=1)[-1]
+    return await callback(token, db)
+
+
+async def ws_intern_or_teacher_only(websocket: WebSocket, db: Session = Depends(get_db)):
+    return await ws_user(websocket, intern_or_teacher_only, db)

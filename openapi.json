@@ -3613,6 +3613,124 @@
           }
         ]
       }
+    },
+    "/api/chat/{recipient_id}": {
+      "get": {
+        "summary": "Get Messages",
+        "operationId": "get_messages_api_chat__recipient_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Recipient Id",
+              "type": "integer"
+            },
+            "name": "recipient_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_Message_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Send Message",
+        "operationId": "send_message_api_chat__recipient_id__post",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Recipient Id",
+              "type": "integer"
+            },
+            "name": "recipient_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -4132,24 +4250,6 @@
           }
         }
       },
-      "FkUser": {
-        "title": "FkUser",
-        "required": [
-          "id",
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "email": {
-            "title": "Email",
-            "type": "string"
-          }
-        }
-      },
       "GoingTest": {
         "title": "GoingTest",
         "required": [
@@ -4275,7 +4375,7 @@
             "title": "Items",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FkUser"
+              "$ref": "#/components/schemas/backend__api__schemas__users__FkUser"
             }
           },
           "total": {
@@ -4404,6 +4504,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ListUser"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_Message_": {
+        "title": "LimitOffsetPage[Message]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
             }
           },
           "total": {
@@ -4768,6 +4900,38 @@
           "is_teacher": {
             "title": "Is Teacher",
             "type": "boolean"
+          }
+        }
+      },
+      "Message": {
+        "title": "Message",
+        "required": [
+          "id",
+          "message",
+          "recipient",
+          "sender",
+          "created_at"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "recipient": {
+            "$ref": "#/components/schemas/backend__api__schemas__chat__FkUser"
+          },
+          "sender": {
+            "$ref": "#/components/schemas/backend__api__schemas__chat__FkUser"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -5583,6 +5747,19 @@
           }
         }
       },
+      "SendMessage": {
+        "title": "SendMessage",
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        }
+      },
       "Subdivision": {
         "title": "Subdivision",
         "required": [
@@ -5737,7 +5914,7 @@
             }
           },
           "teacher": {
-            "$ref": "#/components/schemas/FkUser"
+            "$ref": "#/components/schemas/backend__api__schemas__users__FkUser"
           },
           "competencies": {
             "title": "Competencies",
@@ -5850,6 +6027,39 @@
           },
           "type": {
             "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "backend__api__schemas__chat__FkUser": {
+        "title": "FkUser",
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "patronymic",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
             "type": "string"
           }
         }
@@ -6014,6 +6224,24 @@
           },
           "name": {
             "title": "Name",
+            "type": "string"
+          }
+        }
+      },
+      "backend__api__schemas__users__FkUser": {
+        "title": "FkUser",
+        "required": [
+          "id",
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "email": {
+            "title": "Email",
             "type": "string"
           }
         }

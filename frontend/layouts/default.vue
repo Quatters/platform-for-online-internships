@@ -36,6 +36,7 @@
             { separator: true },
             { link: '/intern/my_courses', title: 'Мои курсы' },
             { link: '/intern/tests', title: 'Мои тесты' },
+            { link: '/intern/chat', title: 'Чат' },
             { separator: true },
             { link: '/intern/courses', title: 'Курсы' },
             { link: '/intern/subdivisions', title: 'Подразделения' },
