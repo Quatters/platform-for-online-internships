@@ -13,11 +13,10 @@ class WebSocketManager:
         await ws.accept()
         self._connections[user.id] = ws
 
-    # async def disconnect(self, *users: User):
-    #     for user in users:
-    #         with contextlib.suppress(KeyError):
-    #             await self._connections[user.id].close()
-    #             del self._connections[user.id]
+    async def disconnect(self, *users: User):
+        for user in users:
+            with contextlib.suppress(KeyError):
+                del self._connections[user.id]
 
     async def broadcast(self, json: dict, users: Iterable[User]):
         for user in users:

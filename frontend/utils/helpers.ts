@@ -1,7 +1,7 @@
 import type { ModalButton } from 'node_modules/tailvue';
 import type { LocationQueryValue } from 'vue-router';
 
-export const noop = () => {};
+export const noop = (..._: any) => {};
 
 export const DEFAULT_MODAL_TITLE = 'Подтвердите действие';
 export const DEFAULT_SECONDARY_MODAL_BUTTON_OPTIONS: ModalButton = {

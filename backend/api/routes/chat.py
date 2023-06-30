@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 from sqlalchemy.orm import Session
 from backend.database import get_db
-from backend.api.auth import intern_or_teacher_only, ws_intern_or_teacher_only
+from backend.api.auth import intern_or_teacher_only
 from backend.api.schemas import chat as schemas
 from backend.api.queries import chat as queries
 from backend.api.queries.users import get_user
@@ -10,7 +10,12 @@ from backend.settings import LimitOffsetPage, LimitOffsetParams
 from backend.api.errors.errors import not_found
 from backend.ws import ws_manager
 
+
 router = APIRouter(prefix='/chat')
+
+
+async def ws_intern_or_teacher_only(token: str, db: Session = Depends(get_db)):
+    return await intern_or_teacher_only(token, db)
 
 
 def current_recipient(recipient_id: int, db: Session = Depends(get_db)):
@@ -57,14 +62,15 @@ async def send_message(
     return response_data
 
 
-@router.websocket('/ws')
+@router.websocket('/ws/{token}')
 async def connect_to_chat(
     websocket: WebSocket,
     user: User = Depends(ws_intern_or_teacher_only),
 ):
     await ws_manager.connect(user, websocket)
-    # try:
-    #     while True:
-    #         await websocket.receive_json()
-    # except WebSocketDisconnect:
-    #     await ws_manager.disconnect(user)
+    try:
+        while True:
+            data = await websocket.receive_json()
+            await websocket.send_json({'pong': True})
+    except WebSocketDisconnect:
+        await ws_manager.disconnect(user)

@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+    import useChatStore from '~/composables/useChatStore';
     import type { SidebarItem } from '~/types';
 
     const { $modal } = useNuxtApp();
@@ -62,4 +63,9 @@
     };
 
     const role: Role = userStore.user?.is_admin ? 'admin' : userStore.user?.is_teacher ? 'teacher' : 'intern';
+
+    if (['intern', 'teacher'].includes(role)) {
+        const chatStore = useChatStore();
+        chatStore.connect({ force: true });
+    }
 </script>

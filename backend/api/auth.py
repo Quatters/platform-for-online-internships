@@ -97,12 +97,3 @@ async def intern_or_teacher_only(token: Annotated[str, Depends(oauth2)], db: Ses
     if user.is_admin:
         raise no_permission()
     return user
-
-
-async def ws_user(websocket: WebSocket, callback: Callable, db: Session = Depends(get_db)):
-    token = websocket.headers.get('authorization', '').rsplit(' ', maxsplit=1)[-1]
-    return await callback(token, db)
-
-
-async def ws_intern_or_teacher_only(websocket: WebSocket, db: Session = Depends(get_db)):
-    return await ws_user(websocket, intern_or_teacher_only, db)

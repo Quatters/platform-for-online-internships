@@ -23,8 +23,8 @@
 </template>
 
 <script setup lang="ts">
-    const userStore = useUserStore();
     const { $api } = useNuxtApp();
+    const userStore = useUserStore();
 
     const message = ref('');
 
@@ -38,7 +38,17 @@
         });
     });
 
-    function submit() {
-        //
+    async function submit() {
+        await $api({
+            path: '/api/chat/{recipient_id}',
+            method: 'post',
+            params: {
+                recipient_id: userStore.user!.teacher!.id,
+            },
+            body: {
+                message: message.value,
+            },
+        });
+        message.value = '';
     }
 </script>
