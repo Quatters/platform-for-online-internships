@@ -16,7 +16,10 @@ class WebSocketManager:  # nocv
 
     async def disconnect(self, *users: User):
         for user in users:
-            with contextlib.suppress(KeyError):
+            ws = self._connections.get(user.id)
+            if ws is not None:
+                with contextlib.suppress(RuntimeError):
+                    ws.close()
                 del self._connections[user.id]
 
     async def broadcast(self, message: str | bytes | dict, users: Iterable[User]):
