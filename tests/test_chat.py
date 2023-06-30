@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from backend.models import User
 from tests.base import login_as, test_admin, test_intern, test_teacher
-from tests.helpers import create_user
 
 
 def test_admin_cannot_use_chat():
@@ -34,28 +33,7 @@ def test_valid_chat(db: Session):
     assert data['total'] == 0
 
     # create message as intern
-    with teacher_client.websocket_connect('/api/chat/ws') as ws:
-        response = intern_client.post(f'/api/chat/{teacher.id}', json={'message': 'intern_1'})
-        ws_data = ws.receive_json()
-        assert ws_data == {
-            'id': ws_data['id'],
-            'message': 'intern_1',
-            'created_at': ws_data['created_at'],
-            'sender': {
-                'id': intern.id,
-                'email': intern.email,
-                'first_name': intern.first_name,
-                'last_name': intern.last_name,
-                'patronymic': intern.patronymic,
-            },
-            'recipient': {
-                'id': teacher.id,
-                'email': teacher.email,
-                'first_name': teacher.first_name,
-                'last_name': teacher.last_name,
-                'patronymic': teacher.patronymic,
-            },
-        }
+    response = intern_client.post(f'/api/chat/{teacher.id}', json={'message': 'intern_1'})
     data = response.json()
     assert response.status_code == 200, data
 

@@ -37,7 +37,6 @@
             { separator: true },
             { link: '/intern/my_courses', title: 'Мои курсы' },
             { link: '/intern/tests', title: 'Мои тесты' },
-            { link: '/intern/chat', title: 'Чат' },
             { separator: true },
             { link: '/intern/courses', title: 'Курсы' },
             { link: '/intern/subdivisions', title: 'Подразделения' },
@@ -66,6 +65,10 @@
 
     if (['intern', 'teacher'].includes(role)) {
         const chatStore = useChatStore();
+        chatStore.showNotifications = true;
         chatStore.connect({ force: true });
+        if (!userStore.user?.is_admin && !userStore.user?.is_teacher && userStore.user?.teacher) {
+            sidebarItems.intern.splice(4, 0, { link: '/intern/chat', title: 'Чат' });
+        }
     }
 </script>

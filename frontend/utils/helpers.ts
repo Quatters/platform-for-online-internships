@@ -1,5 +1,6 @@
 import type { ModalButton } from 'node_modules/tailvue';
 import type { LocationQueryValue } from 'vue-router';
+import { components } from '~/openapi';
 
 export const noop = (..._: any) => {};
 
@@ -39,4 +40,20 @@ export function shuffle<T>(array: Array<T>): Array<T> {
     }
 
     return array;
+}
+
+export function getUserDisplayName(user: components['schemas']['Message']['sender']) {
+    let name = '';
+    if (user.first_name) {
+        name = user.first_name;
+    } else {
+        return user.email;
+    }
+    if (user.last_name) {
+        name = `${user.last_name} ${name}`;
+    }
+    if (user.patronymic) {
+        name = `${name} ${user.patronymic}`;
+    }
+    return `${name} (${user.email})`;
 }

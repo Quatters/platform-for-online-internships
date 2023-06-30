@@ -13,6 +13,14 @@
                     success-title="Стажер успешно откреплен"
                 />
             </template>
+            <template #links>
+                <NuxtLink
+                    :to="{ name: 'teacher-my_interns-id-chat', params: { id: route.params.id } }"
+                    class="btn-link"
+                >
+                    Чат
+                </NuxtLink>
+            </template>
         </ControlPanel>
         <CommonContent>
             <CommonDetailViewCard :item="data!" :hide-fields="['is_admin', 'is_teacher', 'teacher']" />

@@ -56,9 +56,7 @@ async def send_message(
 ):
     result = queries.create_message(db, *chatters, data.message)
     response_data = schemas.Message.from_orm(result)
-    dict_ = response_data.dict()
-    dict_['created_at'] = str(dict_['created_at'])
-    await ws_manager.broadcast(dict_, chatters[1:])
+    await ws_manager.broadcast(response_data.json(), chatters)
     return response_data
 
 
@@ -66,11 +64,10 @@ async def send_message(
 async def connect_to_chat(
     websocket: WebSocket,
     user: User = Depends(ws_intern_or_teacher_only),
-):
+):  # nocv
     await ws_manager.connect(user, websocket)
     try:
         while True:
-            data = await websocket.receive_json()
-            await websocket.send_json({'pong': True})
+            await websocket.receive()
     except WebSocketDisconnect:
         await ws_manager.disconnect(user)

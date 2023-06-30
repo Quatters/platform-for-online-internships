@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
-from typing import Annotated, Callable
+from typing import Annotated
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends, HTTPException, WebSocket, status
+from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 from backend.api.queries.users import get_user_by_email
