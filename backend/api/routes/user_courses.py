@@ -16,7 +16,6 @@ router = APIRouter(prefix='/user/{user_id}/courses')
 def user_himself_only(
     user_id: int,
     user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
 ):
     if user_id != user.id:
         raise not_found()
@@ -48,7 +47,7 @@ def create_user_course(course_data: schemas.CreateCourse,
                        user_id: int,
                        user: User = Depends(get_current_user),
                        db: Session = Depends(get_db)):
-    if queries.get_annotated_user_course_by_course_id(db, user_id, course_data.course_id) is not None:
+    if queries.get_user_course_by_course_id(db, course_data.course_id, user_id) is not None:
         raise bad_request("User is already registered for this course")
     course = courses.get_course(db, course_data.course_id)
     if course is None:

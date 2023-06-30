@@ -40,10 +40,6 @@ def get_user_courses(
     )
 
 
-def get_user_course(db: Session, user_course_id: int) -> UserCourse | None:
-    return db.query(UserCourse).get(user_course_id)
-
-
 def get_user_course_by_course_id(db: Session,
                                  course_id: int,
                                  user_id: int) -> UserCourse | None:
