@@ -1725,7 +1725,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LimitOffsetPage_Union_AnswerAdmin__Answer__"
+                  "$ref": "#/components/schemas/LimitOffsetPage_AnswerAdmin_"
                 }
               }
             }
@@ -1866,15 +1866,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "title": "Response Get Answer Api Courses  Course Id  Topics  Topic Id  Tasks  Task Id  Answers  Answer Id  Get",
-                  "anyOf": [
-                    {
-                      "$ref": "#/components/schemas/AnswerAdmin"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Answer"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/AnswerAdmin"
                 }
               }
             }
@@ -3735,29 +3727,6 @@
   },
   "components": {
     "schemas": {
-      "Answer": {
-        "title": "Answer",
-        "required": [
-          "id",
-          "value",
-          "task_id"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "value": {
-            "title": "Value",
-            "type": "string"
-          },
-          "task_id": {
-            "title": "Task Id",
-            "type": "integer"
-          }
-        }
-      },
       "AnswerAdmin": {
         "title": "AnswerAdmin",
         "required": [
@@ -4299,6 +4268,38 @@
           }
         }
       },
+      "LimitOffsetPage_AnswerAdmin_": {
+        "title": "LimitOffsetPage[AnswerAdmin]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnswerAdmin"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
       "LimitOffsetPage_Competence_": {
         "title": "LimitOffsetPage[Competence]",
         "required": [
@@ -4728,45 +4729,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Topic"
-            }
-          },
-          "total": {
-            "title": "Total",
-            "minimum": 0.0,
-            "type": "integer"
-          },
-          "limit": {
-            "title": "Limit",
-            "minimum": 1.0,
-            "type": "integer"
-          },
-          "offset": {
-            "title": "Offset",
-            "minimum": 0.0,
-            "type": "integer"
-          }
-        }
-      },
-      "LimitOffsetPage_Union_AnswerAdmin__Answer__": {
-        "title": "LimitOffsetPage[Union[AnswerAdmin, Answer]]",
-        "required": [
-          "items",
-          "total"
-        ],
-        "type": "object",
-        "properties": {
-          "items": {
-            "title": "Items",
-            "type": "array",
-            "items": {
-              "anyOf": [
-                {
-                  "$ref": "#/components/schemas/AnswerAdmin"
-                },
-                {
-                  "$ref": "#/components/schemas/Answer"
-                }
-              ]
             }
           },
           "total": {

@@ -219,15 +219,6 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    /** Answer */
-    Answer: {
-      /** Id */
-      id: number;
-      /** Value */
-      value: string;
-      /** Task Id */
-      task_id: number;
-    };
     /** AnswerAdmin */
     AnswerAdmin: {
       /** Id */
@@ -453,6 +444,17 @@ export interface components {
       /** Detail */
       detail?: (components["schemas"]["ValidationError"])[];
     };
+    /** LimitOffsetPage[AnswerAdmin] */
+    LimitOffsetPage_AnswerAdmin_: {
+      /** Items */
+      items: (components["schemas"]["AnswerAdmin"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
     /** LimitOffsetPage[Competence] */
     LimitOffsetPage_Competence_: {
       /** Items */
@@ -600,17 +602,6 @@ export interface components {
     LimitOffsetPage_Topic_: {
       /** Items */
       items: (components["schemas"]["Topic"])[];
-      /** Total */
-      total: number;
-      /** Limit */
-      limit?: number;
-      /** Offset */
-      offset?: number;
-    };
-    /** LimitOffsetPage[Union[AnswerAdmin, Answer]] */
-    LimitOffsetPage_Union_AnswerAdmin__Answer__: {
-      /** Items */
-      items: (components["schemas"]["AnswerAdmin"] | components["schemas"]["Answer"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -1967,7 +1958,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["LimitOffsetPage_Union_AnswerAdmin__Answer__"];
+          "application/json": components["schemas"]["LimitOffsetPage_AnswerAdmin_"];
         };
       };
       /** @description Validation Error */
@@ -2021,7 +2012,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["AnswerAdmin"] | components["schemas"]["Answer"];
+          "application/json": components["schemas"]["AnswerAdmin"];
         };
       };
       /** @description Validation Error */
