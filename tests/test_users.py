@@ -53,6 +53,12 @@ def test_get_token():
     del assert_user['password']
     assert data == assert_user
 
+    # try to create some course with invalid token
+    response = client.get('/api/users/me', headers={
+        'Authorization': 'Bearer invalid'
+    })
+    assert response.status_code == 401
+
 
 def test_get_list_users():
     client = login_as(test_admin)

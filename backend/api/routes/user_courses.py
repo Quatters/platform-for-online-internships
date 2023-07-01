@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.api.auth import get_current_user
+from backend.api.auth import current_user
 from backend.api.errors.errors import bad_request, not_found
 from backend.models.users import User
 from backend.database import get_db
@@ -15,7 +15,7 @@ router = APIRouter(prefix='/user/{user_id}/courses')
 
 def user_himself_only(
     user_id: int,
-    user: User = Depends(get_current_user),
+    user: User = Depends(current_user),
 ):
     if user_id != user.id:
         raise not_found()
@@ -45,7 +45,7 @@ def get_one_user_course(
 @router.post('/', response_model=schemas.UserCourse, dependencies=[Depends(user_himself_only)])
 def create_user_course(course_data: schemas.CreateCourse,
                        user_id: int,
-                       user: User = Depends(get_current_user),
+                       user: User = Depends(current_user),
                        db: Session = Depends(get_db)):
     if queries.get_user_course_by_course_id(db, course_data.course_id, user_id) is not None:
         raise bad_request("User is already registered for this course")
@@ -57,7 +57,7 @@ def create_user_course(course_data: schemas.CreateCourse,
 
 @router.delete('/{course_id}', status_code=204, dependencies=[Depends(user_himself_only)])
 def delete_user_course(course_id: int,
-                       user: User = Depends(get_current_user),
+                       user: User = Depends(current_user),
                        db: Session = Depends(get_db)):
     user_course = queries.get_annotated_user_course_by_course_id(db, course_id, user.id)
     if user_course is None:

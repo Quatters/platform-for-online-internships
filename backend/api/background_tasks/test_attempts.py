@@ -123,7 +123,7 @@ def finish_test(db: Session, test: TestAttempt, answers: list[UserAnswerSchema])
 
             db.bulk_save_objects(user_answers_to_create)
 
-        except:  # noqa: E722
+        except:  # nocv # noqa: E722
             test.status = TestAttemptStatus.check_failure
             logger.error(traceback.format_exc())
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.api.auth import admin_only, get_current_user
+from backend.api.auth import admin_only, current_user
 from backend.api.current_dependencies import get_current_course, current_topic
 from backend.api.dependencies import ListPageParams
 from backend.api.errors.errors import not_found
@@ -27,7 +27,7 @@ def get_topics(params: ListPageParams = Depends(),
 @router.get('/{topic_id}', response_model=schemas.OneTopic)
 def get_topic(
     topic: Topic = Depends(current_topic),
-    user: User = Depends(get_current_user),
+    user: User = Depends(current_user),
     db: Session = Depends(get_db),
 ):
     if not user.is_admin and not user.is_teacher:
