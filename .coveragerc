@@ -12,6 +12,7 @@ concurrency =
 
 [report]
 fail_under = 99
+precision = 2
 show_missing = True
 exclude_lines =
     nocv
