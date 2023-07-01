@@ -114,7 +114,7 @@ def finish_test(db: Session, test: TestAttempt, answers: list[UserAnswerSchema])
                     answer = user_answer.answer
                     test.status = TestAttemptStatus.partially_checked
 
-                else:
+                else:  # nocv
                     raise ValueError(f'Invalid answer: {user_answer.answer}')
 
                 created_user_answer: UserAnswer = handler(db, task, answer, test)

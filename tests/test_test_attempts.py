@@ -277,6 +277,13 @@ def test_tests(db: Session):
     data = response.json()
     assert response.status_code == 200, data
 
+    # invalid review
+    response = teacher_client.put('/api/reviews/-1', json={
+        'score': 4,
+        'review': 'good job',
+    })
+    assert response.status_code == 404
+
     # get same test, check that last answer is reviewed
     response = intern_client.get(f'/api/tests/{test_id}')
     data = response.json()

@@ -22,6 +22,10 @@ def test_competencies_crud(db: Session):
     assert response.status_code == 200
     assert data == data_2
 
+    # get invalid competence
+    response = client.get('/api/competencies/-1')
+    assert response.status_code == 404
+
     # add courses to competence
     course = create_course(db)
     response = client.patch(f'/api/competencies/{competence_1_id}', json={
