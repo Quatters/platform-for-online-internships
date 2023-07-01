@@ -37,6 +37,18 @@ def test_answers_crud(db):
         'is_correct': True,
     }
 
+    # get list with invalid course
+    response = admin_client.get(f'/api/courses/-1/topics/{topic.id}/tasks/{task_single.id}/answers')
+    assert response.status_code == 404
+
+    # get list with invalid topic
+    response = admin_client.get(f'/api/courses/{course.id}/topics/-1/tasks/{task_single.id}/answers')
+    assert response.status_code == 404
+
+    # get list with invalid task
+    response = admin_client.get(f'/api/courses/{course.id}/topics/{topic.id}/tasks/-1/answers')
+    assert response.status_code == 404
+
     # get list
     response = admin_client.get(f'/api/courses/{course.id}/topics/{topic.id}/tasks/{task_single.id}/answers')
     data = response.json()

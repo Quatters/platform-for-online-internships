@@ -29,6 +29,10 @@ def test_subdivisions_crud(db):
         'name': 'sub_1',
     }
 
+    # get one subdivision (invalid)
+    response = client.get('/api/subdivisions/-1')
+    assert response.status_code == 404
+
     # get one subdivision
     response = client.get(f'/api/subdivisions/{sub_1_id}')
     data = response.json()

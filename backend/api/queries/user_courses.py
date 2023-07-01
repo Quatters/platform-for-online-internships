@@ -128,7 +128,7 @@ def _calculate_user_course_progress(db: Session, user_course: UserCourse):
             / _calculate_max_course_score(db, user_course.course)
             * 100
         )
-    except ZeroDivisionError:
+    except ZeroDivisionError:  # nocv
         pass
     return progress
 
