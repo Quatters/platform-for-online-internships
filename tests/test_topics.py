@@ -26,6 +26,15 @@ def test_topics_crud(db: Session):
     assert response.status_code == 200, data
     topic_2_id = data['id']
 
+    # try to use non-existing topic as previous
+    response = client.post(f'/api/courses/{course.id}/topics', json={
+        'name': 'topic_invalid',
+        'description': 'topic_invalid',
+        'prev_topic_id': -1,
+    })
+    assert response.status_code == 404
+
+    # create first topic
     response = client.post(f'/api/courses/{course.id}/topics', json={
         'name': 'topic_3',
         'description': 'topic_3',

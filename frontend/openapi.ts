@@ -207,21 +207,18 @@ export interface paths {
     /** Finish Review */
     put: operations["finish_review_api_reviews__review_id__put"];
   };
+  "/api/chat/{recipient_id}": {
+    /** Get Messages */
+    get: operations["get_messages_api_chat__recipient_id__get"];
+    /** Send Message */
+    post: operations["send_message_api_chat__recipient_id__post"];
+  };
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
-    /** Answer */
-    Answer: {
-      /** Id */
-      id: number;
-      /** Value */
-      value: string;
-      /** Task Id */
-      task_id: number;
-    };
     /** AnswerAdmin */
     AnswerAdmin: {
       /** Id */
@@ -427,13 +424,6 @@ export interface components {
       /** Name */
       name: string;
     };
-    /** FkUser */
-    FkUser: {
-      /** Id */
-      id: number;
-      /** Email */
-      email: string;
-    };
     /** GoingTest */
     GoingTest: {
       /** Id */
@@ -453,6 +443,17 @@ export interface components {
     HTTPValidationError: {
       /** Detail */
       detail?: (components["schemas"]["ValidationError"])[];
+    };
+    /** LimitOffsetPage[AnswerAdmin] */
+    LimitOffsetPage_AnswerAdmin_: {
+      /** Items */
+      items: (components["schemas"]["AnswerAdmin"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
     };
     /** LimitOffsetPage[Competence] */
     LimitOffsetPage_Competence_: {
@@ -479,7 +480,7 @@ export interface components {
     /** LimitOffsetPage[FkUser] */
     LimitOffsetPage_FkUser_: {
       /** Items */
-      items: (components["schemas"]["FkUser"])[];
+      items: (components["schemas"]["backend__api__schemas__users__FkUser"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -524,6 +525,17 @@ export interface components {
     LimitOffsetPage_ListUser_: {
       /** Items */
       items: (components["schemas"]["ListUser"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[Message] */
+    LimitOffsetPage_Message_: {
+      /** Items */
+      items: (components["schemas"]["Message"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -597,17 +609,6 @@ export interface components {
       /** Offset */
       offset?: number;
     };
-    /** LimitOffsetPage[Union[AnswerAdmin, Answer]] */
-    LimitOffsetPage_Union_AnswerAdmin__Answer__: {
-      /** Items */
-      items: (components["schemas"]["AnswerAdmin"] | components["schemas"]["Answer"])[];
-      /** Total */
-      total: number;
-      /** Limit */
-      limit?: number;
-      /** Offset */
-      offset?: number;
-    };
     /** ListReview */
     ListReview: {
       /** Id */
@@ -650,6 +651,20 @@ export interface components {
       is_admin: boolean;
       /** Is Teacher */
       is_teacher: boolean;
+    };
+    /** Message */
+    Message: {
+      /** Id */
+      id: number;
+      /** Message */
+      message: string;
+      recipient: components["schemas"]["backend__api__schemas__chat__FkUser"];
+      sender: components["schemas"]["backend__api__schemas__chat__FkUser"];
+      /**
+       * Created At 
+       * Format: date-time
+       */
+      created_at: string;
     };
     /** NamedUserCourse */
     NamedUserCourse: {
@@ -985,6 +1000,11 @@ export interface components {
       /** Review */
       review?: string;
     };
+    /** SendMessage */
+    SendMessage: {
+      /** Message */
+      message: string;
+    };
     /** Subdivision */
     Subdivision: {
       /** Id */
@@ -1049,7 +1069,7 @@ export interface components {
       is_teacher: boolean;
       /** Posts */
       posts: (components["schemas"]["Post"])[];
-      teacher?: components["schemas"]["FkUser"];
+      teacher?: components["schemas"]["backend__api__schemas__users__FkUser"];
       /** Competencies */
       competencies: (components["schemas"]["backend__api__schemas__users__FkCompetence"])[];
     };
@@ -1090,6 +1110,19 @@ export interface components {
       msg: string;
       /** Error Type */
       type: string;
+    };
+    /** FkUser */
+    backend__api__schemas__chat__FkUser: {
+      /** Id */
+      id: number;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** Patronymic */
+      patronymic: string;
+      /** Email */
+      email: string;
     };
     /** CreateCourse */
     backend__api__schemas__courses__CreateCourse: {
@@ -1152,6 +1185,13 @@ export interface components {
       id: number;
       /** Name */
       name: string;
+    };
+    /** FkUser */
+    backend__api__schemas__users__FkUser: {
+      /** Id */
+      id: number;
+      /** Email */
+      email: string;
     };
   };
   responses: never;
@@ -1918,7 +1958,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["LimitOffsetPage_Union_AnswerAdmin__Answer__"];
+          "application/json": components["schemas"]["LimitOffsetPage_AnswerAdmin_"];
         };
       };
       /** @description Validation Error */
@@ -1972,7 +2012,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["AnswerAdmin"] | components["schemas"]["Answer"];
+          "application/json": components["schemas"]["AnswerAdmin"];
         };
       };
       /** @description Validation Error */
@@ -2732,6 +2772,59 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Review"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Messages */
+  get_messages_api_chat__recipient_id__get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+      };
+      path: {
+        recipient_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_Message_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Send Message */
+  send_message_api_chat__recipient_id__post: {
+    parameters: {
+      path: {
+        recipient_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendMessage"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Message"];
         };
       };
       /** @description Validation Error */

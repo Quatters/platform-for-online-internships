@@ -65,6 +65,7 @@ export default defineI18nConfig(() => ({
             'My interns': 'Мои стажеры',
             'Task checking': 'Проверка заданий',
             Grade: 'Оценить',
+            Chat: 'Чат',
 
             Create: 'Создать',
             Edit: 'Редактировать',

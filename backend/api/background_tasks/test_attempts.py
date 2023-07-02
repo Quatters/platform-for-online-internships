@@ -101,20 +101,20 @@ def finish_test(db: Session, test: TestAttempt, answers: list[UserAnswerSchema])
                 handler = None
                 answer = None
 
-                if isinstance(user_answer.answer, int):
+                if task.task_type is TaskType.single:
                     handler = _handle_single_task
                     answer = get_answer(db, user_answer.answer)
 
-                elif isinstance(user_answer.answer, list):
+                elif task.task_type is TaskType.multiple:
                     handler = _handle_multiple_task
                     answer = db.query(Answer).filter(Answer.id.in_(user_answer.answer)).all()
 
-                elif isinstance(user_answer.answer, str):
+                elif task.task_type is TaskType.text:
                     handler = _handle_text_task
                     answer = user_answer.answer
                     test.status = TestAttemptStatus.partially_checked
 
-                else:
+                else:  # nocv
                     raise ValueError(f'Invalid answer: {user_answer.answer}')
 
                 created_user_answer: UserAnswer = handler(db, task, answer, test)
@@ -123,7 +123,7 @@ def finish_test(db: Session, test: TestAttempt, answers: list[UserAnswerSchema])
 
             db.bulk_save_objects(user_answers_to_create)
 
-        except:  # noqa: E722
+        except:  # nocv # noqa: E722
             test.status = TestAttemptStatus.check_failure
             logger.error(traceback.format_exc())
 

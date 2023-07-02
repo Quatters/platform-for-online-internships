@@ -18,6 +18,10 @@ def test_posts_crud(db: Session):
     assert response.status_code == 200, data
     post_1_id = data['id']
 
+    # get post (invalid)
+    response = client.get(f'/api/subdivisions/{subdivision.id}/posts/-1')
+    assert response.status_code == 404
+
     # get post
     response = client.get(f'/api/subdivisions/{subdivision.id}/posts/{post_1_id}')
     data_2 = response.json()
@@ -82,3 +86,14 @@ def test_posts_crud(db: Session):
     data = response.json()
     assert response.status_code == 200, data
     assert len(data['items']) == posts_in_subdivision_count - 1
+
+    # create posts on /posts endpoint
+    response = client.post('/api/posts', json={
+        'name': 'post_10',
+        'description': 'post_10',
+        'courses': [],
+        'competencies': [],
+        'subdivision_id': subdivision.id,
+    })
+    data = response.json()
+    assert response.status_code == 200, data

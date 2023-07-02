@@ -2,6 +2,7 @@ fastapi[all]~=0.95.1
 fastapi-pagination~=0.12.2
 python-jose[cryptography]~=3.3.0
 passlib[bcrypt]~=1.7.4
+websockets~=11.0.2
 
 alembic~=1.10.3
 sqlalchemy-utils~=0.41.1

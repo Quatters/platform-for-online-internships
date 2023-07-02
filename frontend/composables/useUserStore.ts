@@ -53,5 +53,6 @@ export default defineStore('user', () => {
         fetchUser,
         fetchToken,
         logout,
+        accessToken,
     };
 });

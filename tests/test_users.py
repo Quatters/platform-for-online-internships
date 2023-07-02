@@ -53,6 +53,12 @@ def test_get_token():
     del assert_user['password']
     assert data == assert_user
 
+    # try to create some course with invalid token
+    response = client.get('/api/users/me', headers={
+        'Authorization': 'Bearer invalid'
+    })
+    assert response.status_code == 401
+
 
 def test_get_list_users():
     client = login_as(test_admin)
@@ -161,6 +167,22 @@ def test_create_user(db: Session):
         {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
     ]
 
+    # register
+    response = client.post('/api/auth/register', json={
+        'first_name': 'Intern 2',
+        'email': 'some_intern2@test.com',
+        'password': '12345',
+        'posts': [
+            post_1.id,
+            post_2.id,
+        ],
+        'is_teacher': True,
+        'is_admin': False,
+    })
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['is_teacher'] is False
+
 
 def test_update_user_posts(db):
     client = login_as(test_admin)
@@ -250,6 +272,26 @@ def test_assign_interns_to_teacher(db: Session):
     assert data['total'] == 2
     assert data['items'][0]['id'] == intern_1.id
     assert data['items'][1]['id'] == intern_2.id
+
+    # get one assigned intern
+    response = admin_client.get(f'api/users/{teacher_1.id}/assigned_interns/{intern_2.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {
+        'id': intern_2.id,
+        'email': intern_2.email,
+        'first_name': intern_2.first_name,
+        'last_name': intern_2.last_name,
+        'patronymic': intern_2.patronymic,
+        'is_admin': False,
+        'is_teacher': False,
+        'posts': [
+            {'id': post_1.id, 'subdivision_id': post_1.subdivision_id, 'name': post_1.name},
+            {'id': post_2.id, 'subdivision_id': post_2.subdivision_id, 'name': post_2.name},
+        ],
+        'teacher': {'email': teacher_1.email, 'id': teacher_1.id},
+        'competencies': [],
+    }
 
     # try to assign intern_3 to teacher_1
     response = admin_client.put(f'/api/users/{teacher_1.id}/assigned_interns', json={

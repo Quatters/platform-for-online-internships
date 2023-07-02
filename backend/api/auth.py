@@ -45,7 +45,7 @@ def create_access_token(data: dict):
     )
 
 
-async def get_current_user_data(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
+async def current_user(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(token, AUTH['SECRET_KEY'], algorithms=[AUTH['ALGORITHM']])
         email: str = payload.get('sub')
@@ -60,33 +60,36 @@ async def get_current_user_data(token: Annotated[str, Depends(oauth2)], db: Sess
     return user
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
-    return await get_current_user_data(token, db)
-
-
 async def admin_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
-    user = await get_current_user(token, db)
+    user = await current_user(token, db)
     if user.is_admin:
         return user
     raise no_permission()
 
 
 async def admin_or_teacher_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
-    user = await get_current_user(token, db)
+    user = await current_user(token, db)
     if user.is_admin or user.is_teacher:
         return user
     raise no_permission()
 
 
 async def teacher_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
-    user = await get_current_user(token, db)
+    user = await current_user(token, db)
     if user.is_teacher:
         return user
     raise no_permission()
 
 
 async def intern_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
-    user = await get_current_user(token, db)
+    user = await current_user(token, db)
     if user.is_admin or user.is_teacher:
+        raise no_permission()
+    return user
+
+
+async def intern_or_teacher_only(token: Annotated[str, Depends(oauth2)], db: Session = Depends(get_db)):
+    user = await current_user(token, db)
+    if user.is_admin:
         raise no_permission()
     return user

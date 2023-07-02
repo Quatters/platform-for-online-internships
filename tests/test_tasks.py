@@ -39,6 +39,34 @@ def test_tasks_crud(db: Session):
     assert response.status_code == 200, data
     task_3_id = data['id']
 
+    # create task with invalid prev_task_id
+    response = client.post(f'/api/courses/{course.id}/topics/{topic.id}/tasks', json={
+        'name': 'task_3',
+        'description': 'task_3',
+        'prev_task_id': -1,
+        'task_type': 'text',
+    })
+    assert response.status_code == 404
+
+    # get one task
+    response = client.get(f'/api/courses/{course.id}/topics/{topic.id}/tasks/{task_1_id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {
+        'id': task_1_id,
+        'name': 'task_1',
+        'description': 'task_1',
+        'task_type': 'text',
+        'prev_task': {
+            'id': task_3_id,
+            'name': 'task_3',
+        },
+        'next_task': {
+            'id': task_2_id,
+            'name': 'task_2',
+        },
+    }
+
     # check that now first is task_3
     response = client.get(f'/api/courses/{course.id}/topics/{topic.id}/tasks')
     data = response.json()

@@ -91,6 +91,10 @@ def test_topic_resources_crud(db: Session):
         },
     }
 
+    # get invalid resource
+    response = client.get(f'/api/courses/{course.id}/topics/{topic.id}/resources/-1')
+    assert response.status_code == 404
+
     # test create resource with invalid prev_resource_id
     response = client.post(
         f'/api/courses/{course.id}/topics/{topic.id}/resources',

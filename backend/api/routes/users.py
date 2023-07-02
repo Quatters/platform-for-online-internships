@@ -6,7 +6,7 @@ from backend.api.background_tasks.users import handle_user_teachers_after_post_c
 from backend.api.errors.errors import not_found
 from backend.api.schemas import users as schemas
 from backend.api.queries import users as queries
-from backend.api.auth import admin_only, admin_or_teacher_only, authenticate_user, create_access_token, get_current_user
+from backend.api.auth import admin_only, admin_or_teacher_only, authenticate_user, create_access_token, current_user
 from backend.database import get_db
 from backend.models.users import User
 from backend.api.dependencies import ListPageParams, UserListPageParams
@@ -49,7 +49,7 @@ async def login_for_access_token(
 
 
 @router.get('/users/me', response_model=schemas.User)
-async def get_users_me(user: Annotated[User, Depends(get_current_user)]):
+async def get_users_me(user: Annotated[User, Depends(current_user)]):
     return user
 
 
