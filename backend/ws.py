@@ -19,7 +19,7 @@ class WebSocketManager:  # nocv
             ws = self._connections.get(user.id)
             if ws is not None:
                 with contextlib.suppress(RuntimeError):
-                    ws.close()
+                    await ws.close()
                 del self._connections[user.id]
 
     async def broadcast(self, message: str | bytes | dict, users: Iterable[User]):
