@@ -12,6 +12,11 @@ export default defineStore('chat', () => {
 
     const ws = useWebSocket(`ws://${chatUrl}/api/chat/ws/${userStore.accessToken}`, {
         immediate: false,
+        heartbeat: {
+            interval: 5000,
+            message: 'ping',
+            pongTimeout: 10000,
+        },
         autoReconnect: {
             retries: 10,
             delay: 5000,
