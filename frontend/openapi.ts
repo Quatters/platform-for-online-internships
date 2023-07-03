@@ -139,6 +139,14 @@ export interface paths {
     /** Create Post */
     post: operations["create_post_api_posts_post"];
   };
+  "/api/posts/{post_id}/assign": {
+    /** Self Assign To Post */
+    put: operations["self_assign_to_post_api_posts__post_id__assign_put"];
+  };
+  "/api/posts/{post_id}/unassign": {
+    /** Self Unassign To Post */
+    put: operations["self_unassign_to_post_api_posts__post_id__unassign_put"];
+  };
   "/api/subdivisions/{subdivision_id}/posts": {
     /** Get Subdivision Posts */
     get: operations["get_subdivision_posts_api_subdivisions__subdivision_id__posts_get"];
@@ -693,6 +701,14 @@ export interface components {
       pass_percent: number;
       /** Course Name */
       course_name: string;
+    };
+    /** OkData */
+    OkData: {
+      /**
+       * Detail 
+       * @default OK
+       */
+      detail?: string;
     };
     /** OneCompetence */
     OneCompetence: {
@@ -2257,6 +2273,50 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Post"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Self Assign To Post */
+  self_assign_to_post_api_posts__post_id__assign_put: {
+    parameters: {
+      path: {
+        post_id: unknown;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OkData"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Self Unassign To Post */
+  self_unassign_to_post_api_posts__post_id__unassign_put: {
+    parameters: {
+      path: {
+        post_id: unknown;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["OkData"];
         };
       };
       /** @description Validation Error */

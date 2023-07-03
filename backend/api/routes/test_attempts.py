@@ -35,14 +35,14 @@ def start_test(
     if going_test is not None:
         raise bad_request('Cannot start new test until there is unfinished one.')
 
-    if queries.get_existing_attempts_count(db, user.id, topic.id) >= topic.attempts_amount:
-        raise bad_request('You have run out of attempts for this topic.')
-
     user_course = user_courses_queries.get_user_course_by_course_id(db, topic.course_id, user.id)
     if user_course is None:
         raise bad_request('You cannot start test on a course you are not enrolled in.')
 
-    return queries.create_test(db, topic, user.id)
+    if queries.get_existing_attempts_count(db, user, topic, user_course) >= topic.attempts_amount:
+        raise bad_request('You have run out of attempts for this topic.')
+
+    return queries.create_test(db, topic, user, user_course)
 
 
 @router.post(

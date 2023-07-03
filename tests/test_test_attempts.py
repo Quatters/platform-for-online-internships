@@ -431,3 +431,23 @@ def test_tests(db: Session):
     data = response.json()
     assert response.status_code == 200, data
     assert data['attempts_amount'] == 0
+
+    # remove user_course
+    response = intern_client.delete(f'/api/user/{intern.id}/courses/{course.id}')
+    assert response.status_code == 204
+
+    # create another user_course
+    response = intern_client.post(f'/api/user/{intern.id}/courses', json={
+        'course_id': course.id,
+    })
+    assert response.status_code == 200
+
+    # check that attempts reset
+    response = intern_client.get(f'/api/courses/{course.id}/topics/{topic.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['attempts_amount'] == 3
+
+    response = intern_client.post(f'/api/courses/{course.id}/topics/{topic.id}/start_test')
+    data = response.json()
+    assert response.status_code == 200, data

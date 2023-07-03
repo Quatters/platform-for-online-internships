@@ -9,6 +9,7 @@ from backend.database import get_db
 from backend.api.queries import topics as queries
 from backend.api.schemas import topics as schemas
 from backend.api.queries import test_attempts as test_attempts_queries
+from backend.api.queries import user_courses as user_courses_queries
 from backend.models import Topic, User
 from backend.settings import LimitOffsetPage
 
@@ -30,12 +31,14 @@ def get_topic(
     user: User = Depends(current_user),
     db: Session = Depends(get_db),
 ):
+    return_topic = schemas.OneTopic.from_orm(topic)
     if not user.is_admin and not user.is_teacher:
-        topic.attempts_amount = max(
-            topic.attempts_amount - test_attempts_queries.get_existing_attempts_count(db, user.id, topic.id),
+        user_course = user_courses_queries.get_user_course_by_course_id(db, topic.course_id, user.id)
+        return_topic.attempts_amount = max(
+            topic.attempts_amount - test_attempts_queries.get_existing_attempts_count(db, user, topic, user_course),
             0
         )
-    return topic
+    return return_topic
 
 
 @router.post('/', response_model=schemas.OneTopic, dependencies=[Depends(admin_only)])

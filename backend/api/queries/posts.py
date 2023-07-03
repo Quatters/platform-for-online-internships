@@ -24,8 +24,8 @@ def get_posts_by_subdivision_id(db: Session, subdivision_id: int, params: ListPa
     return paginate(query, params)
 
 
-def get_post(db: Session, post_id) -> Post | None:
-    return db.query(Post).get(post_id)
+def get_post(db: Session, post_id: int) -> Post | None:
+    return db.get(Post, post_id)
 
 
 def create_post(db: Session, post: schemas.CreateSubdivisionPost, subdivision_id: int):

@@ -71,5 +71,5 @@ async def connect_to_chat(
             data = await websocket.receive()
             if data.get('text') == 'ping':
                 await websocket.send_text('pong')
-    except WebSocketDisconnect:
+    except (WebSocketDisconnect, RuntimeError):
         await ws_manager.disconnect(user)
