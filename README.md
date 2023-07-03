@@ -1,3 +1,43 @@
+## Run production compose
+
+To quickly run a production docker-compose follow these steps:
+
+1. Create an `.env` file at the project root with the following content:
+
+```sh
+AUTH_SECRET_KEY=some_test_secret_key
+```
+
+See [`.env.example`](https://github.com/Quatters/platform-for-online-internships/blob/main/.env.example)
+for another environment variables which may be used.
+
+2. Run compose:
+
+```sh
+docker-compose up --build
+```
+
+**Important**: compose must be started as root user. Also, make sure 80 and 8080
+ports are free.
+
+3. Create users:
+
+If this is your first run, you should create at least admin user, who can
+manage content in platform and create other users. Use following commands:
+
+```sh
+docker exec -it backend bash
+cd /app
+# create admin
+python create_user.py --email admin@admin.admin --password admin --role admin
+# create intern and teacher (also you can create them as admin using the app itself)
+python create_user.py --email intern@intern.intern --password intern --role intern
+python create_user.py --email teacher@teacher.teacher --password teacher --role teacher
+exit
+```
+
+4. Check app at http://internships.localhost.
+
 ## Contribute
 
 Every environment variable described below can either be set directly:
@@ -9,7 +49,7 @@ export ENV_KEY=ENV_VALUE
 set ENV_KEY=ENV_VALUE
 ```
 
-or by using `.env` file. Look for the `.env.example` to see which are needed or
+or by using `.env` file. Look for the [`.env.example`](https://github.com/Quatters/platform-for-online-internships/blob/main/.env.example) to see which are needed or
 may be set.
 
 OpenAPI schema plays an important role for both backend and frontend. On backend
@@ -50,7 +90,7 @@ Before backend can be started it's required to set database by providing
 Run development server using
 
 ```sh
-python -m backend --dev
+python -m backend
 ```
 
 To check generated OpenAPI schema visit `/docs` or `/redoc`.
@@ -109,15 +149,12 @@ DATABASE_URL="postgresql://postgres:postgres@localhost/my_db"
 "postgresql://postgres:postgres@localhost/my_db_test"
 ```
 
-If database not exists it will be created automatically, migrations will
-be applied and test users will be created. Each unit test runs in
+If database does not exist it will be created automatically, migrations will
+be applied and test users will be created. Each unit test runs in a
 transaction which is rolled back after it ends, so you are free to do
 everything is needed. At the end of test session database will be dropped.
 
 ---
-
-Before opening PR, make sure there are no `flake8` errors
-and all tests are passed:
 
 #### create_user.py
 
