@@ -6,6 +6,7 @@ from backend.api.dependencies import ListPageParams
 from backend.api.queries.helpers import get_instances_or_400, with_search
 from backend.models.competencies import Competence
 from backend.models.posts import Post
+from backend.models.users import User
 
 
 def get_courses(db: Session, params: ListPageParams):
@@ -20,6 +21,25 @@ def get_course(db: Session, id: int) -> Course | None:
 
 def get_course_by_name(db: Session, name: str) -> Course | None:
     return db.query(Course).filter(Course.name == name).one_or_none()
+
+
+def get_user_recommended_courses(user: User):
+    def has_all_competencies(user: User, course: Course):
+        return set(course.competencies).issubset(set(user.competencies))
+
+    posts = user.posts
+    print(user.posts)
+    recommended_courses = []
+    for post in posts:
+        for course in post.courses:
+            if not has_all_competencies(user, course):
+                recommended_courses.append(course)
+
+    def get_course_name(course: Course):
+        return course.name
+
+    recommended_courses.sort(key=get_course_name)
+    return recommended_courses
 
 
 def create_course(db: Session, course: schemas.CreateCourse) -> Course:

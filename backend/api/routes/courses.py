@@ -1,11 +1,14 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.api.auth import admin_only
+from backend.api.auth import admin_only, get_current_user
 from backend.api.current_dependencies import get_current_course
+from backend.api.errors.errors import bad_request
 from backend.database import get_db
 from backend.api.queries import courses as queries
 from backend.api.schemas import courses as schemas
 from backend.models.courses import Course
+from backend.models.users import User
 from backend.settings import LimitOffsetPage
 from backend.api.dependencies import ListPageParams
 
@@ -21,6 +24,15 @@ def get_courses(params: ListPageParams = Depends(), db: Session = Depends(get_db
 @router.get('/{course_id}', response_model=schemas.OneCourse)
 def get_course(course: Course = Depends(get_current_course)):
     return course
+
+
+@router.get('/recommended/', response_model=List[schemas.Course])
+def get_user_recommended_courses(
+    user: User = Depends(get_current_user),
+):
+    if user.is_admin or user.is_teacher:
+        return bad_request("user must be intern")
+    return queries.get_user_recommended_courses(user)
 
 
 @router.post('/',
