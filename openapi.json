@@ -2489,8 +2489,8 @@
     },
     "/api/posts/{post_id}/unassign": {
       "put": {
-        "summary": "Self Assign To Post",
-        "operationId": "self_assign_to_post_api_posts__post_id__unassign_put",
+        "summary": "Self Unassign To Post",
+        "operationId": "self_unassign_to_post_api_posts__post_id__unassign_put",
         "parameters": [
           {
             "required": true,

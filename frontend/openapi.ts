@@ -144,8 +144,8 @@ export interface paths {
     put: operations["self_assign_to_post_api_posts__post_id__assign_put"];
   };
   "/api/posts/{post_id}/unassign": {
-    /** Self Assign To Post */
-    put: operations["self_assign_to_post_api_posts__post_id__unassign_put"];
+    /** Self Unassign To Post */
+    put: operations["self_unassign_to_post_api_posts__post_id__unassign_put"];
   };
   "/api/subdivisions/{subdivision_id}/posts": {
     /** Get Subdivision Posts */
@@ -2305,8 +2305,8 @@ export interface operations {
       };
     };
   };
-  /** Self Assign To Post */
-  self_assign_to_post_api_posts__post_id__unassign_put: {
+  /** Self Unassign To Post */
+  self_unassign_to_post_api_posts__post_id__unassign_put: {
     parameters: {
       path: {
         post_id: unknown;
