@@ -1,7 +1,8 @@
-from sqlalchemy.orm import Session, load_only
+from sqlalchemy.orm import Session, load_only, joinedload
 from fastapi_pagination.ext.sqlalchemy import paginate
 from backend.api.dependencies import ListPageParams, PostsListPageParams
-from backend.models import Post, Course, Competence
+from backend.models import Post, Course, Competence, User
+from backend.models.association_tables import UserPostAssociation
 from backend.api.schemas import posts as schemas
 from backend.api.queries.helpers import get_instances_or_400, with_search
 
@@ -53,3 +54,20 @@ def update_post(db: Session, post: Post, patch_data: schemas.PatchSubdivisionPos
     db.commit()
     db.refresh(post)
     return post
+
+
+def get_mastered_posts(db: Session, intern: User):
+    user_post_ids = db.query(UserPostAssociation.c.post_id).filter(
+        UserPostAssociation.c.user_id == intern.id,
+    )
+    user_competencies = set(intern.competencies)
+    user_posts = db.query(Post).filter(
+        Post.id.in_(user_post_ids),
+    ).options(
+        joinedload(Post.competencies),
+    )
+
+    return [
+        post for post in user_posts.all()
+        if set(post.competencies).issubset(user_competencies)
+    ]

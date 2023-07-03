@@ -1,19 +1,31 @@
 <template>
     <CommonCard>
-        <h2 class="text-lg mb-4">Осваиваемые должности</h2>
-        <p v-if="userStore.user?.posts.length === 0" class="text-gray-600">
-            Вы пока не осваиваете ни одну должность. Начните с
-            <NuxtLink :to="{ name: 'intern-subdivisions' }" class="link">выбора подразделения,</NuxtLink>
-            чтобы начать обучаться.
+        <h2 class="text-lg mb-4">Освоенные должности</h2>
+        <p v-if="!posts?.length" class="text-gray-600">
+            Вы пока не освоили ни одну должность. Завершайте курсы, зарабатывайте компетенции и у вас все получится!
         </p>
-        <div v-else>
-            <p v-for="(post, idx) in userStore.user!.posts" :key="idx">
-                {{ post.name }}
+        <div v-else class="max-h-[10rem] overflow-y-auto">
+            <p v-for="(post, idx) in posts" :key="idx">
+                <NuxtLink
+                    :to="{
+                        name: 'intern-subdivisions-id-posts-post_id',
+                        params: { id: post.subdivision_id, post_id: post.id },
+                    }"
+                    class="link"
+                >
+                    {{ post.name }}
+                </NuxtLink>
             </p>
         </div>
     </CommonCard>
 </template>
 
 <script setup lang="ts">
-    const userStore = useUserStore();
+    defineProps<{
+        posts: {
+            id: number;
+            name: string;
+            subdivision_id: number;
+        }[];
+    }>();
 </script>

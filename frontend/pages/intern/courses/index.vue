@@ -18,7 +18,7 @@
     const search = ref<string | null | undefined>(getFirstQueryValue(route.query.search));
 
     const { data, loadMore } = await useListLoader({
-        path: '/api/courses/',
+        path: '/api/courses/recommended',
         method: 'get',
     });
 </script>

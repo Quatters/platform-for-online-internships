@@ -6,8 +6,8 @@ from backend.api.queries import posts as queries
 from backend.database import get_db
 from backend.api.dependencies import ListPageParams, PostsListPageParams
 from backend.settings import LimitOffsetPage
-from backend.models import Subdivision, Post
-from backend.api.auth import admin_only
+from backend.models import Subdivision, Post, User
+from backend.api.auth import admin_only, intern_only
 from backend.api.background_tasks.users import handle_user_teachers_after_post_change
 
 
@@ -92,3 +92,11 @@ def delete_subdivision_post(
     queries.delete_post(db, post)
     background_tasks.add_task(handle_user_teachers_after_post_change, db)
     return {}
+
+
+@router.get('/mastered_posts', response_model=list[schemas.Post])
+def get_mastered_posts(
+    db: Session = Depends(get_db),
+    intern: User = Depends(intern_only),
+):
+    return queries.get_mastered_posts(db, intern)

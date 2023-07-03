@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
-from tests.base import login_as, test_admin
-from tests.helpers import create_competence, create_course, create_subdivision, get_records_count
+from tests.base import login_as, test_admin, test_intern
+from tests.helpers import create_competence, create_course, create_post, create_subdivision, get_records_count
+from backend.models import User, UserCompetence
 
 
 def test_posts_crud(db: Session):
@@ -97,3 +98,26 @@ def test_posts_crud(db: Session):
     })
     data = response.json()
     assert response.status_code == 200, data
+
+
+def test_get_mastered_posts(db: Session):
+    client = login_as(test_intern)
+    intern = db.query(User).filter(User.email == test_intern.email).one()
+
+    user_competence = create_competence(db)
+    another_competence = create_competence(db)
+
+    subdivision = create_subdivision(db)
+    mastered_post = create_post(db, subdivision_id=subdivision.id, competencies=[user_competence])
+    another_post = create_post(db, subdivision_id=subdivision.id, competencies=[user_competence, another_competence])
+
+    intern.posts = [mastered_post, another_post]
+    intern.user_competencies = [UserCompetence(user_id=intern.id, competence_id=user_competence.id)]
+    db.commit()
+
+    response = client.get('/api/mastered_posts')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == [
+        {'id': mastered_post.id, 'name': mastered_post.name, 'subdivision_id': mastered_post.subdivision_id}
+    ]
