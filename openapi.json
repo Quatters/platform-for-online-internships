@@ -2444,6 +2444,92 @@
         ]
       }
     },
+    "/api/posts/{post_id}/assign": {
+      "put": {
+        "summary": "Self Assign To Post",
+        "operationId": "self_assign_to_post_api_posts__post_id__assign_put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Id"
+            },
+            "name": "post_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkData"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/posts/{post_id}/unassign": {
+      "put": {
+        "summary": "Self Assign To Post",
+        "operationId": "self_assign_to_post_api_posts__post_id__unassign_put",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Post Id"
+            },
+            "name": "post_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkData"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/api/subdivisions/{subdivision_id}/posts": {
       "get": {
         "summary": "Get Subdivision Posts",
@@ -5040,6 +5126,17 @@
           "course_name": {
             "title": "Course Name",
             "type": "string"
+          }
+        }
+      },
+      "OkData": {
+        "title": "OkData",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string",
+            "default": "OK"
           }
         }
       },

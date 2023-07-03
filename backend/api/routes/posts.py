@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
 from backend.api.current_dependencies import current_post, current_subdivision
+from backend.api.errors.errors import bad_request
 from backend.api.schemas import posts as schemas
 from backend.api.queries import posts as queries
+from backend.api.schemas.base import OkData
 from backend.database import get_db
 from backend.api.dependencies import ListPageParams, PostsListPageParams
 from backend.settings import LimitOffsetPage
@@ -20,6 +22,38 @@ def get_posts(
     db: Session = Depends(get_db),
 ):
     return queries.get_posts(db, params)
+
+
+@router.put(
+    '/posts/{post_id}/assign',
+    response_model=OkData,
+)
+def self_assign_to_post(
+    post: Post = Depends(current_post),
+    user: User = Depends(intern_only),
+    db: Session = Depends(get_db),
+):
+    if post in user.posts:
+        raise bad_request('You are already assigned to this post.')
+    user.posts.append(post)
+    db.commit()
+    return OkData()
+
+
+@router.put(
+    '/posts/{post_id}/unassign',
+    response_model=OkData,
+)
+def self_assign_to_post(
+    post: Post = Depends(current_post),
+    user: User = Depends(intern_only),
+    db: Session = Depends(get_db),
+):
+    if post not in user.posts:
+        raise bad_request('You are not assigned to this post.')
+    user.posts.remove(post)
+    db.commit()
+    return OkData()
 
 
 @router.get('/subdivisions/{subdivision_id}/posts', response_model=LimitOffsetPage[schemas.SubdivisionPost])

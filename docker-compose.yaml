@@ -41,6 +41,7 @@ services:
       GUNICORN_CMD_ARGS: '--bind 0.0.0.0:8000 --workers 4'
       DATABASE_URL: postgresql+psycopg://postgres:postgres@db/internships
       AUTH_SECRET_KEY:
+      AUTH_TOKEN_EXPIRE_MINUTES:
     labels:
       traefik.enable: true
       traefik.http.routers.backend.entrypoints: http

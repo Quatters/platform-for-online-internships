@@ -121,3 +121,35 @@ def test_get_mastered_posts(db: Session):
     assert data == [
         {'id': mastered_post.id, 'name': mastered_post.name, 'subdivision_id': mastered_post.subdivision_id}
     ]
+
+
+def test_self_assign_post(db: Session):
+    client = login_as(test_intern)
+    intern = db.query(User).filter(User.email == test_intern.email).one()
+
+    subdivision = create_subdivision(db)
+    post = create_post(db, subdivision_id=subdivision.id)
+
+    assert intern.posts == []
+
+    response = client.put(f'/api/posts/{post.id}/assign')
+    data = response.json()
+    assert response.status_code == 200, data
+    db.refresh(intern)
+    assert intern.posts == [post]
+
+    response = client.put(f'/api/posts/{post.id}/assign')
+    data = response.json()
+    assert response.status_code == 400, data
+    assert data == {'detail': 'You are already assigned to this post.'}
+
+    response = client.put(f'/api/posts/{post.id}/unassign')
+    data = response.json()
+    assert response.status_code == 200, data
+    db.refresh(intern)
+    assert intern.posts == []
+
+    response = client.put(f'/api/posts/{post.id}/unassign')
+    data = response.json()
+    assert response.status_code == 400, data
+    assert data == {'detail': 'You are not assigned to this post.'}
