@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session, joinedload
 from fastapi_pagination import paginate as pypaginate
 from backend.api.dependencies import TestAttemptListPageParams
-from backend.models import TestAttempt, Topic, Course
+from backend.models import TestAttempt, Topic, Course, UserCourse, User
 from backend.api.queries.helpers import sort_by_self_fk, with_search
 from backend.api.schemas import test_attempts as schemas
 from backend.constants import TestAttemptStatus
@@ -13,13 +13,16 @@ def get_test_by_id(db: Session, test_id: int) -> TestAttempt | None:
 
 def get_going_test(db: Session, user_id: int):
     return db.query(TestAttempt).filter(
-        (TestAttempt.user_id == user_id) & (TestAttempt.finished_at == None)  # noqa: E711
+        TestAttempt.user_id == user_id,
+        TestAttempt.finished_at == None,  # noqa: E711
     ).one_or_none()
 
 
-def get_existing_attempts_count(db: Session, user_id: int, topic_id: int):
+def get_existing_attempts_count(db: Session, user: User, topic: Topic, user_course: UserCourse):
     return db.query(TestAttempt).filter(
-        (TestAttempt.user_id == user_id) & (TestAttempt.topic_id == topic_id)
+        TestAttempt.user_id == user.id,
+        TestAttempt.topic_id == topic.id,
+        TestAttempt.user_course_id == user_course.id,
     ).count()
 
 
@@ -54,7 +57,7 @@ def get_user_tests(db: Session, params: TestAttemptListPageParams, user_id: int)
     return pypaginate(tests, params, length_function=lambda _: query.count())
 
 
-def create_test(db: Session, topic: Topic, user_id: int):
+def create_test(db: Session, topic: Topic, user: User, user_course: UserCourse):
     time_to_pass = 0
     tasks = topic.tasks
     for task in tasks:
@@ -63,8 +66,9 @@ def create_test(db: Session, topic: Topic, user_id: int):
             task.possible_answers = task.answers
 
     test = TestAttempt(
-        user_id=user_id,
+        user_id=user.id,
         topic_id=topic.id,
+        user_course_id=user_course.id,
         time_to_pass=time_to_pass,
         status=TestAttemptStatus.in_progress,
     )

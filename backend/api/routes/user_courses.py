@@ -59,7 +59,7 @@ def create_user_course(course_data: schemas.CreateCourse,
 def delete_user_course(course_id: int,
                        user: User = Depends(current_user),
                        db: Session = Depends(get_db)):
-    user_course = queries.get_annotated_user_course_by_course_id(db, course_id, user.id)
+    user_course = queries.get_user_course_by_course_id(db, course_id, user.id)
     if user_course is None:
         raise not_found()
     queries.delete_user_course(db, user_course)

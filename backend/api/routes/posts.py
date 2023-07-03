@@ -44,7 +44,7 @@ def self_assign_to_post(
     '/posts/{post_id}/unassign',
     response_model=OkData,
 )
-def self_assign_to_post(
+def self_unassign_to_post(
     post: Post = Depends(current_post),
     user: User = Depends(intern_only),
     db: Session = Depends(get_db),
