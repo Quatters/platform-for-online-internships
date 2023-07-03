@@ -10,6 +10,12 @@
                 <ControlFormInput v-model="patchData.name" class="mb-4" label="Название" />
                 <ControlFormTextArea v-model="patchData.description" class="mb-4" label="Описание" />
                 <ControlFormM2MField v-model="patchData.courses" path="/api/courses/" label="Курсы" class="mb-4" />
+                <ControlFormM2MField
+                    v-model="patchData.competencies"
+                    path="/api/competencies/"
+                    label="Компетенции"
+                    class="mb-4"
+                />
             </ControlForm>
         </CommonContent>
     </div>
@@ -35,7 +41,7 @@
         });
     });
 
-    const { patchData } = usePatchDataInitializer<schema>(data, { m2mFields: ['courses'] });
+    const { patchData } = usePatchDataInitializer<schema>(data, { m2mFields: ['courses', 'competencies'] });
 
     async function save() {
         await $api({

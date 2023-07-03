@@ -38,7 +38,7 @@ def patch_competence(db: Session, competence: Competence, data: schemas.PatchCom
     if 'courses' in dict_:
         competence.courses = get_instances_or_400(db, Course, dict_.pop('courses'))
     if 'posts' in dict_:
-        competence.competencies = get_instances_or_400(db, Post, dict_.pop('posts'))
+        competence.posts = get_instances_or_400(db, Post, dict_.pop('posts'))
     for key, value in dict_.items():
         setattr(competence, key, value)
     db.commit()

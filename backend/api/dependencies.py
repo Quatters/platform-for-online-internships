@@ -21,3 +21,7 @@ class TestAttemptListPageParams(ListPageParams):
 
 class PostsListPageParams(ListPageParams):
     subdivision_id: int | None
+
+
+class RecommendedCoursesListPageParams(ListPageParams):
+    post_id: int | None

@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.api.auth import admin_only
+from backend.api.auth import admin_only, intern_only
 from backend.api.current_dependencies import get_current_course
 from backend.database import get_db
 from backend.api.queries import courses as queries
 from backend.api.schemas import courses as schemas
-from backend.models.courses import Course
+from backend.models import Course, User
 from backend.settings import LimitOffsetPage
-from backend.api.dependencies import ListPageParams
+from backend.api.dependencies import ListPageParams, RecommendedCoursesListPageParams
 
 
 router = APIRouter(prefix='/courses')
@@ -16,6 +16,15 @@ router = APIRouter(prefix='/courses')
 @router.get('/', response_model=LimitOffsetPage[schemas.Course])
 def get_courses(params: ListPageParams = Depends(), db: Session = Depends(get_db)):
     return queries.get_courses(db, params)
+
+
+@router.get('/recommended', response_model=LimitOffsetPage[schemas.Course])
+def get_recommended_courses(
+    user: User = Depends(intern_only),
+    params: RecommendedCoursesListPageParams = Depends(),
+    db: Session = Depends(get_db),
+):
+    return queries.get_recommended_courses(db, user, params)
 
 
 @router.get('/{course_id}', response_model=schemas.OneCourse)

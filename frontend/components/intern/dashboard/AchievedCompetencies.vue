@@ -6,7 +6,7 @@
             <NuxtLink :to="{ name: 'intern-courses' }" class="link">курс</NuxtLink>
             и они появятся!
         </p>
-        <div v-else>
+        <div v-else class="max-h-[10rem] overflow-y-auto">
             <p v-for="(competence, idx) in userStore.user!.competencies" :key="idx">
                 {{ competence.name }}
             </p>

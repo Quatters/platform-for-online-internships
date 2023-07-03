@@ -54,6 +54,8 @@ def create_course(
     *,
     name: Optional[str] = None,
     description: Optional[str] = None,
+    competencies: list[Competence] | None = None,
+    posts: list[Post] | None = None,
     pass_percent: int | None = None,
     commit: bool = True,
 ):
@@ -61,7 +63,8 @@ def create_course(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
         pass_percent=pass_percent,
-        competencies=[],
+        competencies=competencies or [],
+        posts=posts or [],
     )
     if commit:
         db.add(course)
@@ -127,12 +130,14 @@ def create_post(
     subdivision_id: int | Column[int],
     name: Optional[str] = None,
     description: Optional[str] = None,
+    competencies: list[Competence] | None = None,
     commit: bool = True,
 ):
     subdivision = Post(
         name=name or str(uuid1()),
         description=description or str(uuid1()),
         subdivision_id=subdivision_id,
+        competencies=competencies or [],
     )
     if commit:
         db.add(subdivision)

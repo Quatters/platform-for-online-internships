@@ -11,6 +11,10 @@ export interface paths {
     /** Create Course */
     post: operations["create_course_api_courses__post"];
   };
+  "/api/courses/recommended": {
+    /** Get Recommended Courses */
+    get: operations["get_recommended_courses_api_courses_recommended_get"];
+  };
   "/api/courses/{course_id}": {
     /** Get Course */
     get: operations["get_course_api_courses__course_id__get"];
@@ -148,6 +152,10 @@ export interface paths {
     delete: operations["delete_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__delete"];
     /** Update Subdivision Post */
     patch: operations["update_subdivision_post_api_subdivisions__subdivision_id__posts__post_id__patch"];
+  };
+  "/api/mastered_posts": {
+    /** Get Mastered Posts */
+    get: operations["get_mastered_posts_api_mastered_posts_get"];
   };
   "/api/competencies/": {
     /** Get Competencies */
@@ -1241,6 +1249,31 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["OneCourse"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Recommended Courses */
+  get_recommended_courses_api_courses_recommended_get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+        post_id?: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_Course_"];
         };
       };
       /** @description Validation Error */
@@ -2354,6 +2387,17 @@ export interface operations {
       422: {
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Mastered Posts */
+  get_mastered_posts_api_mastered_posts_get: {
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": (components["schemas"]["Post"])[];
         };
       };
     };
