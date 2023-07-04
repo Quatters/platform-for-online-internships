@@ -42,15 +42,11 @@
 
     onBeforeUnmount(() => (chatStore.showNotifications = true));
 
-    watch(
-        toRef(chatStore, 'recentMessage'),
-        value => {
-            if (value && data.value) {
-                data.value.items.unshift(value);
-            }
-        },
-        { immediate: true },
-    );
+    watch(toRef(chatStore, 'recentMessage'), value => {
+        if (value && data.value) {
+            data.value.items.unshift(value);
+        }
+    });
 
     async function submit() {
         if (!message.value) {

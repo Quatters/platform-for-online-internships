@@ -13,13 +13,13 @@ export default defineStore('chat', () => {
     const ws = useWebSocket(`ws://${chatUrl}/api/chat/ws/${userStore.accessToken}`, {
         immediate: false,
         heartbeat: {
-            interval: 5000,
+            interval: 10000,
             message: 'ping',
             pongTimeout: 10000,
         },
         autoReconnect: {
-            retries: 10,
-            delay: 5000,
+            retries: 20,
+            delay: 10000,
             onFailed() {
                 console.error('Failed to connect to chat.');
             },
