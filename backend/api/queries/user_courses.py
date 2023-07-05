@@ -82,18 +82,12 @@ def delete_user_course(db: Session, user_course: UserCourse):
 
 
 def _calculate_max_course_score(db: Session, course: Course):
-    all_task_ids_query = select(Task.id).where(Task.topic_id.in_(
-        select(Topic.id).where(Topic.course_id == course.id)
+    all_task_ids_query = db.query(Task.id).filter(Task.topic_id.in_(
+        db.query(Topic.id).filter(Topic.course_id == course.id)
     ))
-    single_tasks_count = db.scalar(
-        func.count(all_task_ids_query.where(Task.task_type == TaskType.single))
-    )
-    multiple_tasks_count = db.scalar(
-        func.count(all_task_ids_query.where(Task.task_type == TaskType.multiple))
-    )
-    text_tasks_count = db.scalar(
-        func.count(all_task_ids_query.where(Task.task_type == TaskType.text))
-    )
+    single_tasks_count = all_task_ids_query.filter(Task.task_type == TaskType.single).count()
+    multiple_tasks_count = all_task_ids_query.filter(Task.task_type == TaskType.multiple).count()
+    text_tasks_count = all_task_ids_query.filter(Task.task_type == TaskType.text).count()
     return (
         single_tasks_count
         + multiple_tasks_count * 2
