@@ -53,6 +53,14 @@ export interface paths {
     /** Assign Interns */
     put: operations["assign_interns_api_users__teacher_id__assigned_interns_put"];
   };
+  "/api/users/{teacher_id}/interns_with_stats": {
+    /** Get Interns With Stats */
+    get: operations["get_interns_with_stats_api_users__teacher_id__interns_with_stats_get"];
+  };
+  "/api/users/{teacher_id}/interns_with_stats/{intern_id}": {
+    /** Get Intern With Stats */
+    get: operations["get_intern_with_stats_api_users__teacher_id__interns_with_stats__intern_id__get"];
+  };
   "/api/users/{teacher_id}/assigned_interns/{intern_id}": {
     /** Get One Assigned Intern */
     get: operations["get_one_assigned_intern_api_users__teacher_id__assigned_interns__intern_id__get"];
@@ -408,6 +416,13 @@ export interface components {
        */
       detail?: string;
     };
+    /** FkCourse */
+    FkCourse: {
+      /** Id */
+      id: number;
+      /** Name */
+      name: string;
+    };
     /** FkPost */
     FkPost: {
       /** Id */
@@ -460,6 +475,33 @@ export interface components {
       /** Detail */
       detail?: (components["schemas"]["ValidationError"])[];
     };
+    /** InternWithStats */
+    InternWithStats: {
+      /** Id */
+      id: number;
+      /** Email */
+      email: string;
+      /** First Name */
+      first_name: string;
+      /** Last Name */
+      last_name: string;
+      /** Patronymic */
+      patronymic: string;
+      /** Is Admin */
+      is_admin: boolean;
+      /** Is Teacher */
+      is_teacher: boolean;
+      /** Finished Courses */
+      finished_courses: (components["schemas"]["FkCourse"])[];
+      /** Competencies */
+      competencies: (components["schemas"]["backend__api__schemas__users__FkCompetence"])[];
+      /** Posts */
+      posts: (components["schemas"]["Post"])[];
+      /** Learnt Posts */
+      learnt_posts: (components["schemas"]["Post"])[];
+      /** Average Score */
+      average_score: number;
+    };
     /** LimitOffsetPage[AnswerAdmin] */
     LimitOffsetPage_AnswerAdmin_: {
       /** Items */
@@ -497,6 +539,17 @@ export interface components {
     LimitOffsetPage_FkUser_: {
       /** Items */
       items: (components["schemas"]["backend__api__schemas__users__FkUser"])[];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit?: number;
+      /** Offset */
+      offset?: number;
+    };
+    /** LimitOffsetPage[InternWithStats] */
+    LimitOffsetPage_InternWithStats_: {
+      /** Items */
+      items: (components["schemas"]["InternWithStats"])[];
       /** Total */
       total: number;
       /** Limit */
@@ -1562,6 +1615,56 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["AssignInterns"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Interns With Stats */
+  get_interns_with_stats_api_users__teacher_id__interns_with_stats_get: {
+    parameters: {
+      query: {
+        limit?: number;
+        offset?: number;
+        search?: string;
+      };
+      path: {
+        teacher_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["LimitOffsetPage_InternWithStats_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Intern With Stats */
+  get_intern_with_stats_api_users__teacher_id__interns_with_stats__intern_id__get: {
+    parameters: {
+      path: {
+        intern_id: number;
+        teacher_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["InternWithStats"];
         };
       };
       /** @description Validation Error */

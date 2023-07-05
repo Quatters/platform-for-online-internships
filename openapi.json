@@ -741,6 +741,134 @@
         ]
       }
     },
+    "/api/users/{teacher_id}/interns_with_stats": {
+      "get": {
+        "summary": "Get Interns With Stats",
+        "operationId": "get_interns_with_stats_api_users__teacher_id__interns_with_stats_get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "integer"
+            },
+            "name": "teacher_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Limit",
+              "minimum": 1.0,
+              "type": "integer",
+              "default": 20
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Offset",
+              "minimum": 0.0,
+              "type": "integer",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "title": "Search",
+              "type": "string"
+            },
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LimitOffsetPage_InternWithStats_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/{teacher_id}/interns_with_stats/{intern_id}": {
+      "get": {
+        "summary": "Get Intern With Stats",
+        "operationId": "get_intern_with_stats_api_users__teacher_id__interns_with_stats__intern_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Intern Id",
+              "type": "integer"
+            },
+            "name": "intern_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "integer"
+            },
+            "name": "teacher_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternWithStats"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/api/users/{teacher_id}/assigned_interns/{intern_id}": {
       "get": {
         "summary": "Get One Assigned Intern",
@@ -4325,6 +4453,24 @@
           }
         }
       },
+      "FkCourse": {
+        "title": "FkCourse",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        }
+      },
       "FkPost": {
         "title": "FkPost",
         "required": [
@@ -4456,6 +4602,86 @@
           }
         }
       },
+      "InternWithStats": {
+        "title": "InternWithStats",
+        "required": [
+          "id",
+          "email",
+          "first_name",
+          "last_name",
+          "patronymic",
+          "is_admin",
+          "is_teacher",
+          "finished_courses",
+          "competencies",
+          "posts",
+          "learnt_posts",
+          "average_score"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "patronymic": {
+            "title": "Patronymic",
+            "type": "string"
+          },
+          "is_admin": {
+            "title": "Is Admin",
+            "type": "boolean"
+          },
+          "is_teacher": {
+            "title": "Is Teacher",
+            "type": "boolean"
+          },
+          "finished_courses": {
+            "title": "Finished Courses",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FkCourse"
+            }
+          },
+          "competencies": {
+            "title": "Competencies",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/backend__api__schemas__users__FkCompetence"
+            }
+          },
+          "posts": {
+            "title": "Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "learnt_posts": {
+            "title": "Learnt Posts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "average_score": {
+            "title": "Average Score",
+            "type": "number"
+          }
+        }
+      },
       "LimitOffsetPage_AnswerAdmin_": {
         "title": "LimitOffsetPage[AnswerAdmin]",
         "required": [
@@ -4565,6 +4791,38 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/backend__api__schemas__users__FkUser"
+            }
+          },
+          "total": {
+            "title": "Total",
+            "minimum": 0.0,
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "minimum": 1.0,
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "minimum": 0.0,
+            "type": "integer"
+          }
+        }
+      },
+      "LimitOffsetPage_InternWithStats_": {
+        "title": "LimitOffsetPage[InternWithStats]",
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "title": "Items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InternWithStats"
             }
           },
           "total": {

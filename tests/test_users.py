@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from backend.models import User
-from tests.base import login_as, test_admin, test_intern, test_anonymous
+from backend.models import User, UserCompetence
+from tests.base import login_as, test_admin, test_intern, test_anonymous, test_teacher
 from tests import helpers
 
 
@@ -444,3 +444,119 @@ def test_user_filters():
     for item in data['items']:
         assert item['is_admin']
         assert item['is_teacher'] is False
+
+
+def test_get_interns_with_stats(db: Session):
+    intern_1 = helpers.create_user(db)
+    intern_2 = helpers.create_user(db)
+    teacher = db.query(User).filter(User.email == test_teacher.email).one()
+
+    intern_1.teacher = teacher
+    intern_2.teacher = teacher
+
+    competence_1 = helpers.create_competence(db)
+    competence_2 = helpers.create_competence(db)
+
+    subdivision = helpers.create_subdivision(db)
+
+    post_1 = helpers.create_post(db, subdivision_id=subdivision.id, competencies=[competence_1, competence_2])
+    post_2 = helpers.create_post(db, subdivision_id=subdivision.id, competencies=[competence_1])
+
+    course_1 = helpers.create_course(db)
+    course_2 = helpers.create_course(db)
+
+    helpers.create_user_course(db, user_id=intern_1.id, course_id=course_1.id, progress=25)
+    helpers.create_user_course(db, user_id=intern_1.id, course_id=course_2.id, progress=75)
+    helpers.create_user_course(db, user_id=intern_2.id, course_id=course_1.id, progress=100)
+    helpers.create_user_course(db, user_id=intern_2.id, course_id=course_2.id, progress=80)
+
+    intern_1.user_competencies = [UserCompetence(user_id=intern_1.id, competence_id=competence_1.id)]
+    intern_2.user_competencies = [
+        UserCompetence(user_id=intern_2.id, competence_id=competence_1.id),
+        UserCompetence(user_id=intern_2.id, competence_id=competence_2.id),
+    ]
+    intern_1.posts = [post_1, post_2]
+    intern_2.posts = [post_1, post_2]
+
+    db.commit()
+    db.refresh(intern_1)
+    db.refresh(intern_2)
+
+    client = login_as(test_teacher)
+    response = client.get(f'/api/users/{teacher.id}/interns_with_stats')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data['total'] == 2
+    assert data['items'][0] == {
+        'id': intern_2.id,
+        'first_name': intern_2.first_name,
+        'last_name': intern_2.last_name,
+        'patronymic': intern_2.patronymic,
+        'email': intern_2.email,
+        'average_score': 90.0,
+        'posts': [
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
+        ],
+        'learnt_posts': [
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
+        ],
+        'competencies': [{'id': c.id, 'name': c.name} for c in intern_2.competencies],
+        'finished_courses': [
+            {'id': course_1.id, 'name': course_1.name},
+        ],
+        'is_admin': False,
+        'is_teacher': False,
+    }
+    assert data['items'][1] == {
+        'id': intern_1.id,
+        'first_name': intern_1.first_name,
+        'last_name': intern_1.last_name,
+        'patronymic': intern_1.patronymic,
+        'email': intern_1.email,
+        'average_score': 50.0,
+        'posts': [
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
+        ],
+        'learnt_posts': [
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
+        ],
+        'competencies': [
+            {'id': competence_1.id, 'name': competence_1.name},
+        ],
+        'finished_courses': [],
+        'is_admin': False,
+        'is_teacher': False,
+    }
+
+    response = client.get(f'/api/users/{teacher.id}/interns_with_stats/{intern_2.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {
+        'id': intern_2.id,
+        'first_name': intern_2.first_name,
+        'last_name': intern_2.last_name,
+        'patronymic': intern_2.patronymic,
+        'email': intern_2.email,
+        'average_score': 90.0,
+        'posts': [
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
+        ],
+        'learnt_posts': [
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
+        ],
+        'competencies': [{'id': c.id, 'name': c.name} for c in intern_2.competencies],
+        'finished_courses': [
+            {'id': course_1.id, 'name': course_1.name},
+        ],
+        'is_admin': False,
+        'is_teacher': False,
+    }
+
+    # get invalid user
+    response = client.get(f'/api/users/{teacher.id}/interns_with_stats/-1')
+    assert response.status_code == 404

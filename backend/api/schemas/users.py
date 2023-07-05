@@ -12,6 +12,11 @@ class FkUser(BaseSchema):
     email: str
 
 
+class FkCourse(BaseSchema):
+    id: int
+    name: str
+
+
 class User(BaseSchema):
     id: int
     email: str
@@ -33,6 +38,14 @@ class ListUser(BaseSchema):
     patronymic: str
     is_admin: bool
     is_teacher: bool
+
+
+class InternWithStats(ListUser):
+    finished_courses: list[FkCourse]
+    competencies: list[FkCompetence]
+    posts: list[Post]
+    learnt_posts: list[Post]
+    average_score: float
 
 
 class DbUser(User):

@@ -36,7 +36,7 @@
 
     const { data } = await useAsyncData(() => {
         return $api({
-            path: '/api/users/{teacher_id}/assigned_interns/{intern_id}',
+            path: '/api/users/{teacher_id}/interns_with_stats/{intern_id}',
             method: 'get',
             params: {
                 teacher_id: userStore.user!.id,

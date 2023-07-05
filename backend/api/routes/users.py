@@ -122,7 +122,36 @@ async def get_assigned_interns(
     teacher: User = Depends(path_teacher),
     params: ListPageParams = Depends(),
 ):
-    return queries.get_assigned_interns(db, teacher.id, params)
+    return queries.get_paginated_assigned_interns(db, teacher.id, params)
+
+
+@router.get(
+    '/users/{teacher_id}/interns_with_stats',
+    response_model=LimitOffsetPage[schemas.InternWithStats],
+    dependencies=[Depends(admin_or_teacher_only)],
+)
+async def get_interns_with_stats(
+    db: Session = Depends(get_db),
+    teacher: User = Depends(path_teacher),
+    params: ListPageParams = Depends(),
+):
+    return queries.get_interns_with_stats(db, teacher, params)
+
+
+@router.get(
+    '/users/{teacher_id}/interns_with_stats/{intern_id}',
+    response_model=schemas.InternWithStats,
+    dependencies=[Depends(admin_or_teacher_only)],
+)
+async def get_intern_with_stats(
+    intern_id: int,
+    db: Session = Depends(get_db),
+    teacher: User = Depends(path_teacher),
+):
+    intern = queries.get_intern_with_stats(db, intern_id, teacher)
+    if not intern:
+        raise not_found()
+    return intern
 
 
 @router.get(

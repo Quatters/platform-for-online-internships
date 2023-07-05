@@ -1,11 +1,13 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 from fastapi_pagination.ext.sqlalchemy import paginate
+from fastapi_pagination import paginate as pypaginate
 from backend.api.errors.errors import bad_request
-from backend.models.posts import Post
-from backend.models.users import User
+from backend.models import Post, User, Course, UserCourse
 from backend.models.association_tables import UserPostAssociation
 from backend.api.dependencies import ListPageParams, UserListPageParams
 from backend.api.queries.helpers import get_instances_or_400, with_search
+from backend.api.queries.posts import get_mastered_posts
 from backend.api.schemas import users as schemas
 from backend.api.utils import hash_password
 
@@ -65,7 +67,7 @@ def create_user(db: Session, user: schemas.CreateUser):
 
 def get_assigned_interns(db: Session, teacher_id: int, params: ListPageParams):
     query = db.query(User).filter(User.teacher_id == teacher_id)
-    query = with_search(
+    return with_search(
         User.email,
         User.first_name,
         User.last_name,
@@ -73,13 +75,59 @@ def get_assigned_interns(db: Session, teacher_id: int, params: ListPageParams):
         query=query,
         search=params.search,
     )
-    return paginate(query, params)
+
+
+def get_paginated_assigned_interns(db: Session, teacher_id: int, params: ListPageParams):
+    return paginate(
+        get_assigned_interns(db, teacher_id, params),
+        params,
+    )
+
+
+def _annotate_intern_with_stats(db: Session, intern: User):
+    user_courses = db.query(UserCourse).filter(
+        UserCourse.user_id == intern.id,
+    ).options(
+        joinedload(UserCourse.course),
+    )
+    intern.finished_courses = db.query(Course).filter(
+        Course.id.in_(
+            user_courses.filter(
+                UserCourse.course.has(UserCourse.progress >= Course.pass_percent),
+            ).with_entities(UserCourse.course_id),
+        ),
+    ).order_by(
+        Course.name,
+    ).all()
+    intern.learnt_posts = get_mastered_posts(db, intern)
+    intern.average_score = (
+        user_courses.with_entities(func.sum(UserCourse.progress)).scalar()
+        / user_courses.count()
+    )
+    return intern
+
+
+def get_interns_with_stats(db: Session, teacher: User, params: ListPageParams):
+    query = get_assigned_interns(db, teacher.id, params).options(
+        joinedload(User.user_competencies),
+        joinedload(User.posts),
+    )
+    interns = [_annotate_intern_with_stats(db, intern) for intern in query.all()]
+    interns.sort(key=lambda intern: intern.average_score, reverse=True)
+    return pypaginate(interns, length_function=lambda *_: query.count())
 
 
 def get_assigned_intern(db: Session, teacher_id: int, intern_id: int):
     return db.query(User).filter(
         (User.teacher_id == teacher_id) & (User.id == intern_id)
     ).one_or_none()
+
+
+def get_intern_with_stats(db: Session, intern_id: int, teacher: User):
+    intern = get_assigned_intern(db, teacher.id, intern_id)
+    if not intern:
+        return intern
+    return _annotate_intern_with_stats(db, intern)
 
 
 def assign_interns(db: Session, teacher: User, intern_ids: list[int]):
