@@ -11,6 +11,7 @@
                 <ControlFormInput v-model="data.description" class="mb-4" label="Описание" required />
                 <ControlFormFkField
                     v-model="data.subdivision_id"
+                    v-model:view-value="currentSubdivisionName"
                     path="/api/subdivisions/"
                     class="mb-4"
                     label="Подразделение"
@@ -43,6 +44,8 @@
         competencies: [],
         subdivision_id: undefined as unknown as number,
     });
+
+    const currentSubdivisionName = ref<string>();
 
     async function save() {
         await $api({
