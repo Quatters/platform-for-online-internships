@@ -10,7 +10,7 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <TeacherInternWithStats v-for="intern in data.items" :key="intern.id" :intern="intern" />
+            <TeacherInternWithStats v-for="intern in data.items" :key="intern.id" :intern="intern" class="mb-3" />
             <CommonLoadMore :response="data" @load-needed="loadMore" />
         </CommonContent>
     </div>
