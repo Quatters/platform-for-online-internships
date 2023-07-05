@@ -100,10 +100,9 @@ def _annotate_intern_with_stats(db: Session, intern: User):
         Course.name,
     ).all()
     intern.learnt_posts = get_mastered_posts(db, intern)
-    intern.average_score = (
-        user_courses.with_entities(func.sum(UserCourse.progress)).scalar()
-        / user_courses.count()
-    )
+    total_score = user_courses.with_entities(func.sum(UserCourse.progress)).scalar() or 0
+    count = user_courses.count() or 1
+    intern.average_score = total_score / count
     return intern
 
 
