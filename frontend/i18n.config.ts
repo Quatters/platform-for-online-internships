@@ -38,6 +38,9 @@ export default defineI18nConfig(() => ({
             'Task description': 'Описание задания',
             Review: 'Комментарий',
             'Pass percent': 'Процент для завершения',
+            'Learnt posts': 'Освоенные должности',
+            'Average score': 'Средний балл',
+            'Finished courses': 'Завершенные курсы',
 
             system_checking: 'проверяется системой',
             partially_checked: 'частично проверено',

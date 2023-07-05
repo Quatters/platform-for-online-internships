@@ -743,8 +743,8 @@
     },
     "/api/users/{teacher_id}/interns_with_stats": {
       "get": {
-        "summary": "Get Best Interns",
-        "operationId": "get_best_interns_api_users__teacher_id__interns_with_stats_get",
+        "summary": "Get Interns With Stats",
+        "operationId": "get_interns_with_stats_api_users__teacher_id__interns_with_stats_get",
         "parameters": [
           {
             "required": true,
@@ -794,6 +794,59 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LimitOffsetPage_InternWithStats_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/{teacher_id}/interns_with_stats/{intern_id}": {
+      "get": {
+        "summary": "Get Intern With Stats",
+        "operationId": "get_intern_with_stats_api_users__teacher_id__interns_with_stats__intern_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Intern Id",
+              "type": "integer"
+            },
+            "name": "intern_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": {
+              "title": "Teacher Id",
+              "type": "integer"
+            },
+            "name": "teacher_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternWithStats"
                 }
               }
             }

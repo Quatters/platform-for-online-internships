@@ -84,34 +84,35 @@ def get_paginated_assigned_interns(db: Session, teacher_id: int, params: ListPag
     )
 
 
+def _annotate_intern_with_stats(db: Session, intern: User):
+    user_courses = db.query(UserCourse).filter(
+        UserCourse.user_id == intern.id,
+    ).options(
+        joinedload(UserCourse.course),
+    )
+    intern.finished_courses = db.query(Course).filter(
+        Course.id.in_(
+            user_courses.filter(
+                UserCourse.course.has(UserCourse.progress >= Course.pass_percent),
+            ).with_entities(UserCourse.course_id),
+        ),
+    ).order_by(
+        Course.name,
+    ).all()
+    intern.learnt_posts = get_mastered_posts(db, intern)
+    intern.average_score = (
+        user_courses.with_entities(func.sum(UserCourse.progress)).scalar()
+        / user_courses.count()
+    )
+    return intern
+
+
 def get_interns_with_stats(db: Session, teacher: User, params: ListPageParams):
     query = get_assigned_interns(db, teacher.id, params).options(
         joinedload(User.user_competencies),
         joinedload(User.posts),
     )
-    interns = query.all()
-
-    for intern in interns:
-        user_courses = db.query(UserCourse).filter(
-            UserCourse.user_id == intern.id,
-        ).options(
-            joinedload(UserCourse.course),
-        )
-        intern.finished_courses = db.query(Course).filter(
-            Course.id.in_(
-                user_courses.filter(
-                    UserCourse.course.has(UserCourse.progress >= Course.pass_percent),
-                ).with_entities(UserCourse.course_id),
-            ),
-        ).order_by(
-            Course.name,
-        ).all()
-        intern.learnt_posts = get_mastered_posts(db, intern)
-        intern.average_score = (
-            user_courses.with_entities(func.sum(UserCourse.progress)).scalar()
-            / user_courses.count()
-        )
-
+    interns = [_annotate_intern_with_stats(db, intern) for intern in query.all()]
     interns.sort(key=lambda intern: intern.average_score, reverse=True)
     return pypaginate(interns, length_function=lambda *_: query.count())
 
@@ -120,6 +121,13 @@ def get_assigned_intern(db: Session, teacher_id: int, intern_id: int):
     return db.query(User).filter(
         (User.teacher_id == teacher_id) & (User.id == intern_id)
     ).one_or_none()
+
+
+def get_intern_with_stats(db: Session, intern_id: int, teacher: User):
+    intern = get_assigned_intern(db, teacher.id, intern_id)
+    if not intern:
+        return intern
+    return _annotate_intern_with_stats(db, intern)
 
 
 def assign_interns(db: Session, teacher: User, intern_ids: list[int]):

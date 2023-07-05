@@ -54,8 +54,12 @@ export interface paths {
     put: operations["assign_interns_api_users__teacher_id__assigned_interns_put"];
   };
   "/api/users/{teacher_id}/interns_with_stats": {
-    /** Get Best Interns */
-    get: operations["get_best_interns_api_users__teacher_id__interns_with_stats_get"];
+    /** Get Interns With Stats */
+    get: operations["get_interns_with_stats_api_users__teacher_id__interns_with_stats_get"];
+  };
+  "/api/users/{teacher_id}/interns_with_stats/{intern_id}": {
+    /** Get Intern With Stats */
+    get: operations["get_intern_with_stats_api_users__teacher_id__interns_with_stats__intern_id__get"];
   };
   "/api/users/{teacher_id}/assigned_interns/{intern_id}": {
     /** Get One Assigned Intern */
@@ -1621,8 +1625,8 @@ export interface operations {
       };
     };
   };
-  /** Get Best Interns */
-  get_best_interns_api_users__teacher_id__interns_with_stats_get: {
+  /** Get Interns With Stats */
+  get_interns_with_stats_api_users__teacher_id__interns_with_stats_get: {
     parameters: {
       query: {
         limit?: number;
@@ -1638,6 +1642,29 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["LimitOffsetPage_InternWithStats_"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /** Get Intern With Stats */
+  get_intern_with_stats_api_users__teacher_id__interns_with_stats__intern_id__get: {
+    parameters: {
+      path: {
+        intern_id: number;
+        teacher_id: number;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["InternWithStats"];
         };
       };
       /** @description Validation Error */

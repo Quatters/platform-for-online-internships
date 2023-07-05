@@ -530,3 +530,33 @@ def test_get_interns_with_stats(db: Session):
         'is_admin': False,
         'is_teacher': False,
     }
+
+    response = client.get(f'/api/users/{teacher.id}/interns_with_stats/{intern_2.id}')
+    data = response.json()
+    assert response.status_code == 200, data
+    assert data == {
+        'id': intern_2.id,
+        'first_name': intern_2.first_name,
+        'last_name': intern_2.last_name,
+        'patronymic': intern_2.patronymic,
+        'email': intern_2.email,
+        'average_score': 90.0,
+        'posts': [
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
+        ],
+        'learnt_posts': [
+            {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
+            {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
+        ],
+        'competencies': [{'id': c.id, 'name': c.name} for c in intern_2.competencies],
+        'finished_courses': [
+            {'id': course_1.id, 'name': course_1.name},
+        ],
+        'is_admin': False,
+        'is_teacher': False,
+    }
+
+    # get invalid user
+    response = client.get(f'/api/users/{teacher.id}/interns_with_stats/-1')
+    assert response.status_code == 404

@@ -6,15 +6,15 @@
                 <p>Средний балл: {{ intern.average_score }}</p>
             </div>
             <label v-if="intern.competencies.length" class="block cursor-pointer lg:mx-3 lg:my-0 my-3 mx-0">
-                <span class="inline-block mb-1 font-medium">Полученные компетенции:</span>
+                <span class="inline-block mb-1 font-medium">Полученные компетенции</span>
                 <FieldArray field-name="competencies" :value="intern.competencies" />
             </label>
-            <label v-if="posts.length" class="block cursor-pointer lg:mx-3 lg:my-0 my-3 mx-0">
-                <span class="inline-block mb-1 font-medium">Осваиваемые должности:</span>
-                <FieldArray field-name="posts" :value="posts" />
+            <label v-if="intern.posts.length" class="block cursor-pointer lg:mx-3 lg:my-0 my-3 mx-0">
+                <span class="inline-block mb-1 font-medium">Должности</span>
+                <FieldArray field-name="posts" :value="intern.posts" />
             </label>
             <label v-if="intern.learnt_posts.length" class="block cursor-pointer lg:mx-3 lg:my-0 my-3 mx-0">
-                <span class="inline-block mb-1 font-medium">Освоенные должности:</span>
+                <span class="inline-block mb-1 font-medium">Освоенные должности</span>
                 <FieldArray field-name="learnt_posts" :value="intern.learnt_posts" />
             </label>
             <label v-if="intern.finished_courses.length" class="block cursor-pointer lg:mx-3 lg:my-0 my-3 mx-0">
@@ -35,9 +35,4 @@
     function getDisplayName() {
         return getUserDisplayName(props.intern);
     }
-
-    const posts = computed(() => {
-        const learntPostIds = props.intern.posts.map(post => post.id);
-        return props.intern.posts.filter(post => !learntPostIds.includes(post.id));
-    });
 </script>
