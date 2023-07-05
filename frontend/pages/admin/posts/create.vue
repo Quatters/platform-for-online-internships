@@ -8,7 +8,7 @@
         <CommonContent>
             <ControlForm @submit="save">
                 <ControlFormInput v-model="data.name" class="mb-4" label="Название" required />
-                <ControlFormInput v-model="data.description" class="mb-4" label="Описание" required />
+                <ControlFormTextArea v-model="data.description" class="mb-4" label="Описание" required />
                 <ControlFormFkField
                     v-model="data.subdivision_id"
                     v-model:view-value="currentSubdivisionName"
