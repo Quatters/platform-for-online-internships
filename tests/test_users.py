@@ -502,10 +502,7 @@ def test_get_interns_with_stats(db: Session):
             {'id': post_1.id, 'name': post_1.name, 'subdivision_id': subdivision.id},
             {'id': post_2.id, 'name': post_2.name, 'subdivision_id': subdivision.id},
         ],
-        'competencies': [
-            {'id': competence_2.id, 'name': competence_2.name},
-            {'id': competence_1.id, 'name': competence_1.name},
-        ],
+        'competencies': [{'id': c.id, 'name': c.name} for c in intern_2.competencies],
         'finished_courses': [
             {'id': course_1.id, 'name': course_1.name},
         ],
