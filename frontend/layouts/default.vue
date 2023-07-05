@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen flex flex-row bg-blue-50">
         <CommonSidebar :sidebar-items="sidebarItems[role]" />
-        <div class="w-full">
+        <div class="w-full overflow-x-auto">
             <CommonHeader />
             <slot></slot>
         </div>

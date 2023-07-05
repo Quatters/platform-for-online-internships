@@ -10,7 +10,7 @@
             </template>
         </ControlPanel>
         <CommonContent>
-            <CommonListViewTable :items="data!.items" :hide-fields="['is_admin', 'is_teacher']" />
+            <TeacherInternWithStats v-for="intern in data.items" :key="intern.id" :intern="intern" />
             <CommonLoadMore :response="data" @load-needed="loadMore" />
         </CommonContent>
     </div>
@@ -21,7 +21,7 @@
     const userStore = useUserStore();
 
     const { data, loadMore } = await useListLoader({
-        path: '/api/users/{teacher_id}/assigned_interns',
+        path: '/api/users/{teacher_id}/interns_with_stats',
         method: 'get',
         params: { teacher_id: userStore.user!.id },
     });
